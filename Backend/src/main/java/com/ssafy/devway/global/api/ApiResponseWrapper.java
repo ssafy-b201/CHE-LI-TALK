@@ -1,4 +1,5 @@
-package com.ssafy.devway.domain.alert.dto;
+package com.ssafy.devway.global.api;
+
 
 import lombok.Builder;
 import lombok.Getter;
@@ -10,3 +11,4 @@ public class ApiResponseWrapper<T> {
 	private String resultCode;
 	private String resultMsg;
 }
+

@@ -1,9 +1,9 @@
 package com.ssafy.devway.domain.alert.controller;
 
-import com.ssafy.devway.domain.alert.dto.ApiResponseWrapper;
 import com.ssafy.devway.domain.alert.dto.RequestDto;
 import com.ssafy.devway.domain.alert.dto.SuccessCode;
 import com.ssafy.devway.domain.alert.service.FCMService;
+import com.ssafy.devway.global.api.ApiResponseWrapper;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
