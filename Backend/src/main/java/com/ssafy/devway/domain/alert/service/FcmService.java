@@ -22,7 +22,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class FCMService {
+public class FcmService {
 
 	//메시지를 구성하고 토큰을 받아서 fcm 으로 메시지 처리를 수행하는 비즈니스 로직
 	public int sendMessageTo(RequestDto requestDto) throws IOException {
