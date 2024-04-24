@@ -6,9 +6,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -24,7 +28,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class FirstActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class SigninActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
     // 구글 로그인 버튼
     private SignInButton btn_google;
@@ -41,15 +45,10 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_signin);
 
-        // Firebase 인증 객체 초기화 , 로그인 체크
         auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null) {
-            // 사용자가 이미 로그인 되어 있다면 바로 메인으로 이동
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(com.firebase.ui.auth.R.string.default_web_client_id))
@@ -99,18 +98,13 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         // 로그인 성공
                         if (task.isSuccessful()) {
-                            Toast.makeText(FirstActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SigninActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
 
-//                            // 여기는 필요 없을 듯 (닉네임, 프사 가져오는 부분)
-//                            intent.putExtra("nickName", account.getDisplayName());
-//                            intent.putExtra("photoUrl", String.valueOf(account.getPhotoUrl()));
-//                            //
-
                             startActivity(intent);
-                        } else { // 로그인 실패
+                        } else { // 로그인 실패 - 로그인 화면으로 돌아가기
                             Log.e("LoginActivity", "로그인 실패", task.getException());
-                            Toast.makeText(FirstActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SigninActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -120,5 +114,4 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.e("GoogleSignIn", "연결 실패: " + connectionResult.getErrorMessage());
     }
-
 }
