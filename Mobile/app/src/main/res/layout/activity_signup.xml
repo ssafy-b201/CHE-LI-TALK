@@ -7,13 +7,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#C5E6F0"
-    tools:context=".MainActivity">
+    tools:context=".SignupActivity">
 
-    <TextView
+    <EditText
+        android:id="@+id/et_id"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:hint="체리톡에서 사용할 영어 이름을 입력하세요." />
+
+    <Button
+        android:id="@+id/btn_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:text="메인 액티비티 도착"/>
+        android:text="시작하기" />
 
 
 </LinearLayout>
