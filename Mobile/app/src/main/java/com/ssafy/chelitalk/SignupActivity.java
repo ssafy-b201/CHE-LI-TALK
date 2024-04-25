@@ -22,7 +22,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 현재 액티비티, 이동하고 싶은 액티비티
-                Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                Intent intent = new Intent(SignupActivity.this, SplashActivity.class);
                 startActivity(intent); // 액티비티 이동
             }
         });
