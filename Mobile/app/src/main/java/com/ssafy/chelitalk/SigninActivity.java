@@ -83,7 +83,7 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
                 GoogleSignInAccount account = result.getSignInAccount();
                 resultLogin(account);
             } else {
-                Log.e("LoginActivity", "Google 로그인 실패: " + result.getStatus());
+                Log.e("SigninActivity", "Google 로그인 실패: " + result.getStatus());
             }
         }
 

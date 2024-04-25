@@ -10,14 +10,35 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class SplashActivity extends AppCompatActivity {
 
-    private static int SPLASH_TIME_OUT = 20000;
+    // Firebase 인증 객체
+    private FirebaseAuth auth;
+
+    private static int SPLASH_TIME_OUT = 2000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash);
+
+        // Firebase 인증 객체 초기화 , 로그인 체크
+        auth = FirebaseAuth.getInstance();
+        auth.signOut(); // 테스트용 로그아웃
+
+        new Handler().postDelayed(() -> {
+            if (auth.getCurrentUser() != null) {
+                // 사용자가 로그인 한 적이 있다면 메인 액티비티로 이동
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
+            } else {
+                // 로그인 한 적 없는 사용자는 회원가입 화면으로 이동
+                startActivity(new Intent(SplashActivity.this, SignupActivity.class));
+                finish();
+            }
+        }, SPLASH_TIME_OUT);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -25,10 +46,5 @@ public class SplashActivity extends AppCompatActivity {
             return insets;
         });
 
-        new Handler().postDelayed(()->{
-            Intent homeIntent = new Intent(SplashActivity.this, MainActivity.class);
-            startActivity(homeIntent);
-            finish();
-        }, SPLASH_TIME_OUT);
     }
 }
