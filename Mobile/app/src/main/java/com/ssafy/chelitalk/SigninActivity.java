@@ -55,6 +55,8 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
                 .requestEmail()
                 .build();
 
+        Log.i("SigninActivity", "token = + " + String.valueOf(getString(com.firebase.ui.auth.R.string.default_web_client_id)));
+
         googleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
