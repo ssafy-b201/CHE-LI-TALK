@@ -15,8 +15,8 @@ pipeline {
                 script {
                     sh 'docker-compose -f /home/ubuntu/chelitalk/Backend/docker-compose.yml build app_cherry'
                     sh 'docker-compose -f /home/ubuntu/chelitalk/Backend/docker-compose.yml up -d app_cherry'
-					sh 'docker-compose -f /home/ubuntu/oringe/devway/docker-compose.yml build --no-cache nginx'
-                    sh 'docker-compose -f /home/ubuntu/oringe/devway/docker-compose.yml build --no-cache certbot'
+					sh 'docker-compose -f /home/ubuntu/oringe/devway/docker-compose.yml build nginx'
+                    sh 'docker-compose -f /home/ubuntu/oringe/devway/docker-compose.yml build certbot'
                 }
             }
         }
