@@ -13,18 +13,18 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    sh 'docker-compose -f devway/docker-compose.yml build app_cherry'
-                    sh 'docker-compose -f devway/docker-compose.yml up -d app_cherry'
-					sh 'docker-compose -f devway/docker-compose.yml build --no-cache nginx_cherry'
-                    sh 'docker-compose -f devway/docker-compose.yml build --no-cache certbot'
+                    sh 'docker-compose -f Backend/docker-compose.yml build app_cherry'
+                    sh 'docker-compose -f Backend/docker-compose.yml up -d app_cherry'
+					sh 'docker-compose -f Backend/docker-compose.yml build --no-cache nginx_cherry'
+                    sh 'docker-compose -f Backend/docker-compose.yml build --no-cache certbot'
                 }
             }
         }
         stage('Deploy') {
             steps {
                 script {
-                    sh 'docker-compose -f /home/ubuntu/oringe/devway/docker-compose.yml up -d nginx_cherry '
-                    sh 'docker-compose -f /home/ubuntu/oringe/devway/docker-compose.yml up -d certbot'
+                    sh 'docker-compose -f /home/ubuntu/oringe/Backend/docker-compose.yml up -d nginx_cherry '
+                    sh 'docker-compose -f /home/ubuntu/oringe/Backend/docker-compose.yml up -d certbot'
                 }
             }
         }
