@@ -26,9 +26,4 @@ public class MemberController {
         return ApiResponse.ok(request.getMemberNickname());
     }
 
-    @PostMapping("/signin")
-    public void signin(){
-
-    }
-
 }
