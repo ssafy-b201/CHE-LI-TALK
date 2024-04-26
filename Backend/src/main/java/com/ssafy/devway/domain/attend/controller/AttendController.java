@@ -22,26 +22,26 @@ public class AttendController {
 
 	private final AttendService attendService;
 
-	/*
+	/**
 	 * 4.1 출석 조회
-	 * */
+	 */
 	@GetMapping("/list/{memberId}")
 	public WeeklyAttendResponse attendList(@PathVariable Long memberId) throws IOException {
 		return attendService.getList(memberId);
 	}
 
-	/*
+	/**
 	* 4.2 출석 업데이트해주기 : 오늘 진입하면 true로 변경
-	* */
+	*/
 	@PutMapping("/update")
 	public WeeklyAttendResponse updateAttend(@RequestBody CheckAttendRequest request){
 		return attendService.updateList(request.getMember().getMemberId());
 	}
 
 
-	/*
+	/**
 	* 4.3 출석 초기화 (일주일 지나면)
-	* */
+	*/
 	@PostMapping("/reset")
 	public WeeklyAttendResponse resetAttend(@PathVariable Long memberId) throws IOException{
 		return attendService.resetList(memberId);

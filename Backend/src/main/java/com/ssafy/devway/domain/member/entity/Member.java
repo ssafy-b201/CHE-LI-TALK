@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,9 +23,6 @@ public class Member {
     @Column(name = "member_nickname")
     private String memberNickname;
 
-    @Column(name = "member_is_first")
-    private Boolean memberIsFirst;
-
     @Column(name = "member_is_alert")
     private Boolean memberIsAlert;
 
@@ -36,7 +32,6 @@ public class Member {
     @Builder
     public Member(String memberNickname, String memberEmail) {
         this.memberNickname = memberNickname;
-        this.memberIsFirst = true;
         this.memberIsAlert = true;
         this.memberEmail = memberEmail;
     }
