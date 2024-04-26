@@ -15,15 +15,15 @@ pipeline {
                 script {
                     sh 'docker-compose -f /home/ubuntu/chelitalk/Backend/docker-compose.yml build app_cherry'
                     sh 'docker-compose -f /home/ubuntu/chelitalk/Backend/docker-compose.yml up -d app_cherry'
-					sh 'docker-compose -f /home/ubuntu/chelitalk/Backend/docker-compose.yml build --no-cache nginx_cherry'
-                    sh 'docker-compose -f /home/ubuntu/chelitalk/Backend/docker-compose.yml build --no-cache certbot'
+					sh 'docker-compose -f /home/ubuntu/chelitalk/Backend/docker-compose.yml build nginx'
+                    sh 'docker-compose -f /home/ubuntu/chelitalk/Backend/docker-compose.yml build certbot'
                 }
             }
         }
         stage('Deploy') {
             steps {
                 script {
-                    sh 'docker-compose -f /home/ubuntu/chelitalk/Backend/docker-compose.yml up -d nginx_cherry '
+                    sh 'docker-compose -f /home/ubuntu/chelitalk/Backend/docker-compose.yml up -d nginx'
                     sh 'docker-compose -f /home/ubuntu/chelitalk/Backend/docker-compose.yml up -d certbot'
                 }
             }

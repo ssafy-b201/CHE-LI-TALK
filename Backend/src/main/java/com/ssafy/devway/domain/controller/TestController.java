@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 public class TestController {
-    @GetMapping("/cherry")
+    @GetMapping("/cherry/api")
     public String home() {
-        return "Hello, LKL";
+        return "Hello, Leesters";
     }
 }
