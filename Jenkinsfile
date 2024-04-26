@@ -23,8 +23,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    sh 'docker-compose -f /home/ubuntu/oringe/Backend/docker-compose.yml up -d nginx_cherry '
-                    sh 'docker-compose -f /home/ubuntu/oringe/Backend/docker-compose.yml up -d certbot'
+                    sh 'docker-compose -f /home/ubuntu/chelitalk/Backend/docker-compose.yml up -d nginx_cherry '
+                    sh 'docker-compose -f /home/ubuntu/chelitalk/Backend/docker-compose.yml up -d certbot'
                 }
             }
         }
