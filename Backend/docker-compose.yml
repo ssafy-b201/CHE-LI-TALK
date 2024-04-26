@@ -14,8 +14,8 @@ services:
       context: .
       dockerfile: Dockerfile-nginx
     ports:
-      - "81:80"
-      - "4413:443"
+      - "81:81"
+      - "445:445"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - /home/ubuntu/certbot/www:/var/www/certbot
