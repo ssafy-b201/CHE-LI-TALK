@@ -52,4 +52,6 @@ dependencies {
 
     //토글
     implementation ("com.github.angads25:toggle:1.1.0")
+    // OkHttp
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
 }

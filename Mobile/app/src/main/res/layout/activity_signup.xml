@@ -10,7 +10,7 @@
     tools:context=".SignupActivity">
 
     <EditText
-        android:id="@+id/et_id"
+        android:id="@+id/et_nickname"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
