@@ -9,6 +9,8 @@ services:
       - "8060:8060"
     environment:
       - TZ=Asia/Seoul
+    networks:
+      - devway_network
 
 networks:
   devway_network:
