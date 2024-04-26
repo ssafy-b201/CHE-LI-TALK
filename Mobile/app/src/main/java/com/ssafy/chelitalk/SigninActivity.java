@@ -28,6 +28,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class SigninActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
     // 구글 로그인 버튼
@@ -54,6 +62,8 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
                 .requestIdToken(getString(com.firebase.ui.auth.R.string.default_web_client_id))
                 .requestEmail()
                 .build();
+
+        Log.i("SigninActivity", "token = + " + String.valueOf(getString(com.firebase.ui.auth.R.string.default_web_client_id)));
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
@@ -83,7 +93,7 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
                 GoogleSignInAccount account = result.getSignInAccount();
                 resultLogin(account);
             } else {
-                Log.e("LoginActivity", "Google 로그인 실패: " + result.getStatus());
+                Log.e("SigninActivity", "Google 로그인 실패: " + result.getStatus());
             }
         }
 
@@ -98,16 +108,51 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         // 로그인 성공
                         if (task.isSuccessful()) {
+
+                            // 서버로 토큰 전달
+                            sendTokenToServer(account.getIdToken());
+
                             Toast.makeText(SigninActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-
                             startActivity(intent);
+
                         } else { // 로그인 실패 - 로그인 화면으로 돌아가기
                             Log.e("LoginActivity", "로그인 실패", task.getException());
                             Toast.makeText(SigninActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+    }
+
+
+    private void sendTokenToServer(String idToken) {
+        OkHttpClient client = new OkHttpClient();
+        String url = "http://10.0.2.2:8080/member/signin";
+
+        MediaType mediaType = MediaType.parse("application/json");
+        String requestBody = "{\"idToken\":\"" + idToken + "\"}";
+        RequestBody body = RequestBody.create(requestBody, mediaType);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    Log.i("Server Response", response.body().string());
+                } else {
+                    Log.e("Server Error", "Response not successful");
+                }
+            }
+        });
     }
 
     @Override
