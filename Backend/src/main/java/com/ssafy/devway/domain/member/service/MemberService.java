@@ -26,12 +26,16 @@ public class MemberService {
             .build();
 
         memberRepository.save(newMember);
-
     }
 
     public MemberDetailResponse detailMember(String memberEmail) {
 
         Member findedMember = getMember(memberEmail);
+
+        if (findedMember == null) {
+            throw new IllegalArgumentException("해당 회원을 찾을 수 없습니다.");
+        }
+
         Long memberId = findedMember.getMemberId();
 
         WeeklyAttendResponse attend = attendService.getList(memberId);
@@ -42,8 +46,16 @@ public class MemberService {
             .build();
     }
 
-    public Member getMember(String memberEmail){
-        return memberRepository.findByMemberEmail(memberEmail)
-            .orElseThrow(() -> new IllegalArgumentException("해당 회원을 찾을 수 없습니다."));
+    public Boolean validMember(String memberEmail) {
+
+        Member findedMember = getMember(memberEmail);
+
+        // false : 가입하지 않은 유저
+        return findedMember != null;
     }
+
+    public Member getMember(String memberEmail) {
+        return memberRepository.findByMemberEmail(memberEmail);
+    }
+
 }

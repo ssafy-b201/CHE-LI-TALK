@@ -23,6 +23,9 @@ public class MemberController {
     private final MemberService memberService;
     private final AttendService attendService;
 
+    /**
+     * 회원 가입
+     */
     @PostMapping("/signup")
     public ApiResponse<String> signup(@RequestBody MemberSignupRequest request){
 
@@ -31,10 +34,22 @@ public class MemberController {
         return ApiResponse.ok(request.getMemberNickname());
     }
 
+    /**
+     * 멤버 정보 조회 (메인페이지)
+     */
     @GetMapping("/detail")
     public ApiResponse<MemberDetailResponse> memberDetail(@RequestParam String memberEmail){
 
         return ApiResponse.ok(memberService.detailMember(memberEmail));
+    }
+
+    /**
+     * 가입한 유저인지 체크
+     */
+    @GetMapping("/valid")
+    public ApiResponse<Boolean> memberValid(@RequestParam String memberEmail){
+
+        return ApiResponse.ok(memberService.validMember(memberEmail));
     }
 
 }
