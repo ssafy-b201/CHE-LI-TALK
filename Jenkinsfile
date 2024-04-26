@@ -13,10 +13,10 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    sh 'docker-compose -f Backend/docker-compose.yml build app_cherry'
-                    sh 'docker-compose -f Backend/docker-compose.yml up -d app_cherry'
-					sh 'docker-compose -f Backend/docker-compose.yml build --no-cache nginx_cherry'
-                    sh 'docker-compose -f Backend/docker-compose.yml build --no-cache certbot'
+                    sh 'docker-compose -f /home/ubuntu/chelitalk/Backend/docker-compose.yml build app_cherry'
+                    sh 'docker-compose -f /home/ubuntu/chelitalk/Backend/docker-compose.yml up -d app_cherry'
+					sh 'docker-compose -f /home/ubuntu/chelitalk/Backend/docker-compose.yml build --no-cache nginx_cherry'
+                    sh 'docker-compose -f /home/ubuntu/chelitalk/Backend/docker-compose.yml build --no-cache certbot'
                 }
             }
         }
