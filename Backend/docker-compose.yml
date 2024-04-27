@@ -12,6 +12,20 @@ services:
     networks:
       - devway_network
 
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: cherry       # Replace 'dbname' with your database name
+      MYSQL_USER: root             # Replace 'user' with your database user
+      MYSQL_PASSWORD: devway201     # Replace 'password' with your database password
+      MYSQL_ROOT_PASSWORD: devway201  # Replace 'rootpassword' with your root password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - devway_network
+
 networks:
   devway_network:
     external: true
