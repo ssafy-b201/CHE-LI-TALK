@@ -1,5 +1,6 @@
 package com.ssafy.devway.domain.attend.entity;
 
+import com.ssafy.devway.domain.attend.dto.response.AttendResDto;
 import com.ssafy.devway.domain.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
@@ -29,12 +31,23 @@ public class Attend {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
+	@Setter
 	private Member member;
 
 	@Column(name = "attend_date")
+	@Setter
 	private LocalDate attendDate;
 
 	@Column(name = "attend_is_attended")
+	@Setter
 	private boolean attendIsAttended;
+
+	public AttendResDto toDto(){
+		AttendResDto dto = new AttendResDto();
+		dto.setMember(this.member);
+		dto.setMember(this.member);
+		dto.setAttendIsAttended(this.attendIsAttended);
+		return dto;
+	}
 
 }
