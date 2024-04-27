@@ -21,7 +21,7 @@ public class AttendService {
 
 	//출석 리스트 조회하기
 	public WeeklyAttendResponse getList(Long memberId) {
-		Member member = memberRepository.findByMemberId(memberId);
+		Member member = getMember(memberId);
 
 		LocalDate date = today.with(DayOfWeek.MONDAY);
 		Boolean isAttended = false;
@@ -37,7 +37,9 @@ public class AttendService {
 
 	//출석 업데이트
 	public WeeklyAttendResponse updateList(Long memberId) {
-		Member member = memberRepository.findByMemberId(memberId);
+
+		Member member = getMember(memberId);
+		LocalDate today = LocalDate.now();
 		HashMap<LocalDate, Boolean> map = new HashMap<>();
 		map.put(today, true);
 //		attendRepository.save(new Attend(member, today, true));
@@ -47,7 +49,7 @@ public class AttendService {
 
 	//출석 초기화
 	public WeeklyAttendResponse resetList(Long memberId) {
-		Member member = memberRepository.findByMemberId(memberId);
+		Member member = getMember(memberId);
 
 		//지난주 월요일
 		LocalDate previousMonday = LocalDate.now().with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
@@ -62,6 +64,11 @@ public class AttendService {
 
 		WeeklyAttendResponse responsedto = new WeeklyAttendResponse(member, map);
 		return responsedto;
+	}
+
+	public Member getMember(Long memberId){
+		return memberRepository.findByMemberId(memberId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다."));
 	}
 
 
