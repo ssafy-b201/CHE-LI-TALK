@@ -15,8 +15,8 @@ services:
   mysql:
     image: mysql
     environment:
-      MYSQL_DATABASE: cherry       # Replace 'dbname' with your database name
-      MYSQL_USER: cherry             # Replace 'user' with your database user
+      MYSQL_DATABASE: chelitalk       # Replace 'dbname' with your database name
+      MYSQL_USER: chelitalk             # Replace 'user' with your database user
       MYSQL_PASSWORD: devway201     # Replace 'password' with your database password
       MYSQL_ROOT_PASSWORD: devway201  # Replace 'rootpassword' with your root password
     volumes:
