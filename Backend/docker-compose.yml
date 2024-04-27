@@ -26,6 +26,9 @@ services:
     networks:
       - devway_network
 
+volumes:
+  mysql_data:
+
 networks:
   devway_network:
     external: true
