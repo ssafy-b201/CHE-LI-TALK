@@ -1,6 +1,8 @@
 package com.ssafy.devway.domain.attend.service;
 
+import com.ssafy.devway.domain.attend.dto.response.AttendResDto;
 import com.ssafy.devway.domain.attend.dto.response.WeeklyAttendResponse;
+import com.ssafy.devway.domain.attend.entity.Attend;
 import com.ssafy.devway.domain.attend.repository.AttendRepository;
 import com.ssafy.devway.domain.member.entity.Member;
 import com.ssafy.devway.domain.member.repository.MemberRepository;
@@ -40,9 +42,16 @@ public class AttendService {
 
 		Member member = getMember(memberId);
 		LocalDate today = LocalDate.now();
+
+		Attend attend = Attend.builder()
+			.member(member)
+			.attendDate(today)
+			.attendIsAttended(true)
+			.build();
+
+		attendRepository.save(attend);
 		HashMap<LocalDate, Boolean> map = new HashMap<>();
 		map.put(today, true);
-//		attendRepository.save(new Attend(member, today, true));
 		WeeklyAttendResponse responsedto = new WeeklyAttendResponse(member, map);
 		return responsedto;
 	}
@@ -51,10 +60,11 @@ public class AttendService {
 	public WeeklyAttendResponse resetList(Long memberId) {
 		Member member = getMember(memberId);
 
-		//지난주 월요일
+		//지난주 월요일(서버에서 자동으로 월요일 되면 false로 초기화)
 		LocalDate previousMonday = LocalDate.now().with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
 
 		HashMap<LocalDate, Boolean> map = new HashMap<>();
+
 		LocalDate date = previousMonday;
 
 		for(int i=0;i<7;i++){

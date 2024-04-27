@@ -42,9 +42,12 @@ public class Attend {
 	@Setter
 	private boolean attendIsAttended;
 
-//	public AttendResDto toDto(){
-//		AttendResDto dto = new AttendResDto();
-//		dto.setMembe
-//	}
+	public AttendResDto toDto(){
+		AttendResDto dto = new AttendResDto();
+		dto.setMember(this.member);
+		dto.setMember(this.member);
+		dto.setAttendIsAttended(this.attendIsAttended);
+		return dto;
+	}
 
 }
