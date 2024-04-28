@@ -5,4 +5,5 @@
     <color name="background_color">#C5E6F0</color>
     <color name="box">#80FFFFFF</color>
     <color name="cherry">#DE3163</color>
+    <color name="cherrybtn">#80DE3163</color>
 </resources>
