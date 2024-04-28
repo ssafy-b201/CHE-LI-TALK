@@ -1,6 +1,5 @@
 package com.ssafy.devway.domain.attend.entity;
 
-import com.ssafy.devway.domain.attend.dto.response.AttendResDto;
 import com.ssafy.devway.domain.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,13 +40,5 @@ public class Attend {
 	@Column(name = "attend_is_attended")
 	@Setter
 	private boolean attendIsAttended;
-
-	public AttendResDto toDto(){
-		AttendResDto dto = new AttendResDto();
-		dto.setMember(this.member);
-		dto.setMember(this.member);
-		dto.setAttendIsAttended(this.attendIsAttended);
-		return dto;
-	}
 
 }
