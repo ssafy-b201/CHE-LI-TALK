@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ssafy.chelitalk.R;
@@ -28,7 +30,7 @@ public class SplashActivity extends AppCompatActivity {
 
     // Firebase 인증 객체
     private FirebaseAuth auth;
-    private static final int SPLASH_TIME_OUT = 2000;
+    private static final int SPLASH_TIME_OUT = 4000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,12 @@ public class SplashActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
 //        auth.signOut(); // 테스트용 로그아웃
+
+        ImageView imageView = findViewById(R.id.imageView);
+        Glide.with(this)
+                .asGif()
+                .load(R.drawable.logo_move)
+                .into(imageView);
 
         new Handler().postDelayed(() -> {
             FirebaseUser currentUser = auth.getCurrentUser();

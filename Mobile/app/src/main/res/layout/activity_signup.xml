@@ -32,9 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="43dp"
         android:layout_gravity="center"
-        android:background="@drawable/rectangle_style"
-        tools:layout_editor_absoluteX="24dp"
-        tools:layout_editor_absoluteY="576dp" />
+        android:background="@drawable/rectangle_style"/>
 
     <Button
         android:id="@+id/btn_start"
@@ -44,9 +42,7 @@
         android:layout_marginTop="15dp"
         android:background="@drawable/rectangle_start_btn"
         android:text="시작하기"
-        android:textColor="@color/white"
-        tools:layout_editor_absoluteX="154dp"
-        tools:layout_editor_absoluteY="645dp" />
+        android:textColor="@color/white"/>
 
     <TextView
         android:layout_width="match_parent"
