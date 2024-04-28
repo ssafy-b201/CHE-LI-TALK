@@ -29,6 +29,7 @@ import okhttp3.Response;
 
 public class SplashActivity extends AppCompatActivity {
 
+
     // Firebase 인증 객체
     private FirebaseAuth auth;
     private static final int SPLASH_TIME_OUT = 2000;
