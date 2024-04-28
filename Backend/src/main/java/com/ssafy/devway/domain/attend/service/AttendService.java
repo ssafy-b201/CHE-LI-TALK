@@ -49,6 +49,7 @@ public class AttendService {
 			.build();
 
 		attendRepository.save(attend);
+
 		HashMap<LocalDate, Boolean> map = new HashMap<>();
 		map.put(today, true);
 		WeeklyAttendResponse responsedto = new WeeklyAttendResponse(member, map);
