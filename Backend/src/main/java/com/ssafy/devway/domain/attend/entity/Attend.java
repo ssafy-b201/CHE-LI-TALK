@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
@@ -29,12 +30,15 @@ public class Attend {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
+	@Setter
 	private Member member;
 
 	@Column(name = "attend_date")
+	@Setter
 	private LocalDate attendDate;
 
 	@Column(name = "attend_is_attended")
+	@Setter
 	private boolean attendIsAttended;
 
 }
