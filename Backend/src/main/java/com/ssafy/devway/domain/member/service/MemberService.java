@@ -20,6 +20,12 @@ public class MemberService {
 
     public void signup(MemberSignupRequest request) {
 
+        Member member = memberRepository.findByMemberEmail(request.getMemberEmail());
+
+        if(member != null){
+            throw new IllegalArgumentException("이미 가입 된 이메일입니다.");
+        }
+
         Member newMember = Member.builder()
             .memberNickname(request.getMemberNickname())
             .memberEmail(request.getMemberEmail())
@@ -49,6 +55,7 @@ public class MemberService {
     public Boolean validMember(String memberEmail) {
 
         Member findedMember = getMember(memberEmail);
+
 
         // false : 가입하지 않은 유저
         return findedMember != null;
