@@ -1,4 +1,4 @@
-package com.ssafy.chelitalk;
+package com.ssafy.chelitalk.common;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.ssafy.chelitalk.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
