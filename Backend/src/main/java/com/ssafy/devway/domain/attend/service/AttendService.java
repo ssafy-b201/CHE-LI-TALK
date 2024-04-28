@@ -1,6 +1,5 @@
 package com.ssafy.devway.domain.attend.service;
 
-import com.ssafy.devway.domain.attend.dto.response.AttendResDto;
 import com.ssafy.devway.domain.attend.dto.response.WeeklyAttendResponse;
 import com.ssafy.devway.domain.attend.entity.Attend;
 import com.ssafy.devway.domain.attend.repository.AttendRepository;
