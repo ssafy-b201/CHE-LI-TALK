@@ -36,19 +36,14 @@ public class SignupActivity extends AppCompatActivity {
         et_nickname = findViewById(R.id.et_nickname);
         auth = FirebaseAuth.getInstance();
 
-        Log.d("SignupActivity", "signupActivity 진입");
-
         btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseUser user = auth.getCurrentUser();
-                Log.d("SignupActivity", "버튼 클릭됨");
 
                 if (user != null) {
-                    Log.d("SignupActivity", "email = " + user.getEmail());
                     String email = user.getEmail();
                     String nickname = et_nickname.getText().toString();
-                    Log.d("SignupActivity", "nickname = " + nickname);
 
                     if (!nickname.isEmpty()) {
                         sendUserInfoToServer(email, nickname);
@@ -57,7 +52,7 @@ public class SignupActivity extends AppCompatActivity {
                     }
                 } else {
                     Log.d("SignupActivity", "사용자 정보 없음");
-                    Toast.makeText(SignupActivity.this, "로그인 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignupActivity.this, "로그인 되어 있지 않습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
