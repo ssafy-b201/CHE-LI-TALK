@@ -19,13 +19,13 @@ public class AttendService {
 
 	private final AttendRepository attendRepository;
 	private final MemberRepository memberRepository;
-	private final LocalDate today = LocalDate.now();
+	private final LocalDate TODAY = LocalDate.now();
 
 	//출석 리스트 조회하기
 	public WeeklyAttendResponse getList(Long memberId) {
 		Member member = getMember(memberId);
 
-		LocalDate date = today.with(DayOfWeek.MONDAY);
+		LocalDate date = TODAY.with(DayOfWeek.MONDAY);
 		Boolean isAttended = false;
 		HashMap<LocalDate, Boolean> map = new HashMap<>();
 		for(int i=0;i<6;i++){
