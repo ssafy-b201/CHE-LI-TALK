@@ -29,25 +29,64 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
+        <TextView
+            android:id="@+id/spinner_info"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="60dp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:text="오늘의 대화 주제" />
+
         <Spinner
             android:id="@+id/spinner_keywords"
             android:layout_width="250dp"
             android:layout_height="40dp"
+            android:layout_marginTop="100dp"
             android:textAlignment="center"
             android:entries="@array/select_keywords"
             android:background="@drawable/rectangle_select_keywords"
-            android:popupBackground="@drawable/rectangle_list_keywords"
-            android:theme="@style/SpinnerItem.DropDownItem"
-            >
+            android:popupBackground="@drawable/rectangle_list_keywords">
         </Spinner>
 
-        <TextView
-            android:id="@+id/tv_result"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="50dp"
-            android:text="선택한 키워드" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_gravity="center">
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="100dp"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center|start"
+            android:src="@drawable/lips"
+            android:background="@drawable/shape_for_circle_chat"/>
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="100dp"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center|end"
+            android:src="@drawable/keyboard"
+            android:background="@drawable/shape_for_circle_chat"/>
 
     </FrameLayout>
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/imageButton"
+        android:padding="5dp"
+        android:src="@drawable/cherries"
+        android:layout_gravity="end"
+        android:layout_marginEnd="50dp"
+        android:layout_margin="50dp"
+        android:background="@drawable/shape_for_circle_button"/>
 
 </LinearLayout>
