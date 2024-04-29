@@ -1,19 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#C5E6F0"
-    tools:context=".MainActivity">
+    tools:context=".common.MainActivity">
 
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+    <ImageView
+        android:layout_height="100dp"
+        android:layout_width="300dp"
+        android:src="@drawable/chat_bubble"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:text="메인 액티비티 도착"/>
+        android:font="@font/galmuri9"
+        android:text="Hello"
+        android:layout_marginBottom="20dp"
+        android:textSize="25sp"
+        android:layout_gravity="center"
+        />
+    </FrameLayout>
 
+    <!--명언-->
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rectangle_style" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/adviceTextView"
+            />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ribbon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="15dp"
+                android:text="today's line"/>
+        </FrameLayout>
+
+    </FrameLayout>
+
+    <!--출석체크-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp"
+        android:text="출첵"
+        android:background="@drawable/rectangle_style" />
+
+    <!--서비스소개-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp"
+        android:text="CHECK, LISTEN, TALK?"
+        android:textAlignment="center"
+        android:background="@drawable/rectangle_style"
+        />
+
+    <!--그래머체크와 푸시알람-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+    <TextView
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/rectangle_style"
+        android:text="grammar check"
+        android:textAlignment="center"
+        />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/rectangle_style"
+                android:text="push alarm"
+                android:textAlignment="center"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="알람이 꺼졌습니다."
+                    />
+               <Switch
+                   android:id="@+id/toggle"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+
+                   tools:ignore="UseSwitchCompatOrMaterialXml" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/imageButton"
+        android:padding="5dp"
+        android:src="@drawable/cherries"
+        android:layout_gravity="end"
+        android:layout_marginEnd="50dp"
+        android:layout_margin="50dp"
+        android:background="@drawable/shape_for_circle_button"/>
 
 </LinearLayout>

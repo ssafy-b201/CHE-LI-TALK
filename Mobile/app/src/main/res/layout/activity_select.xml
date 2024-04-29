@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="#C5E6F0"
+    tools:context=".english.SelectActivity">
+
+    <FrameLayout
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo_bubble"
+            />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <Spinner
+            android:id="@+id/spinner_keywords"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:textAlignment="center"
+            android:entries="@array/select_keywords"
+            android:background="@drawable/rectangle_select_keywords"
+            android:popupBackground="@drawable/rectangle_list_keywords"
+            android:theme="@style/SpinnerItem.DropDownItem"
+            >
+        </Spinner>
+
+        <TextView
+            android:id="@+id/tv_result"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="50dp"
+            android:text="선택한 키워드" />
+
+    </FrameLayout>
+
+</LinearLayout>

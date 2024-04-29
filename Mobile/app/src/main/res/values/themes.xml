@@ -5,7 +5,29 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.Chelitalk" parent="Base.Theme.Chelitalk" />
+    <style name="Theme.Chelitalk" parent="Theme.AppCompat.Light" >
+        <item name="windowNoTitle">true</item>
+    <!-- Spinner theme -->
+    <item name="android:spinnerItemStyle">@style/SpinnerItem</item>
+    <item name="android:spinnerDropDownItemStyle">@style/SpinnerItem.DropDownItem</item>
+    </style>
+
+    <!-- selected spinner item -->
+    <style name="SpinnerItem" parent="@android:style/Widget.DropDownItem">
+        <item name="android:textColor">@color/cherry</item>
+        <item name="android:text">keywords</item>
+        <item name="overlapAnchor">false</item>
+        <item name="android:spinnerMode">dropdown</item>
+    </style>
+
+    <!-- spinner list items -->
+    <style name="SpinnerItem.DropDownItem" parent="@android:style/Widget.DropDownItem.Spinner">
+        <item name="android:textColor">@color/cherry</item>
+        <item name="android:divider">@color/grey</item>
+        <item name="android:dividerHeight">5dp</item>
+        <item name="overlapAnchor">false</item>
+        <item name="android:spinnerMode">dropdown</item>
+    </style>
 
 
 </resources>
