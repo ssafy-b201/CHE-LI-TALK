@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_gravity="center"
     android:background="#C5E6F0"
-    android:gravity="center"
-    tools:context=".SplashActivity"
-    >
+    tools:context=".common.SplashActivity">
+
 
     <ImageView
-        android:layout_height="400dp"
-        android:layout_width="500dp"
-        android:src="@drawable/cheritalk_splash_icon"
-        android:layout_marginBottom="220dp"
-        />
+        android:id="@+id/imageView"
+        android:layout_width="350dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="80dp"
+        android:layout_gravity="center"
+        android:src="@drawable/logo_move" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom|center"
+        android:layout_marginBottom="50dp"
         android:text="Source By Devway"
-        android:layout_marginTop="30dp"
         android:textColor="#000000"
-        android:textSize="12sp"
-        />
+        android:textSize="12sp" />
 
 
 </LinearLayout>

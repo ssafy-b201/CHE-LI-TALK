@@ -1,19 +1,19 @@
-package com.ssafy.chelitalk;
+package com.ssafy.chelitalk.common;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
+import android.widget.ImageView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.ssafy.chelitalk.R;
+import com.ssafy.chelitalk.login.SigninActivity;
+import com.ssafy.chelitalk.login.SignupActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,10 +21,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class SplashActivity extends AppCompatActivity {
@@ -32,7 +30,7 @@ public class SplashActivity extends AppCompatActivity {
 
     // Firebase 인증 객체
     private FirebaseAuth auth;
-    private static final int SPLASH_TIME_OUT = 2000;
+    private static final int SPLASH_TIME_OUT = 4000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +39,12 @@ public class SplashActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
 //        auth.signOut(); // 테스트용 로그아웃
+
+        ImageView imageView = findViewById(R.id.imageView);
+        Glide.with(this)
+                .asGif()
+                .load(R.drawable.logo_move)
+                .into(imageView);
 
         new Handler().postDelayed(() -> {
             FirebaseUser currentUser = auth.getCurrentUser();
