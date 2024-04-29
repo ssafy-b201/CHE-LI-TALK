@@ -13,7 +13,7 @@
             android:id="@+id/imgBanner3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/box"
+            android:background="@drawable/rectangle_style"
             android:contentDescription="@string/app_name"/>
 
         <TextView
@@ -26,7 +26,12 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="Hello This is Page 3"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="8sp"
+            android:autoSizeMaxTextSize="16sp"
+            android:autoSizeStepGranularity="1sp"
+            android:text="ADVICES FOR YOU \n 매일 달라지는 영어 명언과 함께  \n 오늘도 힘차게 살아봅시다. "
+            />
             />
     </RelativeLayout>
 

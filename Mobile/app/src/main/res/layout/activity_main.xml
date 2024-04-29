@@ -79,28 +79,31 @@
         android:background="@drawable/rectangle_style" />
 
     <!--서비스소개-->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="30dp"
-        android:text="CHECK, LISTEN, TALK?"
-        android:textAlignment="center"
-        android:background="@drawable/rectangle_style"
-        />
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginBottom="30dp"-->
+<!--        android:text="CHECK, LISTEN, TALK?"-->
+<!--        android:textAlignment="center"-->
+<!--        android:background="@drawable/rectangle_style"-->
+<!--        />-->
     <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/frameSize">
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/frameSize"
+        android:layout_marginBottom="30dp">
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/frameSize"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/rectangle_style"
             android:clipToPadding="false"
             android:clipChildren="false" />
         <me.relex.circleindicator.CircleIndicator3
+            android:id="@+id/indicator"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:id="@+id/indicator"
             android:layout_gravity="bottom"/>
     </FrameLayout>
 
