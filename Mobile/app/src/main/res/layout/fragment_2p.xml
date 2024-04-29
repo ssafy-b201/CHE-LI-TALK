@@ -26,11 +26,8 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:autoSizeTextType="uniform"
-            android:autoSizeMinTextSize="8sp"
-            android:autoSizeMaxTextSize="16sp"
-            android:autoSizeStepGranularity="1sp"
-            android:text="REMEMBER ME \n 영어 회화 연습 후 기억하고 싶은 문장을 \n 저장해보세요! 리멤버 미"
+            android:fontFamily="@font/mitmi"
+            android:text="@string/default_text2"
             />
     </RelativeLayout>
 

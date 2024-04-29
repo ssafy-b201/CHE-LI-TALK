@@ -26,11 +26,8 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:autoSizeTextType="uniform"
-            android:autoSizeMinTextSize="8sp"
-            android:autoSizeMaxTextSize="16sp"
-            android:autoSizeStepGranularity="1sp"
-            android:text="CHECK, LISTEN, TALK? \n 문법 체크! 원어민 리슨! 영어 토크! \n AI와의 대화를 통해 영어 회화 연습을 해보세요."
+            android:fontFamily="@font/mitmi"
+            android:text="@string/default_text"
             />
     </RelativeLayout>
 

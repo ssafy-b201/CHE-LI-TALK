@@ -62,12 +62,14 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="15dp"
                 android:fontFamily="@font/galmuri9"
-                android:text="today's line"/>
+                android:text="오늘의 명언"/>
         </FrameLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@font/mitmi"
+            android:textSize="23sp"
             android:id="@+id/adviceTextView"
             />
     </FrameLayout>
@@ -113,10 +115,12 @@
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginRight="40dp"
+        android:gravity="center"
+        android:layout_marginEnd="40dp"
         android:background="@drawable/rectangle_style"
         android:fontFamily="@font/galmuri9"
-        android:text="grammar check"
+        android:text="GRAMMAR\nCHECK"
+        android:textSize="30sp"
         android:textAlignment="center"
         />
 
@@ -138,11 +142,6 @@
                 android:orientation="horizontal"
                 android:layout_gravity="center">
 
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="알람이 꺼졌습니다."-->
-<!--                    />-->
                <Switch
                    android:id="@+id/toggle"
                    android:layout_width="wrap_content"
