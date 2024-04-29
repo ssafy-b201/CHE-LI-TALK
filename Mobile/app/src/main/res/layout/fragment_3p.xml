@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/frameSize"
+        android:layout_marginLeft="@dimen/pageMarginAndOffset"
+        android:layout_marginRight="@dimen/pageMarginAndOffset"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/imgBanner3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/rectangle_style"
+            android:contentDescription="@string/app_name"/>
+
+        <TextView
+            android:id="@+id/tvName3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="8sp"
+            android:autoSizeMaxTextSize="16sp"
+            android:autoSizeStepGranularity="1sp"
+            android:text="ADVICES FOR YOU \n 매일 달라지는 영어 명언과 함께  \n 오늘도 힘차게 살아봅시다. "
+            />
+            />
+    </RelativeLayout>
+
+</FrameLayout>

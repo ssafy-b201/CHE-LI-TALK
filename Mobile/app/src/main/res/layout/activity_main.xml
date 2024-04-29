@@ -22,9 +22,10 @@
         android:layout_marginTop="30dp"
         />
     <TextView
+        android:id="@+id/greetingTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:font="@font/galmuri9"
+        android:fontFamily="@font/galmuri9"
         android:text="Hello"
         android:layout_marginBottom="20dp"
         android:textSize="25sp"
@@ -43,11 +44,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
             android:background="@drawable/rectangle_style" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/adviceTextView"
-            />
+
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -64,9 +61,15 @@
                 android:textSize="25sp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="15dp"
+                android:fontFamily="@font/galmuri9"
                 android:text="today's line"/>
         </FrameLayout>
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/adviceTextView"
+            />
     </FrameLayout>
 
     <!--출석체크-->
@@ -74,20 +77,31 @@
         android:layout_width="wrap_content"
         android:layout_height="70dp"
         android:layout_gravity="center"
+        android:gravity="center|start"
         android:layout_marginBottom="30dp"
+        android:padding="20dp"
+        android:fontFamily="@font/galmuri9"
         android:text="출첵"
         android:background="@drawable/rectangle_style" />
 
-    <!--서비스소개-->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="30dp"
-        android:text="CHECK, LISTEN, TALK?"
-        android:textAlignment="center"
-        android:background="@drawable/rectangle_style"
-        />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/frameSize"
+        android:layout_marginBottom="30dp">
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/rectangle_style"
+            android:clipToPadding="false"
+            android:clipChildren="false" />
+        <me.relex.circleindicator.CircleIndicator3
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom"/>
+    </FrameLayout>
 
     <!--그래머체크와 푸시알람-->
     <LinearLayout
@@ -101,6 +115,7 @@
         android:layout_gravity="center"
         android:layout_marginRight="40dp"
         android:background="@drawable/rectangle_style"
+        android:fontFamily="@font/galmuri9"
         android:text="grammar check"
         android:textAlignment="center"
         />
@@ -114,6 +129,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/rectangle_style"
                 android:text="push alarm"
+                android:fontFamily="@font/galmuri9"
                 android:textAlignment="center"
                 />
             <LinearLayout
@@ -122,11 +138,11 @@
                 android:orientation="horizontal"
                 android:layout_gravity="center">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="알람이 꺼졌습니다."
-                    />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="알람이 꺼졌습니다."-->
+<!--                    />-->
                <Switch
                    android:id="@+id/toggle"
                    android:layout_width="wrap_content"
@@ -138,9 +154,9 @@
     </LinearLayout>
 
     <ImageButton
+        android:id="@+id/imageButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/imageButton"
         android:padding="5dp"
         android:src="@drawable/cherries"
         android:layout_gravity="end"

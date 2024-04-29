@@ -1,16 +1,35 @@
 package com.ssafy.chelitalk.common;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.ssafy.chelitalk.R;
+import com.ssafy.chelitalk.carousel.MyAdapter;
+import com.ssafy.chelitalk.english.CheckActivity;
+import com.ssafy.chelitalk.english.HistoryActivity;
+import com.ssafy.chelitalk.english.LikeActivity;
+import com.ssafy.chelitalk.english.SelectActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,20 +39,132 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
-import java.nio.Buffer;
+import java.util.Calendar;
+
+import me.relex.circleindicator.CircleIndicator3;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String API_URL = "https://api.adviceslip.com/advice";
     private TextView adviceTextView;
+    private TextView greetingTextView;
+    private ViewPager2 mPager;
+    private FragmentStateAdapter pagerAdapter;
+    private int num_page = 3;
+    private CircleIndicator3 mIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        //메뉴 dialog(modal)
+        final ImageButton button1 = (ImageButton) findViewById(R.id.imageButton);
+        button1.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
+                dlg.setTitle("Menu");
+                ListAdapter adapter = new ArrayAdapter<String>(
+                        MainActivity.this, R.layout.dialog_item, R.id.text, new String[]{"HOME", "STUDY", "LIKE","HISTORY", "CHECK"}){
+                    @NonNull
+                    @Override
+                    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
+                        View view = super.getView(position, convertView, parent);
+                        ImageView img = view.findViewById(R.id.icon);
+                        switch (position){
+                            case 0: img.setImageResource(R.drawable.home_icon); break;
+                            case 1: img.setImageResource(R.drawable.study_icon); break;
+                            case 2: img.setImageResource(R.drawable.like_icon); break;
+                            case 3: img.setImageResource(R.drawable.history_icon); break;
+                            case 4: img.setImageResource(R.drawable.check_icon); break;
+                            default:img.setImageResource(R.drawable.cherry); break;
+                        }
+                        return view;
+                    }
+                };
+                dlg.setAdapter(adapter, new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent;
+                        switch(which){
+                            case 0:
+                                intent = new Intent(MainActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                break;
+                            case 1:
+                                intent = new Intent(MainActivity.this, SelectActivity.class);
+                                startActivity(intent);
+                                break;
+                            case 2:
+                                intent = new Intent(MainActivity.this, LikeActivity.class);
+                                startActivity(intent);
+                                break;
+                            case 3:
+                                intent = new Intent(MainActivity.this, HistoryActivity.class);
+                                startActivity(intent);
+                                break;
+                            case 4:
+                                intent = new Intent(MainActivity.this, CheckActivity.class);
+                                startActivity(intent);
+                                break;
+                        }
+                    }
+                });
+                dlg.show();
+            }
+        });
+
+        //인사말
+        greetingTextView = findViewById(R.id.greetingTextView);
+        setGreetingBasedOnTime();
+
+        //캐러셀
+        mPager = findViewById(R.id.viewpager);
+        pagerAdapter = new MyAdapter(this, num_page);
+        mPager.setAdapter(pagerAdapter);
+        mIndicator = findViewById(R.id.indicator);
+        mIndicator.setViewPager(mPager);
+        mIndicator.createIndicators(num_page,0);
+        mPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        mPager.setCurrentItem(1000);
+        mPager.setOffscreenPageLimit(3);
+
+        mPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                if(positionOffsetPixels == 0){
+                    mPager.setCurrentItem(position);
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position){
+                super.onPageSelected(position);
+                mIndicator.animatePageSelected(position%num_page);
+            }
+        });
+
+        final float pageMargin = getResources().getDimensionPixelOffset(R.dimen.pageMargin);
+        final float pageOffset = getResources().getDimensionPixelOffset(R.dimen.offset);
+
+        mPager.setPageTransformer(new ViewPager2.PageTransformer() {
+            @Override
+            public void transformPage(@NonNull View page, float position) {
+                float myOffset = position * -(2*pageOffset+pageMargin);
+                if(mPager.getOrientation()==ViewPager2.ORIENTATION_HORIZONTAL){
+                    if(ViewCompat.getLayoutDirection(mPager)==ViewCompat.LAYOUT_DIRECTION_RTL){
+                        page.setTranslationX(-myOffset);
+                    }else{
+                        page.setTranslationX(myOffset);
+                    }
+                }else{
+                    page.setTranslationY(myOffset);
+                }
+            }
+        });
 
         //화면에 진입하면 바로 명언띄우기
         adviceTextView  = findViewById(R.id.adviceTextView);
@@ -54,6 +185,22 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void setGreetingBasedOnTime() {
+        Calendar c = Calendar.getInstance();
+        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+        System.out.println(timeOfDay);
+
+        if(timeOfDay >= 6 && timeOfDay < 12){
+            greetingTextView.setText("Good Morning");
+        }else if(timeOfDay >= 12 && timeOfDay < 17){
+            greetingTextView.setText("Good Afternoon");
+        }else if(timeOfDay >= 17 && timeOfDay < 21){
+            greetingTextView.setText("Good Evening");
+        }else{
+            greetingTextView.setText("Good Night");
+        }
+    }
+
     private class FetchAdviceTask extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... voids){
@@ -65,23 +212,32 @@ public class MainActivity extends AppCompatActivity {
                 URL url = new URL(API_URL);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
+                while(true){
+                    urlConnection.connect();
+                    InputStream inputStream = urlConnection.getInputStream();
+                    StringBuilder buffer = new StringBuilder();
+                    if(inputStream == null){
+                        break;
+                    }
+                    reader = new BufferedReader(new InputStreamReader(inputStream));
+                    String line;
+                    while((line = reader.readLine()) != null){
+                        buffer.append(line).append("\n");
+                    }
+                    if(buffer.length()==0){
+                        break;
+                    }
+                    adviceJsonString = buffer.toString();
 
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuilder buffer = new StringBuilder();
-                if(inputStream == null){
-                    return null;
+                    JSONObject adviceJson = new JSONObject(adviceJsonString);
+                    JSONObject slip = adviceJson.getJSONObject("slip");
+                    String advice = slip.getString("advice");
+
+                    if(advice.length() < 80){
+                        break;
+                    }
                 }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                while((line = reader.readLine()) != null){
-                    buffer.append(line).append("\n");
-                }
-                if(buffer.length()==0){
-                    return null;
-                }
-                adviceJsonString = buffer.toString();
-            }catch(IOException e){
+            }catch(IOException | JSONException e){
                 e.printStackTrace();
             }finally{
                 if(urlConnection != null){

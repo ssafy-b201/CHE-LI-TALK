@@ -16,32 +16,43 @@
         android:theme="@style/Theme.Chelitalk"
         tools:targetApi="31">
         <activity
+            android:name=".english.CheckActivity"
+            android:exported="false" />
+        <activity
+            android:name=".english.HistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".english.LikeActivity"
+            android:exported="false" />
+        <activity
             android:name=".english.SelectActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            </activity>
+            android:exported="false" />
         <activity
             android:name=".login.SigninActivity"
             android:exported="false" />
         <activity
             android:name=".common.SplashActivity"
             android:exported="false">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".login.SignupActivity"
             android:exported="false" />
         <activity
             android:name=".common.MainActivity"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
