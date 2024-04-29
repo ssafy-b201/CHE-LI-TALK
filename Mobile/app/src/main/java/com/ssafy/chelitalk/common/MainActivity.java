@@ -121,23 +121,32 @@ public class MainActivity extends AppCompatActivity {
                 URL url = new URL(API_URL);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
+                while(true){
+                    urlConnection.connect();
+                    InputStream inputStream = urlConnection.getInputStream();
+                    StringBuilder buffer = new StringBuilder();
+                    if(inputStream == null){
+                        break;
+                    }
+                    reader = new BufferedReader(new InputStreamReader(inputStream));
+                    String line;
+                    while((line = reader.readLine()) != null){
+                        buffer.append(line).append("\n");
+                    }
+                    if(buffer.length()==0){
+                        break;
+                    }
+                    adviceJsonString = buffer.toString();
 
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuilder buffer = new StringBuilder();
-                if(inputStream == null){
-                    return null;
+                    JSONObject adviceJson = new JSONObject(adviceJsonString);
+                    JSONObject slip = adviceJson.getJSONObject("slip");
+                    String advice = slip.getString("advice");
+
+                    if(advice.length() < 100){
+                        break;
+                    }
                 }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                while((line = reader.readLine()) != null){
-                    buffer.append(line).append("\n");
-                }
-                if(buffer.length()==0){
-                    return null;
-                }
-                adviceJsonString = buffer.toString();
-            }catch(IOException e){
+            }catch(IOException | JSONException e){
                 e.printStackTrace();
             }finally{
                 if(urlConnection != null){

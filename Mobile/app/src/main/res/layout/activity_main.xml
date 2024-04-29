@@ -24,7 +24,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:font="@font/galmuri9"
+        android:fontFamily="@font/galmuri9"
         android:text="Hello"
         android:layout_marginBottom="20dp"
         android:textSize="25sp"
@@ -60,6 +60,7 @@
                 android:textSize="25sp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="15dp"
+                android:fontFamily="@font/galmuri9"
                 android:text="today's line"/>
         </FrameLayout>
         <TextView
@@ -75,19 +76,10 @@
         android:layout_height="70dp"
         android:layout_gravity="center"
         android:layout_marginBottom="30dp"
+        android:fontFamily="@font/galmuri9"
         android:text="출첵"
         android:background="@drawable/rectangle_style" />
 
-    <!--서비스소개-->
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:layout_marginBottom="30dp"-->
-<!--        android:text="CHECK, LISTEN, TALK?"-->
-<!--        android:textAlignment="center"-->
-<!--        android:background="@drawable/rectangle_style"-->
-<!--        />-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/frameSize"
@@ -119,6 +111,7 @@
         android:layout_gravity="center"
         android:layout_marginRight="40dp"
         android:background="@drawable/rectangle_style"
+        android:fontFamily="@font/galmuri9"
         android:text="grammar check"
         android:textAlignment="center"
         />
@@ -132,6 +125,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/rectangle_style"
                 android:text="push alarm"
+                android:fontFamily="@font/galmuri9"
                 android:textAlignment="center"
                 />
             <LinearLayout
@@ -140,11 +134,11 @@
                 android:orientation="horizontal"
                 android:layout_gravity="center">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="알람이 꺼졌습니다."
-                    />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="알람이 꺼졌습니다."-->
+<!--                    />-->
                <Switch
                    android:id="@+id/toggle"
                    android:layout_width="wrap_content"
