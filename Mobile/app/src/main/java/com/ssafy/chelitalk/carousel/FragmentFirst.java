@@ -1,11 +1,13 @@
 package com.ssafy.chelitalk.carousel;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.TypefaceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,10 +37,13 @@ public class FragmentFirst extends Fragment {
         String text = getResources().getString(R.string.default_text);
         SpannableString spannableString = new SpannableString(text);
 
+//        Typeface typeface = ResourcesCompat.getFront(getContext(), R.font.galmuri9);
+
         int start = text.indexOf("CHECK");
         int end = text.indexOf("?")+1;
         spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#DE3163")), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new AbsoluteSizeSpan(25, true), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        spannableString.setSpan(new TypefaceSpan(typeface), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         int restStart = text.indexOf("문법 체크");
         int restEnd = text.length();

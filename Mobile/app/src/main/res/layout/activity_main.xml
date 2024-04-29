@@ -4,8 +4,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#C5E6F0"
+    android:orientation="vertical"
     tools:context=".common.MainActivity">
 
     <FrameLayout
@@ -13,96 +13,108 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
-    <ImageView
-        android:layout_height="100dp"
-        android:layout_width="300dp"
-        android:src="@drawable/chat_bubble"
-        android:layout_marginBottom="20dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        />
-    <TextView
-        android:id="@+id/greetingTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/galmuri9"
-        android:text="Hello"
-        android:layout_marginBottom="20dp"
-        android:textSize="25sp"
-        android:layout_gravity="center"
-        />
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/chat_bubble" />
+
+        <TextView
+            android:id="@+id/greetingTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/galmuri9"
+            android:textSize="23sp" />
     </FrameLayout>
 
     <!--명언-->
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/rectangle_style" />
-
+        android:layout_gravity="center|top">
+        <!-- 리본 -->
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:translationZ="2dp"
+
+            android:layout_gravity="center|top">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="center_horizontal|top"
                 android:src="@drawable/ribbon" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="25sp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="15dp"
                 android:fontFamily="@font/galmuri9"
-                android:text="오늘의 명언"/>
+                android:text="오늘의 명언"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
         </FrameLayout>
-        <TextView
+
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/mitmi"
-            android:textSize="23sp"
-            android:id="@+id/adviceTextView"
-            />
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/adviceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:fontFamily="@font/galmuri9"
+                android:maxWidth="300dp"
+                android:textSize="15dp"
+                android:padding="10dp"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/rectangle_style" />
+        </FrameLayout>
     </FrameLayout>
+
 
     <!--출석체크-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="70dp"
         android:layout_gravity="center"
-        android:gravity="center|start"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="30dp"
-        android:padding="20dp"
+        android:background="@drawable/rectangle_style"
         android:fontFamily="@font/galmuri9"
-        android:text="출첵"
-        android:background="@drawable/rectangle_style" />
+        android:gravity="center|start"
+        android:padding="20dp"
+        android:text="출첵" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/frameSize"
         android:layout_marginBottom="30dp">
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/rectangle_style"
-            android:clipToPadding="false"
-            android:clipChildren="false" />
+            android:clipChildren="false"
+            android:clipToPadding="false" />
+
         <me.relex.circleindicator.CircleIndicator3
             android:id="@+id/indicator"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom" />
     </FrameLayout>
 
     <!--그래머체크와 푸시알람-->
@@ -111,43 +123,44 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="horizontal">
-    <TextView
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_marginEnd="40dp"
-        android:background="@drawable/rectangle_style"
-        android:fontFamily="@font/galmuri9"
-        android:text="GRAMMAR\nCHECK"
-        android:textSize="30sp"
-        android:textAlignment="center"
-        />
+
+        <TextView
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/rectangle_style"
+            android:fontFamily="@font/galmuri9"
+            android:gravity="center"
+            android:text="GRAMMAR\nCHECK"
+            android:textAlignment="center"
+            android:textSize="30sp" />
 
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
             <TextView
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/rectangle_style"
-                android:text="push alarm"
                 android:fontFamily="@font/galmuri9"
-                android:textAlignment="center"
-                />
+                android:text="push alarm"
+                android:textAlignment="center" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
-               <Switch
-                   android:id="@+id/toggle"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
+                <Switch
+                    android:id="@+id/toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-                   tools:ignore="UseSwitchCompatOrMaterialXml" />
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>
@@ -156,11 +169,11 @@
         android:id="@+id/imageButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:padding="5dp"
-        android:src="@drawable/cherries"
         android:layout_gravity="end"
-        android:layout_marginEnd="50dp"
         android:layout_margin="50dp"
-        android:background="@drawable/shape_for_circle_button"/>
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/shape_for_circle_button"
+        android:padding="5dp"
+        android:src="@drawable/cherries" />
 
 </LinearLayout>
