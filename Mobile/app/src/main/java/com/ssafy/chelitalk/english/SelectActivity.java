@@ -2,20 +2,21 @@ package com.ssafy.chelitalk.english;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.ssafy.chelitalk.R;
-
-import org.w3c.dom.Text;
 
 public class SelectActivity extends AppCompatActivity {
 
@@ -28,14 +29,33 @@ public class SelectActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_select);
 
-        spinner = (Spinner)findViewById(R.id.spinner_keywords);
-        tv_result = (TextView)findViewById(R.id.tv_result);
+
+        spinner = findViewById(R.id.spinner_keywords);
+
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, R.layout.spinner_selected_layout, getResources().getStringArray(R.array.select_keywords)) {
+            @NonNull
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = convertView;
+                if (view == null) {
+                    view = getLayoutInflater().inflate(R.layout.spinner_dropdown_layout, parent, false);
+                }
+                TextView textView = view.findViewById(R.id.text_view_spinner_item);
+                textView.setText(getItem(position));
+                return view;
+            }
+        };
+
+        spinner.setAdapter(adapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                tv_result.setText(parent.getItemAtPosition(position).toString());
+
+                /**
+                 * todo : 여기에 선택하면 키워드 gpt로 보내는 로직
+                 */
             }
 
             @Override
