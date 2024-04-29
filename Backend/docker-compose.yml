@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+  app_cherry:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8060:8060"
+    environment:
+      - TZ=Asia/Seoul
+    networks:
+      - devway_network
+
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: chelitalk       # Replace 'dbname' with your database name
+      MYSQL_USER: chelitalk             # Replace 'user' with your database user
+      MYSQL_PASSWORD: devway201     # Replace 'password' with your database password
+      MYSQL_ROOT_PASSWORD: devway201  # Replace 'rootpassword' with your root password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - devway_network
+
+volumes:
+  mysql_data:
+
+networks:
+  devway_network:
+    external: true

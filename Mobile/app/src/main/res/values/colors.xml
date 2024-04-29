@@ -6,4 +6,5 @@
     <color name="box">#80FFFFFF</color>
     <color name="cherry">#DE3163</color>
     <color name="cherrybtn">#80DE3163</color>
+    <color name="grey">#80858484</color>
 </resources>
