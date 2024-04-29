@@ -7,3 +7,6 @@ spring:
     url: jdbc:mysql://k10b201.p.ssafy.io:3306/chelitalk
     username: root
     password: devway201
+  jpa:
+    hibernate:
+      ddl-auto: update  
