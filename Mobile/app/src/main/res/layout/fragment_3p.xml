@@ -26,11 +26,8 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:autoSizeTextType="uniform"
-            android:autoSizeMinTextSize="8sp"
-            android:autoSizeMaxTextSize="16sp"
-            android:autoSizeStepGranularity="1sp"
-            android:text="ADVICES FOR YOU \n 매일 달라지는 영어 명언과 함께  \n 오늘도 힘차게 살아봅시다. "
+            android:fontFamily="@font/mitmi"
+            android:text="@string/default_text3"
             />
             />
     </RelativeLayout>

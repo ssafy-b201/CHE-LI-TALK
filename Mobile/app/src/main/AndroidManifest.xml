@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Chelitalk"
         tools:targetApi="31">
         <activity
+            android:name=".english.HistoryDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".english.CheckActivity"
             android:exported="false" />
         <activity
