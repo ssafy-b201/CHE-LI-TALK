@@ -50,13 +50,14 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.12.0")
     implementation("com.google.android.gms:play-services-auth:20.2.0")
 
-    //토글
+    // 토글
     implementation ("com.github.angads25:toggle:1.1.0")
     // OkHttp
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
 
-    //캐러셀
+    // 캐러셀
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("me.relex:circleindicator:2.1.6")
+
 
 }
