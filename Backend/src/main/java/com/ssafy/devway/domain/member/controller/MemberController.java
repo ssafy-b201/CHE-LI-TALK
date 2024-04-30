@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/member")
+@RequestMapping("/cherry/api/member")
 public class MemberController {
 
     private final MemberService memberService;
@@ -48,6 +48,11 @@ public class MemberController {
     public ApiResponse<Boolean> memberValid(@RequestParam String memberEmail){
 
         return ApiResponse.ok(memberService.validMember(memberEmail));
+    }
+
+    @GetMapping
+    public String test(){
+        return "hi222";
     }
 
 }

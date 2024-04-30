@@ -1,12 +1,22 @@
 package com.ssafy.devway.domain.member.service;
 
-import com.ssafy.devway.domain.attend.dto.response.WeeklyAttendResponse;
+import com.ssafy.devway.domain.attend.dto.AttendDto;
+import com.ssafy.devway.domain.attend.entity.Attend;
+import com.ssafy.devway.domain.attend.repository.AttendRepository;
 import com.ssafy.devway.domain.attend.service.AttendService;
 import com.ssafy.devway.domain.member.dto.request.MemberSignupRequest;
 import com.ssafy.devway.domain.member.dto.response.MemberDetailResponse;
 import com.ssafy.devway.domain.member.entity.Member;
 import com.ssafy.devway.domain.member.repository.MemberRepository;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.A;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final AttendService attendService;
+    private final AttendRepository attendRepository;
 
     public void signup(MemberSignupRequest request) {
 
@@ -32,6 +42,17 @@ public class MemberService {
             .build();
 
         memberRepository.save(newMember);
+
+        LocalDate today = LocalDate.now();
+        LocalDate startOfWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        for(int i=0;i<7;i++){
+            LocalDate date = startOfWeek.plusDays(i);
+            Attend attend = new Attend();
+            attend.setMember(newMember);
+            attend.setAttendDate(date);
+            attend.setAttendIsAttended(false);
+            attendRepository.save(attend);
+        }
     }
 
     public MemberDetailResponse detailMember(String memberEmail) {
@@ -44,11 +65,11 @@ public class MemberService {
 
         Long memberId = findedMember.getMemberId();
 
-        WeeklyAttendResponse attend = attendService.getList(memberId);
+        List<AttendDto> attendList = new ArrayList<>();
 
         return MemberDetailResponse.builder()
             .memberNickname(findedMember.getMemberNickname())
-            .attend(attend)
+            .attendList(attendList)
             .build();
     }
 
