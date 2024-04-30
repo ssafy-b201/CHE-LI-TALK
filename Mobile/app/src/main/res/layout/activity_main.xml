@@ -58,7 +58,7 @@
                 android:fontFamily="@font/galmuri9"
                 android:text="오늘의 명언"
                 android:textColor="@color/white"
-                android:textSize="25sp" />
+                android:textSize="15sp" />
         </FrameLayout>
 
         <FrameLayout
