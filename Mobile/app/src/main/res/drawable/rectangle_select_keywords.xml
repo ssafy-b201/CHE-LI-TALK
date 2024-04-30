@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+    <layer-list>
+        <item>
+            <shape android:shape="rectangle">
+                <!--모서리 둥글게-->
+                <corners android:radius="10dp" />
+                <solid android:color="@color/white" />
+            </shape>
+        </item>
+
+        <item
+            android:drawable="@drawable/ic_down"
+            android:gravity="center|end"
+            android:width="17dp"
+            android:height="10dp"
+            android:end="15dp"/>
+    </layer-list>
+    </item>
+
+</selector>

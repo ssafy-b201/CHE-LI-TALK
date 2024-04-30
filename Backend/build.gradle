@@ -36,7 +36,6 @@ dependencies {
 
 	// mysql
 	implementation 'mysql:mysql-connector-java:8.0.23'
-
 }
 
 tasks.named('test') {
