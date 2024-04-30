@@ -27,7 +27,7 @@ public class AttendService {
 		LocalDate date = TODAY.with(DayOfWeek.MONDAY);
 		Boolean isAttended = false;
 		HashMap<LocalDate, Boolean> map = new HashMap<>();
-		for(int i=0;i<6;i++){
+		for(int i=0;i<7;i++){
 			map.put(date, isAttended);
 			date = date.plusDays(1);
 		}
@@ -41,18 +41,16 @@ public class AttendService {
 
 		Member member = getMember(memberId);
 		LocalDate today = LocalDate.now();
-
-		Attend attend = Attend.builder()
-			.member(member)
-			.attendDate(today)
-			.attendIsAttended(true)
-			.build();
-
+		Attend attend = attendRepository.findByMemberAndAttendDate(memberId, today);
+		attend.setAttendIsAttended(true);
 		attendRepository.save(attend);
 
 		HashMap<LocalDate, Boolean> map = new HashMap<>();
 		map.put(today, true);
+
 		WeeklyAttendResponse responsedto = new WeeklyAttendResponse(member, map);
+
+		memberRepository.save(member);
 		return responsedto;
 	}
 
