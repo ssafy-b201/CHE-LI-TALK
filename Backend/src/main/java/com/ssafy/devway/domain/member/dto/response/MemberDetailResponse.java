@@ -1,6 +1,7 @@
 package com.ssafy.devway.domain.member.dto.response;
 
-import com.ssafy.devway.domain.attend.dto.response.WeeklyAttendResponse;
+import com.ssafy.devway.domain.attend.dto.AttendDto;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,6 +11,6 @@ public class MemberDetailResponse {
 
     String memberEmail;
     String memberNickname;
-    WeeklyAttendResponse attend;
+    List<AttendDto> attendList;
 
 }
