@@ -16,6 +16,14 @@ import com.ssafy.chelitalk.common.MainActivity;
 import com.ssafy.chelitalk.R;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -61,42 +69,83 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void sendUserInfoToServer(String email, String nickname) {
+        try {
 
-        OkHttpClient client = new OkHttpClient();
-        String url = "http://10.0.2.2:8080/member/signup";
+            OkHttpClient client = getSecureOkHttpClient();
 
-        MediaType mediaType = MediaType.parse("application/json");
-        String requestBody = "{\"memberEmail\":\"" + email + "\", \"memberNickname\":\"" + nickname + "\"}";
-        RequestBody body = RequestBody.create(requestBody, mediaType);
+            String url = "https://k10b201.p.ssafy.io/cherry/api/member/signup";
 
-        Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
+            MediaType mediaType = MediaType.parse("application/json");
+            String requestBody = "{\"memberEmail\":\"" + email + "\", \"memberNickname\":\"" + nickname + "\"}";
+            RequestBody body = RequestBody.create(requestBody, mediaType);
 
-        client.newCall(request).enqueue(new okhttp3.Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
-                e.printStackTrace();
-            }
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
 
-            @Override
-            public void onResponse(okhttp3.Call call, Response response) throws IOException {
-                Log.d("HTTP Status Code", String.valueOf(response.code()));
-                if (response.isSuccessful()) {
-                    runOnUiThread(() -> {
-                        Toast.makeText(SignupActivity.this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(SignupActivity.this, MainActivity.class));
-                        Log.d("HTTP Status Code", String.valueOf(response.code()));
-                        finish();
-                    });
-                } else {
-                    runOnUiThread(() -> {
-                        Toast.makeText(SignupActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
-                        Log.d("HTTP Status Code", String.valueOf(response.code()));
-                    });
+            Log.d("SignupActivity", "Request URL: " + url);
+            Log.d("SignupActivity", "Request Body: " + requestBody);
+
+            client.newCall(request).enqueue(new okhttp3.Callback() {
+
+                @Override
+                public void onFailure(okhttp3.Call call, IOException e) {
+                    Log.e("SignupActivity", "서버 통신 실패", e);
                 }
-            }
-        });
+
+                @Override
+                public void onResponse(okhttp3.Call call, Response response) throws IOException {
+                    Log.d("HTTP Status Code", String.valueOf(response.code()));
+                    if (response.isSuccessful()) {
+                        runOnUiThread(() -> {
+                            Toast.makeText(SignupActivity.this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                            Log.d("HTTP Status Code", String.valueOf(response.code()));
+                            finish();
+                        });
+                    } else {
+                        runOnUiThread(() -> {
+                            Toast.makeText(SignupActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
+                            Log.d("HTTP Status Code", String.valueOf(response.code()));
+                            Log.d("HTTP Status Message", response.message());
+                        });
+                    }
+                    response.close();
+                }
+            });
+        }catch (Exception e) {
+            Log.e("SignupActivity", "///// OkHttp Client Error /////", e);
+        }
     }
+
+    private OkHttpClient getSecureOkHttpClient() throws Exception {
+        CertificateFactory cf = CertificateFactory.getInstance("X.509");
+        InputStream caInput = getResources().openRawResource(R.raw.k10b201);
+        Certificate ca;
+        try {
+            ca = cf.generateCertificate(caInput);
+        } finally {
+            caInput.close();
+        }
+
+        String keyStoreType = KeyStore.getDefaultType();
+        KeyStore keyStore = KeyStore.getInstance(keyStoreType);
+        keyStore.load(null, null);
+        keyStore.setCertificateEntry("ca", ca);
+
+        String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+        TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+        tmf.init(keyStore);
+
+        X509TrustManager trustManager = (X509TrustManager) tmf.getTrustManagers()[0];
+
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, new javax.net.ssl.TrustManager[]{trustManager}, null);
+
+        return new OkHttpClient.Builder()
+                .sslSocketFactory(sslContext.getSocketFactory(), trustManager)
+                .build();
+    }
+
 }
