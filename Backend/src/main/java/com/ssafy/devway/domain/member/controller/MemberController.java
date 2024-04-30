@@ -52,7 +52,7 @@ public class MemberController {
 
     @GetMapping
     public String test(){
-        return "hi";
+        return "hi222";
     }
 
 }
