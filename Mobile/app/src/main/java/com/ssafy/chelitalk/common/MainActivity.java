@@ -60,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+
+
+
         //메뉴 dialog(modal)
         final ImageButton button1 = (ImageButton) findViewById(R.id.imageButton);
         button1.setOnClickListener(new View.OnClickListener(){
@@ -73,6 +76,18 @@ public class MainActivity extends AppCompatActivity {
                     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
                         View view = super.getView(position, convertView, parent);
                         ImageView img = view.findViewById(R.id.icon);
+
+                        int width = 200;
+                        int height = 200;
+
+                        if(position ==1){
+                            width=100;
+                        }
+
+                        ViewGroup.LayoutParams layoutParams = img.getLayoutParams();
+                        layoutParams.width = width;
+                        layoutParams.height = height;
+                        img.setLayoutParams(layoutParams);
                         switch (position){
                             case 0: img.setImageResource(R.drawable.home_icon); break;
                             case 1: img.setImageResource(R.drawable.study_icon); break;
@@ -233,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject slip = adviceJson.getJSONObject("slip");
                     String advice = slip.getString("advice");
 
-                    if(advice.length() < 80){
+                    if(advice.length() < 70){
                         break;
                     }
                 }

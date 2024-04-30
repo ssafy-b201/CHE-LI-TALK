@@ -16,10 +16,14 @@
         android:theme="@style/Theme.Chelitalk"
         tools:targetApi="31">
         <activity
+<<<<<<< ef577cfae5b9531747cebdb3702e4bce147e8768
             android:name=".english.ChattingActivity"
             android:exported="false" />
         <activity
             android:name=".english.SpeakingActivity"
+=======
+            android:name=".english.HistoryDetailActivity"
+>>>>>>> 66110729266861a3eda8edf2dfbc50095c383798
             android:exported="false" />
         <activity
             android:name=".english.CheckActivity"

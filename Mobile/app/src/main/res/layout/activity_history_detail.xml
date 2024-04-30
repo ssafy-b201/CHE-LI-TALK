@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:layout_gravity="center"
     android:background="#C5E6F0"
-    tools:context=".english.LikeActivity">
+    tools:context=".english.HistoryDetailActivity">
 
     <FrameLayout
         android:layout_width="80dp"
@@ -43,7 +43,7 @@
             android:layout_marginBottom="15dp"
             android:fontFamily="@font/galmuri9"
             android:textColor="@color/white"
-            android:text="기억하고 싶은 문장"
+            android:text="날짜가 들어가야할 곳"
             />
     </FrameLayout>
 
