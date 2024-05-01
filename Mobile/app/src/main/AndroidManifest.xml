@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Chelitalk"
         android:usesCleartextTraffic="true"
+        android:windowSoftInputMode="adjustResize"
         tools:targetApi="31">
         <activity
             android:name=".activity.english.ChattingActivity"
@@ -26,7 +27,7 @@
             android:name=".activity.english.HistoryDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.english.CheckActivity"
+            android:name=".activity.english.HistoryActivity"
             android:exported="false" />
         <activity
             android:name=".activity.english.CheckActivity"
@@ -36,39 +37,28 @@
             android:exported="false" />
         <activity
             android:name=".activity.english.SelectActivity"
-            android:exported="false">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".activity.login.SigninActivity"
             android:exported="false" />
         <activity
             android:name=".activity.common.SplashActivity"
-            android:exported="false">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity.login.SignupActivity"
             android:exported="false" />
         <activity
             android:name=".activity.common.MainActivity"
-            android:exported="true">
-            <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-
+            android:exported="false">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
         </activity>
     </application>
 
