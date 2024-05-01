@@ -95,4 +95,58 @@ public class GPTBlock implements BlockElement {
     }
   }
 
+  public String askQuestionForFirstChat(String prompt, String nickname, GPTMode gptMode) throws IOException {
+    List<Message> messages = new ArrayList<>();
+    messages.add(new Message("user", prompt + nickname + gptMode.textMode));
+
+    ChatRequestDTO requestDto = new ChatRequestDTO(
+        messages,
+        properties.getModel(),  // Make sure this getter actually returns the model
+        properties.getMaxTokens(),
+        properties.getTemperature(),
+        properties.getTopP()
+    );
+
+    String jsonBody = gson.toJson(requestDto);
+    RequestBody body = RequestBody.create(jsonBody,
+        MediaType.get("application/json; charset=utf-8"));
+
+    Request request = new Request.Builder()
+        .url(properties.getUrl())
+        .addHeader("Authorization", "Bearer " + properties.getApiKey())
+        .post(body)
+        .build();
+
+    Response response = null;
+    try {
+      response = httpClient.newCall(request).execute();
+      if (response.isSuccessful() && response.body() != null) {
+
+        String responseBody = response.body().string();
+        ChatResponseDTO chatResponse = gson.fromJson(responseBody, ChatResponseDTO.class);
+        lastQuestion = prompt;
+        lastAnswer = chatResponse.getChoices().get(0).getMessage().getContent();
+
+        return lastAnswer;
+      } else {
+        throw new RuntimeException("Failed to communicate with ChatGPT: " + response.message());
+      }
+    } catch (Exception e) {
+      if (response != null) {
+        System.out.println();
+        try {
+          return
+              "HTTP status code: " + response.code() +
+                  "HTTP response body: " + (response.body() != null ? response.body().string()
+                  : "null");
+        } catch (IOException ex) {
+          return "Failed to read response body";
+        }
+      } else {
+        return "Error during API request: " + e.getMessage();
+      }
+    }
+  }
+
+
 }

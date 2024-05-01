@@ -50,9 +50,6 @@ public class MemberController {
         return ApiResponse.ok(memberService.validMember(memberEmail));
     }
 
-    @GetMapping
-    public String test(){
-        return "hi222";
-    }
+
 
 }
