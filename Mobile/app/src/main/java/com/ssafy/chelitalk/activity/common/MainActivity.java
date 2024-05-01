@@ -1,4 +1,4 @@
-package com.ssafy.chelitalk.common;
+package com.ssafy.chelitalk.activity.common;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,12 +24,17 @@ import androidx.core.view.ViewCompat;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.ssafy.chelitalk.R;
-import com.ssafy.chelitalk.carousel.MyAdapter;
-import com.ssafy.chelitalk.english.CheckActivity;
-import com.ssafy.chelitalk.english.HistoryActivity;
-import com.ssafy.chelitalk.english.LikeActivity;
-import com.ssafy.chelitalk.english.SelectActivity;
+import com.ssafy.chelitalk.activity.carousel.MyAdapter;
+import com.ssafy.chelitalk.activity.english.CheckActivity;
+import com.ssafy.chelitalk.activity.english.HistoryActivity;
+import com.ssafy.chelitalk.activity.english.LikeActivity;
+import com.ssafy.chelitalk.activity.english.SelectActivity;
+import com.ssafy.chelitalk.api.attend.Attend;
+import com.ssafy.chelitalk.api.attend.AttendService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,8 +46,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Calendar;
+import java.util.List;
 
 import me.relex.circleindicator.CircleIndicator3;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,12 +64,47 @@ public class MainActivity extends AppCompatActivity {
     private FragmentStateAdapter pagerAdapter;
     private int num_page = 3;
     private CircleIndicator3 mIndicator;
+    private FirebaseAuth auth;
+    private TextView attendView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        //현재 로그인 된 사용자 가져오기
+        auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        String name = currentUser != null ? currentUser.getDisplayName() : "Guest";
+        String email = currentUser != null ? currentUser.getEmail() : null;
+
+        attendView = findViewById(R.id.attendView);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://k10b201.p.ssafy.io/cherry/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        AttendService attendAPI = retrofit.create(AttendService.class);
+
+        attendAPI.attendList(email).enqueue(new Callback<List<Attend>>() {
+            @Override
+            public void onResponse(Call<List<Attend>> call, Response<List<Attend>> response) {
+                //성공적으로 응답하면 실행
+                if(response.isSuccessful() && response.body() != null){
+                    List<Attend> attends = response.body();
+                    updateAttendView(attends);
+                }else{
+                    Toast.makeText(MainActivity.this, "출석 데이터 추출 실패!", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Attend>> call, Throwable t) {
+                //실패하면 실행
+                t.printStackTrace();
+            }
+        });
 
 
 
@@ -200,19 +246,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void updateAttendView(List<Attend> attends) {
+        StringBuilder sb = new StringBuilder();
+        for(Attend attend : attends){
+            sb.append(attend.getAttend() ? "0": "X");
+        }
+        attendView.setText(sb.toString());
+    }
+
     private void setGreetingBasedOnTime() {
         Calendar c = Calendar.getInstance();
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
-        System.out.println(timeOfDay);
+        String name = (auth.getCurrentUser() != null && auth.getCurrentUser().getDisplayName() != null) ? auth.getCurrentUser().getDisplayName() : "Guest";
 
         if(timeOfDay >= 6 && timeOfDay < 12){
-            greetingTextView.setText("Good Morning");
+            greetingTextView.setText("Good Morning, "+name);
         }else if(timeOfDay >= 12 && timeOfDay < 17){
-            greetingTextView.setText("Good Afternoon");
+            greetingTextView.setText("Good Afternoon, "+name);
         }else if(timeOfDay >= 17 && timeOfDay < 21){
-            greetingTextView.setText("Good Evening");
+            greetingTextView.setText("Good Evening, "+name);
         }else{
-            greetingTextView.setText("Good Night");
+            greetingTextView.setText("Good Night, "+name);
         }
     }
 

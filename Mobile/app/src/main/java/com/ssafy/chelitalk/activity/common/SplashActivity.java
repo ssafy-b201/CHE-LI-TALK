@@ -1,4 +1,4 @@
-package com.ssafy.chelitalk.common;
+package com.ssafy.chelitalk.activity.common;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ssafy.chelitalk.R;
-import com.ssafy.chelitalk.login.SigninActivity;
-import com.ssafy.chelitalk.login.SignupActivity;
+import com.ssafy.chelitalk.activity.login.SigninActivity;
+import com.ssafy.chelitalk.activity.login.SignupActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +32,6 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.OkHttpClient.Builder;
 
 public class SplashActivity extends AppCompatActivity {
 

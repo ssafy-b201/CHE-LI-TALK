@@ -1,4 +1,4 @@
-package com.ssafy.chelitalk.carousel;
+package com.ssafy.chelitalk.activity.carousel;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

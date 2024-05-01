@@ -1,4 +1,4 @@
-package com.ssafy.chelitalk.english;
+package com.ssafy.chelitalk.activity.english;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,7 +23,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.ssafy.chelitalk.R;
-import com.ssafy.chelitalk.common.MainActivity;
+import com.ssafy.chelitalk.activity.common.MainActivity;
 
 public class SelectActivity extends AppCompatActivity {
 

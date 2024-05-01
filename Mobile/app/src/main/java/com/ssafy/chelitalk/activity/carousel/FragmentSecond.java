@@ -1,6 +1,7 @@
-package com.ssafy.chelitalk.carousel;
+package com.ssafy.chelitalk.activity.carousel;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.ssafy.chelitalk.R;
@@ -36,10 +38,13 @@ public class FragmentSecond extends Fragment {
         String text = getResources().getString(R.string.default_text2);
         SpannableString spannableString = new SpannableString(text);
 
+        Typeface typeface = ResourcesCompat.getFont(getContext(), R.font.galmuri9);
+
         int start = text.indexOf("REMEMBER");
         int end = text.indexOf("영어");
         spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#DE3163")), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new AbsoluteSizeSpan(25, true), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new CustomTypefaceScan(typeface), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         int restStart = text.indexOf("영어 회화");
         int restEnd = text.length();

@@ -1,4 +1,4 @@
-package com.ssafy.chelitalk.login;
+package com.ssafy.chelitalk.activity.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.ssafy.chelitalk.common.MainActivity;
+import com.ssafy.chelitalk.activity.common.MainActivity;
 import com.ssafy.chelitalk.R;
 
 import java.io.IOException;
