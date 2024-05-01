@@ -2,7 +2,8 @@ package com.ssafy.devway.domain.chat.service;
 
 import com.ssafy.devway.ChatGPT.GPTBlock;
 import com.ssafy.devway.ChatGPT.GPTMode;
-import com.ssafy.devway.domain.chat.dto.ChatRequestDto;
+import com.ssafy.devway.domain.chat.dto.request.ChatDetailRequestDto;
+import com.ssafy.devway.domain.chat.dto.request.ChatRequestDto;
 import com.ssafy.devway.domain.chat.dto.response.ChatListResponse;
 import com.ssafy.devway.domain.chat.entity.Chat;
 import com.ssafy.devway.domain.chat.entity.Sentence;
@@ -130,4 +131,10 @@ public class ChatService {
         return memberRepository.findByMemberEmail(memberEmail);
     }
 
+    public Chat chatDetail(ChatDetailRequestDto dto) {
+        Member member = memberRepository.findByMemberEmail(dto.getMemberEmail());
+        LocalDateTime createdAt = dto.getCreatedAt();
+
+        return chatRepository.findByMemberAndCreatedAt(member, createdAt);
+    }
 }
