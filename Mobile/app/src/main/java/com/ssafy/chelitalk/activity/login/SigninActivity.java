@@ -1,4 +1,4 @@
-package com.ssafy.chelitalk.login;
+package com.ssafy.chelitalk.activity.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +23,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.ssafy.chelitalk.common.MainActivity;
+import com.ssafy.chelitalk.activity.common.MainActivity;
 import com.ssafy.chelitalk.R;
 
 import org.json.JSONObject;

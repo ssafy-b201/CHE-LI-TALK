@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#C5E6F0"
     android:orientation="vertical"
-    tools:context=".common.MainActivity">
+    tools:context=".activity.common.MainActivity">
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
                 android:fontFamily="@font/galmuri9"
                 android:text="오늘의 명언"
                 android:textColor="@color/white"
-                android:textSize="25sp" />
+                android:textSize="15sp" />
         </FrameLayout>
 
         <FrameLayout
@@ -85,6 +85,7 @@
 
     <!--출석체크-->
     <TextView
+        android:id="@+id/attendView"
         android:layout_width="wrap_content"
         android:layout_height="70dp"
         android:layout_gravity="center"
@@ -94,8 +95,9 @@
         android:fontFamily="@font/galmuri9"
         android:gravity="center|start"
         android:padding="20dp"
-        android:text="출첵" />
+        android:text="출첵      M     T     W     T     F     S     S" />
 
+    <!--서비스 소개-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/frameSize"
@@ -146,6 +148,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/rectangle_style"
                 android:fontFamily="@font/galmuri9"
+                android:textSize="20sp"
                 android:text="push alarm"
                 android:textAlignment="center" />
 
@@ -159,7 +162,6 @@
                     android:id="@+id/toggle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     tools:ignore="UseSwitchCompatOrMaterialXml" />
             </LinearLayout>
         </FrameLayout>

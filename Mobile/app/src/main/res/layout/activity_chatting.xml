@@ -8,6 +8,6 @@
     android:orientation="vertical"
     android:layout_gravity="center"
     android:background="#C5E6F0"
-    tools:context=".english.ChattingActivity">
+    tools:context=".activity.english.ChattingActivity">
 
 </LinearLayout>

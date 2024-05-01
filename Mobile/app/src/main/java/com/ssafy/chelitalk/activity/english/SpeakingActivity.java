@@ -1,4 +1,4 @@
-package com.ssafy.chelitalk.english;
+package com.ssafy.chelitalk.activity.english;
 
 import android.os.Bundle;
 

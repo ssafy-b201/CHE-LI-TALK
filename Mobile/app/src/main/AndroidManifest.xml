@@ -14,48 +14,60 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Chelitalk"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".english.ChattingActivity"
+            android:name=".activity.english.ChattingActivity"
             android:exported="false" />
         <activity
-            android:name=".english.SpeakingActivity"
+            android:name=".activity.english.SpeakingActivity"
             android:exported="false" />
         <activity
-            android:name=".english.HistoryDetailActivity"
+            android:name=".activity.english.HistoryDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".english.CheckActivity"
+            android:name=".activity.english.CheckActivity"
             android:exported="false" />
         <activity
-            android:name=".english.HistoryActivity"
+            android:name=".activity.english.CheckActivity"
             android:exported="false" />
         <activity
-            android:name=".english.LikeActivity"
+            android:name=".activity.english.LikeActivity"
             android:exported="false" />
         <activity
-            android:name=".english.SelectActivity"
+            android:name=".activity.english.SelectActivity"
             android:exported="false">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity
-            android:name=".login.SigninActivity"
+            android:name=".activity.login.SigninActivity"
             android:exported="false" />
         <activity
-            android:name=".common.SplashActivity"
+            android:name=".activity.common.SplashActivity"
+            android:exported="false">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".activity.login.SignupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.common.MainActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".login.SignupActivity"
-            android:exported="false" />
-        <activity
-            android:name=".common.MainActivity"
-            android:exported="false">
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
 
         </activity>
     </application>
