@@ -84,9 +84,6 @@ public class SignupActivity extends AppCompatActivity {
                     .post(body)
                     .build();
 
-            Log.d("SignupActivity", "Request URL: " + url);
-            Log.d("SignupActivity", "Request Body: " + requestBody);
-
             client.newCall(request).enqueue(new okhttp3.Callback() {
 
                 @Override
@@ -101,14 +98,12 @@ public class SignupActivity extends AppCompatActivity {
                         runOnUiThread(() -> {
                             Toast.makeText(SignupActivity.this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(SignupActivity.this, MainActivity.class));
-                            Log.d("HTTP Status Code", String.valueOf(response.code()));
                             finish();
                         });
                     } else {
                         runOnUiThread(() -> {
                             Toast.makeText(SignupActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
                             Log.d("HTTP Status Code", String.valueOf(response.code()));
-                            Log.d("HTTP Status Message", response.message());
                         });
                     }
                     response.close();
