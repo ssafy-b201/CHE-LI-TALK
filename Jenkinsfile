@@ -7,7 +7,20 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'wns1915_cherry', url: 'https://lab.ssafy.com/2_yewon/chelitalk.git' // GitLab 리포지토리
+                git branch: 'release', credentialsId: 'wns1915_cherry', url: 'https://lab.ssafy.com/2_yewon/chelitalk.git'
+            }
+        }
+		stage('Update Local Repository') {
+            steps {
+                script {
+						withCredentials([usernamePassword(credentialsId: 'wns1915_cherry', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+							sh '''
+							ENCODED_USERNAME=$(echo $GIT_USERNAME | sed 's/@/%40/g')
+							cd /home/ubuntu/chelitalk
+							git pull https://$ENCODED_USERNAME:$GIT_PASSWORD@lab.ssafy.com/2_yewon/chelitalk.git release
+							'''
+						}
+                }
             }
         }
         stage('Build Docker Images') {

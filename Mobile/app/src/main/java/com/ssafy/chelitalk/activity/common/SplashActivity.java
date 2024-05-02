@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.ssafy.chelitalk.R;
 import com.ssafy.chelitalk.activity.login.SigninActivity;
 import com.ssafy.chelitalk.activity.login.SignupActivity;
+import com.ssafy.chelitalk.api.member.MemberData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -95,11 +96,13 @@ public class SplashActivity extends AppCompatActivity {
                     try {
                         String jsonResponse = response.body().string();
                         JSONObject jsonObject = new JSONObject(jsonResponse);
-                        boolean isRegistered = jsonObject.getBoolean("data");
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        boolean isRegistered = data.getBoolean("isRegistered");
+                        String nickname = data.getString("nickname");
 
                         runOnUiThread(() -> {
                             if (isRegistered) {
-                                proceedToMain();
+                                proceedToMain(nickname);
                             } else {
                                 promptSignup();
                             }
@@ -144,8 +147,12 @@ public class SplashActivity extends AppCompatActivity {
                 .build();
     }
 
-    private void proceedToMain() {
-        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+    private void proceedToMain(String nickname) {
+        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+
+        MemberData.getInstance().setNickname(nickname);
+
+        startActivity(intent);
         finish();
     }
 

@@ -3,6 +3,7 @@ package com.ssafy.devway.domain.member.controller;
 import com.ssafy.devway.domain.attend.service.AttendService;
 import com.ssafy.devway.domain.member.dto.request.MemberSignupRequest;
 import com.ssafy.devway.domain.member.dto.response.MemberDetailResponse;
+import com.ssafy.devway.domain.member.dto.response.MemberValidResponse;
 import com.ssafy.devway.domain.member.service.MemberService;
 import com.ssafy.devway.global.api.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class MemberController {
      * 회원 가입
      */
     @PostMapping("/signup")
-    public ApiResponse<String> signup(@RequestBody MemberSignupRequest request){
+    public ApiResponse<String> signup(@RequestBody MemberSignupRequest request) {
 
         memberService.signup(request);
 
@@ -36,7 +37,7 @@ public class MemberController {
      * 멤버 정보 조회 (메인페이지)
      */
     @GetMapping("/detail")
-    public ApiResponse<MemberDetailResponse> memberDetail(@RequestParam String memberEmail){
+    public ApiResponse<MemberDetailResponse> memberDetail(@RequestParam String memberEmail) {
 
         return ApiResponse.ok(memberService.detailMember(memberEmail));
     }
@@ -45,14 +46,9 @@ public class MemberController {
      * 가입한 유저인지 체크
      */
     @GetMapping("/valid")
-    public ApiResponse<Boolean> memberValid(@RequestParam String memberEmail){
+    public ApiResponse<MemberValidResponse> memberValid(@RequestParam String memberEmail) {
 
         return ApiResponse.ok(memberService.validMember(memberEmail));
-    }
-
-    @GetMapping
-    public String test(){
-        return "hi222";
     }
 
 }

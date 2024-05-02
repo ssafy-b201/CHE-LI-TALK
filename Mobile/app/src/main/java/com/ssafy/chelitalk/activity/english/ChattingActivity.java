@@ -126,7 +126,7 @@ public class ChattingActivity extends AppCompatActivity {
                 btnDialogOk.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(ChattingActivity.this, HistoryActivity.class);
+                        Intent intent = new Intent(ChattingActivity.this, CheckActivity.class);
                         startActivity(intent);
                     }
                 });
