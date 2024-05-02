@@ -1,4 +1,4 @@
-package com.ssafy.devway.domain.chat.dto;
+package com.ssafy.devway.domain.chat.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
