@@ -7,9 +7,15 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'release', credentialsId: 'wns1915_cherry', url: 'https://lab.ssafy.com/2_yewon/chelitalk.git',
-				script {
-							sh 'cd /home/ubuntu/chelitalk && git pull origin release'
+                git branch: 'release', credentialsId: 'wns1915_cherry', url: 'https://lab.ssafy.com/2_yewon/chelitalk.git'
+            }
+        }
+		stage('Update Local Repository') {
+            steps {
+                script {
+							withCredentials([usernamePassword(credentialsId: 'wns1915_cherry', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+								sh 'cd /home/ubuntu/chelitalk && git pull --quiet --no-rebase --username $GIT_USERNAME --password $GIT_PASSWORD origin release'
+							}
                 }
             }
         }
