@@ -7,10 +7,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-				script {
-					sh 'git pull origin release'
-				}
-                git branch: 'release', credentialsId: 'wns1915_cherry', url: 'https://lab.ssafy.com/2_yewon/chelitalk.git' // GitLab 리포지토리
+                git branch: 'origin/release', credentialsId: 'wns1915_cherry', url: 'https://lab.ssafy.com/2_yewon/chelitalk.git' // GitLab 리포지토리
             }
         }
         stage('Build Docker Images') {
