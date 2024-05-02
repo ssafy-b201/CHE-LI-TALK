@@ -140,7 +140,6 @@ public class ChatService {
     }
 
     public String checkChat(ChatCheckRequestDto dto) throws IOException {
-        GPTBlock gptTest = new GPTBlock("sk-proj-xe7g0CQdvSdmKZPTJPbGT3BlbkFJoEfOvwHmhjcKdGVMFiB2");
         Member member = getMember(dto.getMemberEmail());
         Chat chat = chatRepository.findByChatId(dto.getChatId());
 
@@ -155,7 +154,7 @@ public class ChatService {
             if(sentence.getSentenceSender().equals("gpt")){
                 continue;
             }
-            String correction = gptTest.askQuestion(sentence.getSentenceContent(), GPTMode.GPT_ENGLISH_GRAMMER);
+            String correction = gptBlock.askQuestion(sentence.getSentenceContent(), GPTMode.GPT_ENGLISH_GRAMMER);
             allCorrections.append(correction).append("\n");
         }
 //            return gptTest.getLastAnswer();
