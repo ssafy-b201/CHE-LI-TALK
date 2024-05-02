@@ -43,7 +43,8 @@ public class ChatService {
         String memberNickname = member.getMemberNickname();
 
         // 키워드로 질문 시작
-        String question = gptBlock.askQuestionForFirstChat(dto.getContent(), memberNickname, GPTMode.GPT_TALK_START_ENGLISH_CHAT);
+        String question = gptBlock.askQuestionForFirstChat(dto.getContent(), memberNickname,
+            GPTMode.GPT_TALK_START_ENGLISH_CHAT);
 
         // chat 생성
         Chat newChat = Chat.builder()
@@ -87,7 +88,9 @@ public class ChatService {
 
         // 유저의 채팅 리스트 중 가장 마지막
         int index = member.getMemberChats().size() - 1;
-        if(index == -1) index = 0;
+        if (index == -1) {
+            index = 0;
+        }
 
         Chat nowChat = member.getMemberChats().get(index);
 
@@ -121,15 +124,10 @@ public class ChatService {
                 .map(chat -> new ChatListResponse(chat.getCreatedAt()))
                 .collect(Collectors.toList());
             return responseList;
-        }else{
+        } else {
             return new ArrayList<>();
         }
 
-    }
-
-
-    public Member getMember(String memberEmail) {
-        return memberRepository.findByMemberEmail(memberEmail);
     }
 
     public List<ChatListDetailResponse> chatDetail(ChatDetailRequestDto dto) {
@@ -137,14 +135,15 @@ public class ChatService {
         LocalDateTime createdAt = dto.getCreatedAt();
 
         Chat chat = chatRepository.findByMemberAndCreatedAt(member, createdAt);
-        if(chat==null){
+        if (chat == null) {
             throw new IllegalArgumentException("채팅 정보가 없습니다");
         }
 
         List<ChatListDetailResponse> chatDetails = new ArrayList<>();
         List<Sentence> sentences = sentenceRepository.findByChatId(chat.getChatId());
-        for(int i=0;i<sentences.size();i++){
-            chatDetails.add(new ChatListDetailResponse(sentences.get(i).getSentenceSender(), sentences.get(i).getSentenceContent()));
+        for (int i = 0; i < sentences.size(); i++) {
+            chatDetails.add(new ChatListDetailResponse(sentences.get(i).getSentenceSender(),
+                sentences.get(i).getSentenceContent()));
         }
         return chatDetails;
     }
@@ -153,23 +152,27 @@ public class ChatService {
         Member member = getMember(dto.getMemberEmail());
         Chat chat = chatRepository.findByChatId(dto.getChatId());
 
-        if(chat == null){
+        if (chat == null) {
             throw new IllegalArgumentException("채팅 정보가 유효하지 않습니다");
         }
 
         List<Sentence> chatList = chat.getChatSentences();
         StringBuilder allCorrections = new StringBuilder();
 
-        for(Sentence sentence : chatList){
-            if(sentence.getSentenceSender().equals("gpt")){
+        for (Sentence sentence : chatList) {
+            if (sentence.getSentenceSender().equals("gpt")) {
                 continue;
             }
-            String correction = gptBlock.askQuestion(sentence.getSentenceContent(), GPTMode.GPT_ENGLISH_GRAMMER);
+            String correction = gptBlock.askQuestion(sentence.getSentenceContent(),
+                GPTMode.GPT_ENGLISH_GRAMMER);
             allCorrections.append(correction).append("\n");
         }
         return allCorrections.toString();
 
 
+    }
 
+    public Member getMember(String memberEmail) {
+        return memberRepository.findByMemberEmail(memberEmail);
     }
 }
