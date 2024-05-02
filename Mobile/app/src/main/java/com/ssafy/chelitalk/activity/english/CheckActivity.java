@@ -183,4 +183,4 @@ public class CheckActivity extends AppCompatActivity {
         startActivity(intent);
         finish(); // 현재 활동 종료
 
-    }
+    }}
