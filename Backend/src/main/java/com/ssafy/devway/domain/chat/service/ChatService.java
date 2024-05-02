@@ -43,7 +43,7 @@ public class ChatService {
         String memberNickname = member.getMemberNickname();
 
         // 키워드로 질문 시작
-        String question = gptBlock.askQuestionForFirstChat(dto.getContent(), memberNickname,
+        String question = gptBlock.askQuestion(dto.getContent(),
             GPTMode.GPT_TALK_START_ENGLISH_CHAT);
 
         // chat 생성
