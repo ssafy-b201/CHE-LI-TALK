@@ -97,7 +97,9 @@ public class SignupActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         runOnUiThread(() -> {
                             Toast.makeText(SignupActivity.this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                            Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                            intent.putExtra("nickname", nickname);
+                            startActivity(intent);
                             finish();
                         });
                     } else {
