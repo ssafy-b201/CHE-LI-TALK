@@ -22,8 +22,20 @@
             android:layout_height="wrap_content"
             android:src="@drawable/logo_bubble"
             />
-
     </FrameLayout>
+
+    <!--여기에 대화내용 불러오기-->
+
+    <TextView
+        android:id="@+id/text_response"
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:fontFamily="@font/mitmi"
+        android:background="@color/box"
+        android:layout_margin="20dp"/>
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -35,15 +47,5 @@
         android:background="@drawable/shape_for_circle_button"
         android:padding="5dp"
         android:src="@drawable/cherries" />
-
-    <TextView
-        android:id="@+id/text_response"
-        android:layout_width="250dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:fontFamily="@font/mitmi"
-        android:layout_margin="20dp"/>
 
 </LinearLayout>

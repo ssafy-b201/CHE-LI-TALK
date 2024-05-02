@@ -8,7 +8,7 @@ import retrofit2.http.Query;
 
 public interface AttendService {
 
-    @GET("/attend/list")
+    @GET("attend/list")
     Call<List<Attend>> attendList(@Query("memberEmail") String memberEmail);
 
 }
