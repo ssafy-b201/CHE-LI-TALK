@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="#C5E6F0"
+    tools:context=".activity.english.HistoryActivity">
+
+    <FrameLayout
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo_bubble"
+            />
+
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ribbon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/galmuri9"
+            android:text="채팅 히스토리"
+            android:textColor="@color/white"/>
+    </FrameLayout>
+
+<!--    <FrameLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="30dp">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/history"-->
+<!--            android:layout_width="300dp"-->
+<!--            android:layout_height="500dp"-->
+<!--            android:background="@drawable/rectangle_style"-->
+<!--            android:padding="16dp"-->
+<!--            android:gravity="center"-->
+<!--            android:fontFamily="@font/galmuri9"-->
+<!--            android:textColor="#FF000000"-->
+<!--            android:textSize="18sp" />-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/line"-->
+<!--            android:layout_gravity="left|center"-->
+<!--            android:layout_marginLeft="40dp"-->
+<!--            />-->
+<!--    </FrameLayout>-->
+    <LinearLayout
+        android:id="@+id/textContainer"
+        android:background="@color/white"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:padding="16dp"/>
+
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="end"
+        android:layout_margin="50dp"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/shape_for_circle_button"
+        android:padding="5dp"
+        android:src="@drawable/cherries" />
+</LinearLayout>

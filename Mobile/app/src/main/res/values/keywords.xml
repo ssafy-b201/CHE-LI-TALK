@@ -11,12 +11,10 @@
         <item>취미</item>
         <item>운동</item>
         <item>독서</item>
-        <item>패션</item>
         <item>건강</item>
         <item>직업</item>
         <item>예술</item>
         <item>문화</item>
-        <item>자연</item>
     </string-array>
 
 </resources>
