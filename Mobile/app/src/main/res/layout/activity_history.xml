@@ -52,6 +52,7 @@
         android:layout_marginTop="30dp">
 
         <TextView
+            android:id="@+id/history"
             android:layout_width="300dp"
             android:layout_height="500dp"
             android:background="@drawable/rectangle_style"
