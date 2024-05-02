@@ -1,4 +1,4 @@
-package com.ssafy.chelitalk.login;
+package com.ssafy.chelitalk.activity.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,19 +23,27 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.ssafy.chelitalk.common.MainActivity;
+import com.ssafy.chelitalk.activity.common.MainActivity;
 import com.ssafy.chelitalk.R;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class SigninActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
+public class SigninActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     // 구글 로그인 버튼
     private SignInButton btn_google;
@@ -98,11 +106,11 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         // 로그인 성공
                         if (task.isSuccessful()) {
-
                             checkUserRegistration(account.getEmail());
 
                         } else { // 로그인 실패 - 로그인 화면으로 돌아가기
@@ -114,43 +122,79 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     private void checkUserRegistration(String email) {
-        OkHttpClient client = new OkHttpClient();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://10.0.2.2:8080/member/valid").newBuilder();
-        urlBuilder.addQueryParameter("memberEmail", email);
-        String url = urlBuilder.build().toString();
+        try {
+            OkHttpClient client = getSecureOkHttpClient();
 
-        Request request = new Request.Builder().url(url).build();
-        client.newCall(request).enqueue(new okhttp3.Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
-                Log.e("SigninActivity", "Email 검증 실패", e);
-                promptSignup();
-            }
+            HttpUrl.Builder urlBuilder = HttpUrl.parse("https://k10b201.p.ssafy.io/cherry/api/member/valid").newBuilder();
+            urlBuilder.addQueryParameter("memberEmail", email);
+            String url = urlBuilder.build().toString();
 
-            @Override
-            public void onResponse(okhttp3.Call call, Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    runOnUiThread(() -> promptSignup());
-                    return;
+            Request request = new Request.Builder().url(url).build();
+            client.newCall(request).enqueue(new okhttp3.Callback() {
+
+                @Override
+                public void onFailure(okhttp3.Call call, IOException e) {
+                    Log.e("SigninActivity", "Email 검증 실패", e);
+                    promptSignup();
                 }
-                try {
-                    String jsonResponse = response.body().string();
-                    JSONObject jsonObject = new JSONObject(jsonResponse);
-                    boolean isRegistered = jsonObject.getBoolean("data");
 
-                    runOnUiThread(() -> {
-                        if (isRegistered) {
-                            proceedToMain();
-                        } else {
-                            promptSignup();
-                        }
-                    });
-                } catch (Exception e) {
-                    Log.e("SigninActivity", "JSON 파싱 오류", e);
-                    runOnUiThread(() -> promptSignup());
+                @Override
+                public void onResponse(okhttp3.Call call, Response response) throws IOException {
+                    if (!response.isSuccessful()) {
+                        runOnUiThread(() -> promptSignup());
+                        return;
+                    }
+                    try {
+                        String jsonResponse = response.body().string();
+                        JSONObject jsonObject = new JSONObject(jsonResponse);
+                        boolean isRegistered = jsonObject.getBoolean("data");
+
+                        runOnUiThread(() -> {
+                            if (isRegistered) {
+                                proceedToMain();
+                            } else {
+                                promptSignup();
+                            }
+                        });
+                    } catch (Exception e) {
+                        Log.e("SigninActivity", "JSON 파싱 오류", e);
+                        runOnUiThread(() -> promptSignup());
+                    }
                 }
-            }
-        });
+
+            });
+        }catch (Exception e) {
+            Log.e("SigninActivity", "///// OkHttp Client Error /////", e);
+        }
+    }
+
+    private OkHttpClient getSecureOkHttpClient() throws Exception {
+        CertificateFactory cf = CertificateFactory.getInstance("X.509");
+        InputStream caInput = getResources().openRawResource(R.raw.k10b201);
+        Certificate ca;
+        try {
+            ca = cf.generateCertificate(caInput);
+        } finally {
+            caInput.close();
+        }
+
+        String keyStoreType = KeyStore.getDefaultType();
+        KeyStore keyStore = KeyStore.getInstance(keyStoreType);
+        keyStore.load(null, null);
+        keyStore.setCertificateEntry("ca", ca);
+
+        String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+        TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+        tmf.init(keyStore);
+
+        X509TrustManager trustManager = (X509TrustManager) tmf.getTrustManagers()[0];
+
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, new javax.net.ssl.TrustManager[]{trustManager}, null);
+
+        return new OkHttpClient.Builder()
+                .sslSocketFactory(sslContext.getSocketFactory(), trustManager)
+                .build();
     }
 
     private void proceedToMain() {

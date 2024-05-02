@@ -8,28 +8,29 @@
     android:layout_height="match_parent"
     android:background="#C5E6F0"
     android:orientation="vertical"
-    tools:context=".login.SignupActivity">
-
+    tools:context=".activity.login.SignupActivity">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="350dp"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:layout_marginTop="80dp"
         android:layout_gravity="center"
-        android:src="@drawable/cheritalk_splash_icon" />
+        android:src="@drawable/chelitalk_splash_icon" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="체리톡에서 사용 할 영어이름을 입력해주세요."
+        android:fontFamily="@font/galmuri9"
+        android:textStyle="bold"
+        android:textSize="16sp"
         android:layout_gravity="center"
         android:layout_marginBottom="15dp" />
 
-
     <EditText
         android:id="@+id/et_nickname"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="43dp"
         android:layout_gravity="center"
         android:background="@drawable/rectangle_style"/>
@@ -42,6 +43,7 @@
         android:layout_marginTop="15dp"
         android:background="@drawable/rectangle_start_btn"
         android:text="시작하기"
+        android:fontFamily="@font/galmuri9"
         android:textColor="@color/white"/>
 
     <TextView

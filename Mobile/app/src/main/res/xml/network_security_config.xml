@@ -2,13 +2,15 @@
 <network-security-config>
     <base-config cleartextTrafficPermitted="true">
         <trust-anchors>
-            <!-- Trust preinstalled CAs -->
+            <certificates src="@raw/k10b201"/>
             <certificates src="system" />
         </trust-anchors>
     </base-config>
-
-    <!-- Specific domain configuration for development -->
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">10.0.2.2</domain>
+    <domain-config>
+        <domain includeSubdomains="true">k10b201.p.ssafy.io</domain>
+        <trust-anchors>
+<!--            <certificates src="user" />-->
+             <certificates src="@raw/k10b201" />
+        </trust-anchors>
     </domain-config>
 </network-security-config>
