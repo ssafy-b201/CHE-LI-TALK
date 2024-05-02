@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -45,10 +46,22 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.KeyStore;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
+
 import me.relex.circleindicator.CircleIndicator3;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -76,15 +89,17 @@ public class MainActivity extends AppCompatActivity {
         //현재 로그인 된 사용자 가져오기
         auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
-        String name = currentUser != null ? currentUser.getDisplayName() : "Guest";
         String email = currentUser != null ? currentUser.getEmail() : null;
 
         attendView = findViewById(R.id.attendView);
 
+        OkHttpClient client = TrustOkHttpClientUtil.getUnsafeOkHttpClient();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://k10b201.p.ssafy.io/cherry/api/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
                 .build();
+
 
         AttendService attendAPI = retrofit.create(AttendService.class);
 
@@ -95,14 +110,16 @@ public class MainActivity extends AppCompatActivity {
                 if(response.isSuccessful() && response.body() != null){
                     List<Attend> attends = response.body();
                     updateAttendView(attends);
+                    Log.d("MainActivity", "Attendance Data: " + attends);
                 }else{
-                    Toast.makeText(MainActivity.this, "출석 데이터 추출 실패!", Toast.LENGTH_SHORT).show();
+                    Log.d("MainActivity", "Response not successful or empty: " + response.code() + " - " + response.message());
+                    Toast.makeText(MainActivity.this, "출석 데이터 추출 실패! " + response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onFailure(Call<List<Attend>> call, Throwable t) {
-                //실패하면 실행
-                t.printStackTrace();
+                Log.e("MainActivity", "API call failed: " + t.getMessage(), t);
+                Toast.makeText(MainActivity.this, "API 호출 실패: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -249,9 +266,10 @@ public class MainActivity extends AppCompatActivity {
     private void updateAttendView(List<Attend> attends) {
         StringBuilder sb = new StringBuilder();
         for(Attend attend : attends){
-            sb.append(attend.getAttend() ? "0": "X");
+            sb.append(attend.getAttend() ? "출석": "출석안함");
         }
         attendView.setText(sb.toString());
+        Log.d("MainActivity", "Updated Attendance View: " + sb.toString());
     }
 
     private void setGreetingBasedOnTime() {
