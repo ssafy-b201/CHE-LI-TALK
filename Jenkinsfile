@@ -13,9 +13,7 @@ pipeline {
 		stage('Update Local Repository') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'wns1915_cherry', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
 						sh 'cd /home/ubuntu/chelitalk && git pull origin release'
-					}
                 }
             }
         }
