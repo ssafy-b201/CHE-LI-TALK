@@ -54,7 +54,8 @@ public class ChatController {
      * 채팅 상세 조회-날짜누르면 대화 상세보기
      */
     @GetMapping("/list/detail")
-    public List<ChatListDetailResponse> chatDetail(@RequestBody ChatDetailRequestDto dto) throws IOException{
+    public List<ChatListDetailResponse> chatDetail(@RequestBody ChatDetailRequestDto dto)
+        throws IOException {
         return chatService.chatDetail(dto);
     }
 
