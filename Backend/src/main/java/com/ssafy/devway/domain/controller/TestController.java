@@ -13,4 +13,9 @@ public class TestController {
     public String home() {
         return "Hello, Leesters";
     }
+
+    @GetMapping("/cherry/api/test")
+    public String hi() {
+        return "Hello, testers!!";
+    }
 }
