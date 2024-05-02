@@ -14,7 +14,7 @@ public class TestController {
         return "Hello, Leesters";
     }
 
-    @GetMapping("/cherry/api/test")
+    @GetMapping("/cherry/api/tester")
     public String hi() {
         return "Hello, testers!!";
     }
