@@ -15,10 +15,9 @@ pipeline {
                 script {
 						withCredentials([usernamePassword(credentialsId: 'wns1915_cherry', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
 							sh '''
+							ENCODED_USERNAME=$(echo $GIT_USERNAME | sed 's/@/%40/g')
 							cd /home/ubuntu/chelitalk
-							echo url=https://$GIT_USERNAME:$GIT_PASSWORD@lab.ssafy.com/2_yewon/chelitalk.git > .git/credentials-chelitalk
-							git config credential.helper 'store --file=.git/credentials-chelitalk'
-							git pull origin release
+							git pull https://$ENCODED_USERNAME:$GIT_PASSWORD@lab.ssafy.com/2_yewon/chelitalk.git release
 							'''
 						}
                 }
