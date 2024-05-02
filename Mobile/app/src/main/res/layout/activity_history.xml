@@ -44,7 +44,7 @@
             android:text="채팅 히스토리"
             android:textColor="@color/white"/>
     </FrameLayout>
-    
+
 <!--    <FrameLayout-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->
@@ -80,4 +80,15 @@
         android:gravity="center_horizontal"
         android:padding="16dp"/>
 
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="end"
+        android:layout_margin="50dp"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/shape_for_circle_button"
+        android:padding="5dp"
+        android:src="@drawable/cherries" />
 </LinearLayout>

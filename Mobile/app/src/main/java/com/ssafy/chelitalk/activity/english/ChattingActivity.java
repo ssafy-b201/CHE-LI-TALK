@@ -49,6 +49,7 @@ public class ChattingActivity extends AppCompatActivity {
     private EditText etMessage;
     private RecyclerView recyclerView;
     private MessageAdapter adapter;
+    private TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +66,15 @@ public class ChattingActivity extends AppCompatActivity {
         String keyword = intent.getStringExtra("keyword");
         String userEmail = intent.getStringExtra("userEmail");
 
+        tv = findViewById(R.id.tv_keyword); // 여기로 이동
+        tv.setText(keyword + "을(를) 주제로 채팅을 진행합니다.");
+
         // 선택한 키워드로 채팅 시작
         startChat(userEmail, keyword);
 
         // 메시지 전송
         etMessage = findViewById(R.id.etMessage);
+
         Button btnSend = findViewById(R.id.btnSend);
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
