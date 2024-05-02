@@ -6,6 +6,7 @@ import com.ssafy.devway.domain.attend.repository.AttendRepository;
 import com.ssafy.devway.domain.attend.service.AttendService;
 import com.ssafy.devway.domain.member.dto.request.MemberSignupRequest;
 import com.ssafy.devway.domain.member.dto.response.MemberDetailResponse;
+import com.ssafy.devway.domain.member.dto.response.MemberValidResponse;
 import com.ssafy.devway.domain.member.entity.Member;
 import com.ssafy.devway.domain.member.repository.MemberRepository;
 import java.time.DayOfWeek;
@@ -73,14 +74,24 @@ public class MemberService {
             .build();
     }
 
-    public Boolean validMember(String memberEmail) {
+    public MemberValidResponse validMember(String memberEmail) {
 
         Member findedMember = getMember(memberEmail);
 
+        if(findedMember != null){
+            return MemberValidResponse.builder()
+                .isRegistered(true)
+                .nickname(findedMember.getMemberNickname())
+                .build();
+        }else{
+            return MemberValidResponse.builder()
+                .isRegistered(false)
+                .nickname(null)
+                .build();
+        }
 
-        // false : 가입하지 않은 유저
-        return findedMember != null;
     }
+
 
     public Member getMember(String memberEmail) {
         return memberRepository.findByMemberEmail(memberEmail);
