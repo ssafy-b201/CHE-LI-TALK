@@ -35,6 +35,7 @@ import com.ssafy.chelitalk.activity.english.LikeActivity;
 import com.ssafy.chelitalk.activity.english.SelectActivity;
 import com.ssafy.chelitalk.api.attend.Attend;
 import com.ssafy.chelitalk.api.attend.AttendService;
+import com.ssafy.chelitalk.api.member.MemberData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -111,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "API 호출 실패: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
 
 
 
@@ -264,16 +264,22 @@ public class MainActivity extends AppCompatActivity {
     private void setGreetingBasedOnTime() {
         Calendar c = Calendar.getInstance();
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
-        String name = (auth.getCurrentUser() != null && auth.getCurrentUser().getDisplayName() != null) ? auth.getCurrentUser().getDisplayName() : "Guest";
+
+        // Singleton에서 닉네임 가져오기
+        String nickname = MemberData.getInstance().getNickname();
+
+        if (nickname == null) {
+            nickname = "Guest";
+        }
 
         if(timeOfDay >= 6 && timeOfDay < 12){
-            greetingTextView.setText("Good Morning, "+name);
+            greetingTextView.setText("Good Morning, " + nickname);
         }else if(timeOfDay >= 12 && timeOfDay < 17){
-            greetingTextView.setText("Good Afternoon, "+name);
+            greetingTextView.setText("Good Afternoon, " + nickname);
         }else if(timeOfDay >= 17 && timeOfDay < 21){
-            greetingTextView.setText("Good Evening, "+name);
+            greetingTextView.setText("Good Evening, " + nickname);
         }else{
-            greetingTextView.setText("Good Night, "+name);
+            greetingTextView.setText("Good Night, " + nickname);
         }
     }
 
