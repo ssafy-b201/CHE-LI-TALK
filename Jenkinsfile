@@ -13,7 +13,7 @@ pipeline {
 		stage('Update Local Repository') {
             steps {
                 script {
-                    sh 'cd /home/ubuntu/chelitalk && git config --global --add safe.directory /home/ubuntu/chelitalk && git pull origin release'
+                    sh 'cd /home/ubuntu/chelitalk && git pull origin release'
                 }
             }
         }
