@@ -44,7 +44,7 @@ public class ChatService {
 
         // 키워드로 질문 시작
         String question = gptBlock.askQuestion(dto.getContent(),
-            GPTMode.GPT_TALK_START_ENGLISH_CHAT);
+            GPTMode.GPT_TALK_START_ENGLISH);
 
         // chat 생성
         Chat newChat = Chat.builder()
