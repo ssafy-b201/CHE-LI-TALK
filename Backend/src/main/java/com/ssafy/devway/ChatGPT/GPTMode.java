@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum GPTMode {
   GPT_NORMAL("."),
-  GPT_TALK_START_ENGLISH("안녕하세요, 영어 대화 연습을 위해 영어로 일상 대화를 시작할 수 있는 질문을 한 문장 해주세요. 주제는 앞의 키워드와 같습니다! 이 문장에 대답은 안하셔도 됩니다. "),
+  GPT_TALK_START_ENGLISH("영어 대화 연습을 위해 영어로 일상 대화를 시작할 수 있는 질문을 한 문장 해주세요. 주제는 앞의 키워드와 같습니다! 이 문장에 대답은 안하셔도 됩니다. "),
   GPT_TALK_START_ENGLISH_CHAT("안녕하세요, 영어 대화 연습을 위해 영어로 일상 대화를 시작할 수 있는 질문을 한 문장 해주세요. 주제는 맨 앞의 키워드와 같습니다! "
       + "또, 두번째로 보낸 이름에 대한 인사도 문장 앞에 붙여주세요. 질문에 한글은 절대 포함하지 않게 해주세요. 이 요청들에 대한 대답은 안하셔도 됩니다."),
   GPT_TALK_CONTINUE_ENGLISH("앞의 문장의 내용과 이어갈 대화 내용을 하나의 영어 문장으로 보내주세요. 이 요청에 대한 답은 안해주셔도 됩니다."),
