@@ -95,11 +95,13 @@ public class SplashActivity extends AppCompatActivity {
                     try {
                         String jsonResponse = response.body().string();
                         JSONObject jsonObject = new JSONObject(jsonResponse);
-                        boolean isRegistered = jsonObject.getBoolean("data");
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        boolean isRegistered = data.getBoolean("isRegistered");
+                        String nickname = data.getString("nickname");
 
                         runOnUiThread(() -> {
                             if (isRegistered) {
-                                proceedToMain();
+                                proceedToMain(nickname);
                             } else {
                                 promptSignup();
                             }
@@ -144,8 +146,11 @@ public class SplashActivity extends AppCompatActivity {
                 .build();
     }
 
-    private void proceedToMain() {
-        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+    private void proceedToMain(String nickname) {
+        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+        intent.putExtra("nickname", nickname);
+
+        startActivity(intent);
         finish();
     }
 

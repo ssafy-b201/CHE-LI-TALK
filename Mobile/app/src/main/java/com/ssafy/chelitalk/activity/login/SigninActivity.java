@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.ssafy.chelitalk.activity.common.MainActivity;
 import com.ssafy.chelitalk.R;
+import com.ssafy.chelitalk.activity.common.SplashActivity;
 
 import org.json.JSONObject;
 
@@ -147,11 +148,13 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
                     try {
                         String jsonResponse = response.body().string();
                         JSONObject jsonObject = new JSONObject(jsonResponse);
-                        boolean isRegistered = jsonObject.getBoolean("data");
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        boolean isRegistered = data.getBoolean("isRegistered");
+                        String nickname = data.getString("nickname");
 
                         runOnUiThread(() -> {
                             if (isRegistered) {
-                                proceedToMain();
+                                proceedToMain(nickname);
                             } else {
                                 promptSignup();
                             }
@@ -197,8 +200,11 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
                 .build();
     }
 
-    private void proceedToMain() {
-        startActivity(new Intent(SigninActivity.this, MainActivity.class));
+    private void proceedToMain(String nickname) {
+        Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+        intent.putExtra("nickname", nickname);
+
+        startActivity(intent);
         finish();
     }
 
