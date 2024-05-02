@@ -4,6 +4,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,15 +25,17 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ssafy.chelitalk.R;
+import com.ssafy.chelitalk.activity.common.MainActivity;
 import com.ssafy.chelitalk.activity.common.NetworkClient;
 import com.ssafy.chelitalk.api.check.Check;
 import com.ssafy.chelitalk.api.check.CheckService;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import com.ssafy.chelitalk.activity.common.MainActivity;
 
 public class CheckActivity extends AppCompatActivity {
     private static Retrofit retrofit;
@@ -60,12 +68,24 @@ public class CheckActivity extends AppCompatActivity {
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    if(response.isSuccessful() && response.body() != null){
+                    if(response.isSuccessful()){
                         responseTextView.setText(response.body());
                     }else{
-                        responseTextView.setText("데이터 없음");
-                        Log.d("CheckActivity", "데이터 없음"+response.code());
+                        try {
+                            String errorResponse = response.errorBody().string();
+                            Log.e("CheckActivity", "에러메시지: " + errorResponse);
+                        } catch (IOException e) {
+                            Log.e("CheckActivity", "Error reading error body", e);
+                        }
                     }
+                }
+
+                private String formatToJson(String responseBody) {
+                    String[] parts = responseBody.split(":");
+                    if(parts.length == 2){
+                        return "{\"" + parts[0].trim() + "\":\"" + parts[1].trim() + "\"}";
+                    }
+                    return "{}";
                 }
 
                 @Override
@@ -86,81 +106,74 @@ public class CheckActivity extends AppCompatActivity {
         });
 
 
-        //메뉴 dialog(modal)
-//        final ImageButton button1 = (ImageButton) findViewById(R.id.imageButton);
-//        button1.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-//                AlertDialog.Builder dlg = new AlertDialog.Builder(CheckActivity.this);
-//                dlg.setTitle("Menu");
-//                ListAdapter adapter = new ArrayAdapter<String>(
-//                        CheckActivity.this, R.layout.dialog_item, R.id.text, new String[]{"HOME", "STUDY", "LIKE", "HISTORY", "CHECK"}) {
-//                    @NonNull
-//                    @Override
-//                    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-//                        View view = super.getView(position, convertView, parent);
-//                        ImageView img = view.findViewById(R.id.icon);
-//                        switch (position) {
-//                            case 0:
-//                                img.setImageResource(R.drawable.home_icon);
-//                                break;
-//                            case 1:
-//                                img.setImageResource(R.drawable.study_icon);
-//                                break;
-//                            case 2:
-//                                img.setImageResource(R.drawable.like_icon);
-//                                break;
-//                            case 3:
-//                                img.setImageResource(R.drawable.history_icon);
-//                                break;
-//                            case 4:
-//                                img.setImageResource(R.drawable.check_icon);
-//                                break;
-//                            default:
-//                                img.setImageResource(R.drawable.cherry);
-//                                break;
-//                        }
-//                        return view;
-//                    }
-//                };
-//
-//                dlg.setAdapter(adapter, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Intent intent;
-//                        switch (which) {
-//                            case 0:
-//                                intent = new Intent(CheckActivity.this, MainActivity.class);
-//                                startActivity(intent);
-//                                break;
-//                            case 1:
-//                                intent = new Intent(CheckActivity.this, SelectActivity.class);
-//                                startActivity(intent);
-//                                break;
-//                            case 2:
-//                                intent = new Intent(CheckActivity.this, LikeActivity.class);
-//                                startActivity(intent);
-//                                break;
-//                            case 3:
-//                                intent = new Intent(CheckActivity.this, HistoryActivity.class);
-//                                startActivity(intent);
-//                                break;
-//                            case 4:
-//                                intent = new Intent(CheckActivity.this, CheckActivity.class);
-//                                startActivity(intent);
-//                                break;
-//                        }
-//                    }
-//                });
-//                dlg.show();
-//            }
-//        });
-    }
 
-//    @Override
-//    public void onBackPressed() {
-//        Intent intent = new Intent(CheckActivity.this, MainActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(intent);
-//        finish(); // 현재 활동 종료
-//    }
+        //메뉴 dialog(modal)
+        final ImageButton button1 = (ImageButton) findViewById(R.id.imageButton);
+        button1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                AlertDialog.Builder dlg = new AlertDialog.Builder(CheckActivity.this);
+                dlg.setTitle("Menu");
+                ListAdapter adapter = new ArrayAdapter<String>(
+                        CheckActivity.this, R.layout.dialog_item, R.id.text, new String[]{"HOME", "STUDY", "LIKE", "HISTORY", "CHECK"}) {
+                    @NonNull
+                    @Override
+                    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                        View view = super.getView(position, convertView, parent);
+                        ImageView img = view.findViewById(R.id.icon);
+                        switch (position) {
+                            case 0:
+                                img.setImageResource(R.drawable.home_icon);
+                                break;
+                            case 1:
+                                img.setImageResource(R.drawable.study_icon);
+                                break;
+                            case 2:
+                                img.setImageResource(R.drawable.like_icon);
+                                break;
+                            case 3:
+                                img.setImageResource(R.drawable.history_icon);
+                                break;
+                            case 4:
+                                img.setImageResource(R.drawable.check_icon);
+                                break;
+                            default:
+                                img.setImageResource(R.drawable.cherry);
+                                break;
+                        }
+                        return view;
+                    }
+                };
+
+                dlg.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent;
+                        switch (which) {
+                            case 0:
+                                intent = new Intent(CheckActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                break;
+                            case 1:
+                                intent = new Intent(CheckActivity.this, SelectActivity.class);
+                                startActivity(intent);
+                                break;
+                            case 2:
+                                intent = new Intent(CheckActivity.this, LikeActivity.class);
+                                startActivity(intent);
+                                break;
+                            case 3:
+                                intent = new Intent(CheckActivity.this, HistoryActivity.class);
+                                startActivity(intent);
+                                break;
+                            case 4:
+                                intent = new Intent(CheckActivity.this, CheckActivity.class);
+                                startActivity(intent);
+                                break;
+                        }
+                    }
+                });
+                dlg.show();
+            }
+        });
+    }
 }
