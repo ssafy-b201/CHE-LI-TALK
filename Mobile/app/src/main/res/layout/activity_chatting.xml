@@ -76,7 +76,7 @@
             android:layout_width="280dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:text="메시지를 입력하세요."
+            android:hint="메시지를 입력하세요."
             android:textColor="@color/black"
             android:gravity="center"
             android:background="@drawable/shape_for_ok_btn"/>

@@ -78,6 +78,10 @@ public class ChattingActivity extends AppCompatActivity {
                 if (!message.isEmpty()) {
                     sendMessage(userEmail, message);
                     etMessage.setText("");
+                    runOnUiThread(() -> {
+                        // 서버 응답 메시지를 RecyclerView에 추가합니다.
+                        adapter.addMessage(new Message(message, true));
+                    });
                 }
             }
         });
@@ -157,11 +161,9 @@ public class ChattingActivity extends AppCompatActivity {
                         Log.d("ChattingActivity", "메시지 전송 성공");
                         String responseMessage = response.body().string();
                         runOnUiThread(() -> {
-                            // 서버 응답 메시지를 RecyclerView에 추가합니다.
-                            adapter.addMessage(new Message(responseMessage, false)); // 받은 메시지로 간주
+                            adapter.addMessage(new Message(responseMessage, false));
                         });
                     } else {
-                        // 서버 오류 처리
                         Log.e("ChattingActivity", "서버 오류: " + response.code());
                     }
                 }
@@ -201,8 +203,7 @@ public class ChattingActivity extends AppCompatActivity {
                         Log.d("ChattingActivity", "메시지 전송 성공");
                             String responseMessage = response.body().string();
                         runOnUiThread(() -> {
-                            adapter.addMessage(new Message(message, true));
-                            adapter.addMessage(new Message(responseMessage, false)); // 받은 메시지 추가
+                            adapter.addMessage(new Message(responseMessage, false));
                         });
                     } else {
                         // 서버 오류 처리

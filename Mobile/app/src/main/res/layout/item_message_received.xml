@@ -1,10 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp"
-    android:gravity="right"
-    android:background="@drawable/rectangle_sbubble_gpt">
+    android:gravity="start"
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/textViewMessageReceived"
@@ -13,5 +12,6 @@
         android:text="Sample Message"
         android:textColor="@color/white"
         android:padding="10dp"
-        android:maxWidth="250dp"/>
+        android:maxWidth="250dp"
+        android:background="@drawable/rectangle_sbubble_gpt"/>
 </LinearLayout>
