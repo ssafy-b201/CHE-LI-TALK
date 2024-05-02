@@ -60,7 +60,7 @@ public class ChatController {
     /**
      * 채팅 문법 체크
      */
-    @GetMapping("/check")
+    @PostMapping("/check")
     public String chatCheck(@RequestBody ChatCheckRequestDto dto) throws IOException{
 
         return chatService.checkChat(dto);
