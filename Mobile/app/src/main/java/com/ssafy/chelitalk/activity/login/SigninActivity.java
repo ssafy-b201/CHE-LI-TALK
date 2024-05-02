@@ -26,6 +26,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.ssafy.chelitalk.activity.common.MainActivity;
 import com.ssafy.chelitalk.R;
 import com.ssafy.chelitalk.activity.common.SplashActivity;
+import com.ssafy.chelitalk.api.member.MemberData;
 
 import org.json.JSONObject;
 
@@ -202,7 +203,8 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
     private void proceedToMain(String nickname) {
         Intent intent = new Intent(SigninActivity.this, MainActivity.class);
-        intent.putExtra("nickname", nickname);
+
+        MemberData.getInstance().setNickname(nickname);
 
         startActivity(intent);
         finish();

@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ssafy.chelitalk.activity.common.MainActivity;
 import com.ssafy.chelitalk.R;
+import com.ssafy.chelitalk.api.member.MemberData;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -97,8 +98,10 @@ public class SignupActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         runOnUiThread(() -> {
                             Toast.makeText(SignupActivity.this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
+
+                            MemberData.getInstance().setNickname(nickname);
+
                             Intent intent = new Intent(SignupActivity.this, MainActivity.class);
-                            intent.putExtra("nickname", nickname);
                             startActivity(intent);
                             finish();
                         });

@@ -30,6 +30,8 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,9 +39,11 @@ import com.ssafy.chelitalk.R;
 import com.ssafy.chelitalk.activity.common.MainActivity;
 import com.ssafy.chelitalk.activity.common.NetworkClient;
 import com.ssafy.chelitalk.api.history.History;
+import com.ssafy.chelitalk.api.history.HistoryAdapter;
 import com.ssafy.chelitalk.api.history.HistoryService;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -52,6 +56,9 @@ public class HistoryActivity extends AppCompatActivity {
 
     private static Retrofit retrofit;
     private static HistoryService api;
+    private RecyclerView historyRecyclerView;
+    private HistoryAdapter adapter;
+    private List<History> historyList = new ArrayList<>();
 
 
     @Override
@@ -59,6 +66,9 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_history);
+
+        historyRecyclerView = findViewById(R.id.historyRecyclerView);
+        historyRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         retrofit = NetworkClient.getRetrofitClient(HistoryActivity.this);
         if (retrofit == null) {
@@ -70,55 +80,31 @@ public class HistoryActivity extends AppCompatActivity {
         FirebaseUser currentUser = auth.getCurrentUser();
         String email = currentUser != null ? currentUser.getEmail() : null;
 
-        LinearLayout container = findViewById(R.id.textContainer);
-
         if(email!=null) {
             Call<List<History>> call = api.historyList(email);
             call.enqueue(new Callback<List<History>>() {
                 @Override
                 public void onResponse(Call<List<History>> call, Response<List<History>> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        List<History> historyList = response.body();
-                        //날짜 포맷 지정
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-                        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
-
-                        for (History history : historyList) {
-                            TextView textView = new TextView(HistoryActivity.this);
-                            String dateText = dateFormat.format(history.getCreatedAt());
-                            String timeText = "\n" + timeFormat.format(history.getCreatedAt());
-
-                            SpannableString spannable = new SpannableString(dateText + timeText);
-                            spannable.setSpan(new StyleSpan(Typeface.BOLD), 0, dateText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                            spannable.setSpan(new RelativeSizeSpan(0.8f), dateText.length(), spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                            textView.setText(spannable);
-                            textView.setTextSize(16);
-                            textView.setTextColor(ContextCompat.getColor(HistoryActivity.this, R.color.black));
-                            Typeface typeface = ResourcesCompat.getFont(HistoryActivity.this, R.font.galmuri9);
-                            textView.setTypeface(typeface);
-                            textView.setGravity(Gravity.CENTER);
-                            textView.setPadding(20, 10, 20, 10);
-                            textView.setLayoutParams(new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT));
-                            container.addView(textView);
-                        }
-                    } else if(response.body() ==null){
-                        Toast.makeText(getApplicationContext(), "목록이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
-                    } else{
-                        Toast.makeText(getApplicationContext(), "응답실패", Toast.LENGTH_SHORT).show();
+                        historyList = response.body();
+                        adapter = new HistoryAdapter(HistoryActivity.this, historyList);
+                        historyRecyclerView.setAdapter(adapter);
+                    } else {
+                        historyList = new ArrayList<>();  // 응답 실패 시 빈 리스트 할당
+                        Log.d("HistoryActivity", "No data received or error in response");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<History>> call, Throwable t) {
+                    historyList = new ArrayList<>();
                     Toast.makeText(getApplicationContext(), "통신오류: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }else{
 //            textView.setText("사용자 정보가 없습니다");
         }
+
 
 
 
