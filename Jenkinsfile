@@ -10,6 +10,13 @@ pipeline {
                 git branch: 'release', credentialsId: 'wns1915_cherry', url: 'https://lab.ssafy.com/2_yewon/chelitalk.git'
             }
         }
+		stage('Update Local Repository') {
+            steps {
+                script {
+                    sh 'cd /home/ubuntu/chelitalk && git pull origin release'
+                }
+            }
+        }
         stage('Build Docker Images') {
             steps {
                 script {
