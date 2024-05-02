@@ -35,4 +35,7 @@ public class Sentence {
     @Column(name = "sentence_content")
     private String sentenceContent;
 
+    @Column(name = "sentence_like_status")
+    private Boolean sentenceLikeStatus;
+
 }
