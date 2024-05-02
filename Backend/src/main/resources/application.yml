@@ -9,4 +9,5 @@ spring:
     password: devway201
   jpa:
     hibernate:
-      ddl-auto: update  
+      ddl-auto: update
+

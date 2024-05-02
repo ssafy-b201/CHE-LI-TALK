@@ -2,7 +2,9 @@ package com.ssafy.devway.domain.chat.service;
 
 import com.ssafy.devway.ChatGPT.GPTBlock;
 import com.ssafy.devway.ChatGPT.GPTMode;
-import com.ssafy.devway.domain.chat.dto.ChatRequestDto;
+import com.ssafy.devway.domain.chat.dto.request.ChatCheckRequestDto;
+import com.ssafy.devway.domain.chat.dto.request.ChatDetailRequestDto;
+import com.ssafy.devway.domain.chat.dto.request.ChatRequestDto;
 import com.ssafy.devway.domain.chat.dto.response.ChatListResponse;
 import com.ssafy.devway.domain.chat.entity.Chat;
 import com.ssafy.devway.domain.chat.entity.Sentence;
@@ -130,4 +132,35 @@ public class ChatService {
         return memberRepository.findByMemberEmail(memberEmail);
     }
 
+    public Chat chatDetail(ChatDetailRequestDto dto) {
+        Member member = memberRepository.findByMemberEmail(dto.getMemberEmail());
+        LocalDateTime createdAt = dto.getCreatedAt();
+
+        return chatRepository.findByMemberAndCreatedAt(member, createdAt);
+    }
+
+    public String checkChat(ChatCheckRequestDto dto) throws IOException {
+        Member member = getMember(dto.getMemberEmail());
+        Chat chat = chatRepository.findByChatId(dto.getChatId());
+
+        if(chat == null || !chat.getMember().equals(member)){
+            throw new IllegalArgumentException("채팅 정보가 유효하지 않습니다");
+        }
+
+        List<Sentence> chatList = chat.getChatSentences();
+        StringBuilder allCorrections = new StringBuilder();
+
+        for(Sentence sentence : chatList){
+            if(sentence.getSentenceSender().equals("gpt")){
+                continue;
+            }
+            String correction = gptBlock.askQuestion(sentence.getSentenceContent(), GPTMode.GPT_ENGLISH_GRAMMER);
+            allCorrections.append(correction).append("\n");
+        }
+//            return gptTest.getLastAnswer();
+        return allCorrections.toString();
+
+
+
+    }
 }
