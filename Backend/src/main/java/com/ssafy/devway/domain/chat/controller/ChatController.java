@@ -4,6 +4,7 @@ package com.ssafy.devway.domain.chat.controller;
 import com.ssafy.devway.domain.chat.dto.request.ChatCheckRequestDto;
 import com.ssafy.devway.domain.chat.dto.request.ChatDetailRequestDto;
 import com.ssafy.devway.domain.chat.dto.request.ChatRequestDto;
+import com.ssafy.devway.domain.chat.dto.response.ChatListDetailResponse;
 import com.ssafy.devway.domain.chat.dto.response.ChatListResponse;
 import com.ssafy.devway.domain.chat.entity.Chat;
 import com.ssafy.devway.domain.chat.service.ChatService;
@@ -53,7 +54,7 @@ public class ChatController {
      * 채팅 상세 조회-날짜누르면 대화 상세보기
      */
     @GetMapping("/list/detail")
-    public Chat chatDetail(@RequestBody ChatDetailRequestDto dto) throws IOException{
+    public List<ChatListDetailResponse> chatDetail(@RequestBody ChatDetailRequestDto dto) throws IOException{
         return chatService.chatDetail(dto);
     }
 
@@ -62,7 +63,6 @@ public class ChatController {
      */
     @PostMapping("/check")
     public String chatCheck(@RequestBody ChatCheckRequestDto dto) throws IOException{
-
         return chatService.checkChat(dto);
     }
 }
