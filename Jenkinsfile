@@ -13,18 +13,18 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
-                    sh 'docker-compose /home/ubuntu/chelitalk/Backend/docker-compose.yml build --no-cache app_cherry'
-                    sh 'docker-compose /home/ubuntu/chelitalk/Backend/docker-compose.yml up -d app_cherry'
-					sh 'docker-compose /home/ubuntu/oringe/devway/docker-compose.yml build nginx'
-                    sh 'docker-compose /home/ubuntu/oringe/devway/docker-compose.yml build certbot'
+                    sh 'sudo docker-compose /home/ubuntu/chelitalk/Backend/docker-compose.yml build --no-cache app_cherry'
+                    sh 'sudo docker-compose /home/ubuntu/chelitalk/Backend/docker-compose.yml up -d app_cherry'
+					sh 'sudo docker-compose /home/ubuntu/oringe/devway/docker-compose.yml build nginx'
+                    sh 'sudo docker-compose /home/ubuntu/oringe/devway/docker-compose.yml build certbot'
                 }
             }
         }
         stage('Deploy') {
             steps {
                 script {
-                    sh 'docker-compose /home/ubuntu/oringe/devway/docker-compose.yml up -d nginx'
-                    sh 'docker-compose /home/ubuntu/oringe/devway/docker-compose.yml up -d certbot'
+                    sh 'sudo docker-compose /home/ubuntu/oringe/devway/docker-compose.yml up -d nginx'
+                    sh 'sudo docker-compose /home/ubuntu/oringe/devway/docker-compose.yml up -d certbot'
                 }
             }
         }
