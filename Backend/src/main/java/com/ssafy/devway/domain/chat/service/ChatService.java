@@ -40,7 +40,6 @@ public class ChatService {
     public String beginChatting(ChatRequestDto dto) throws IOException {
 
         Member member = getMember(dto.getMemberEmail());
-        String memberNickname = member.getMemberNickname();
 
         // 키워드로 질문 시작
         String question = gptBlock.askQuestion(dto.getContent(),
