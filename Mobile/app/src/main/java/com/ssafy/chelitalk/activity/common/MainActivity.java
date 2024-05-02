@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
         OkHttpClient client = TrustOkHttpClientUtil.getUnsafeOkHttpClient();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://k10b201.p.ssafy.io/cherry/api/")
+                .baseUrl("http://localhost:8060/cherry/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
