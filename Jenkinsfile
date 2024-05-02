@@ -17,7 +17,7 @@ pipeline {
 							sh '''
 							cd /home/ubuntu/chelitalk
 							echo url=https://$GIT_USERNAME:$GIT_PASSWORD@lab.ssafy.com/2_yewon/chelitalk.git > .git/credentials
-							git config credential.helper 'store --file=.git/credentials'
+							git config credential.helper 'store --file=.git/credentials-chelitalk'
 							git pull origin release
 							'''
 						}
