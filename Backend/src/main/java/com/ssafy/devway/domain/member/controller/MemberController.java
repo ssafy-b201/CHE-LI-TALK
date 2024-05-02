@@ -3,6 +3,7 @@ package com.ssafy.devway.domain.member.controller;
 import com.ssafy.devway.domain.attend.service.AttendService;
 import com.ssafy.devway.domain.member.dto.request.MemberSignupRequest;
 import com.ssafy.devway.domain.member.dto.response.MemberDetailResponse;
+import com.ssafy.devway.domain.member.dto.response.MemberValidResponse;
 import com.ssafy.devway.domain.member.service.MemberService;
 import com.ssafy.devway.global.api.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -45,10 +46,9 @@ public class MemberController {
      * 가입한 유저인지 체크
      */
     @GetMapping("/valid")
-    public ApiResponse<Boolean> memberValid(@RequestParam String memberEmail) {
+    public ApiResponse<MemberValidResponse> memberValid(@RequestParam String memberEmail) {
 
         return ApiResponse.ok(memberService.validMember(memberEmail));
     }
-
 
 }
