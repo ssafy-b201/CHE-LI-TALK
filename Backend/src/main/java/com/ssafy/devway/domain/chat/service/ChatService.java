@@ -150,7 +150,11 @@ public class ChatService {
 
     public String checkChat(ChatCheckRequestDto dto) throws IOException {
         Member member = getMember(dto.getMemberEmail());
-        Chat chat = chatRepository.findByChatId(dto.getChatId());
+        int index = member.getMemberChats().size() - 1;
+        if(index == -1) index = 0;
+
+        //가장 최근의 채팅
+        Chat chat = member.getMemberChats().get(index);
 
         if (chat == null) {
             throw new IllegalArgumentException("채팅 정보가 유효하지 않습니다");

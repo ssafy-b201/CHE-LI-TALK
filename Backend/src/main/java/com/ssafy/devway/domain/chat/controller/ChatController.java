@@ -46,7 +46,7 @@ public class ChatController {
      * 채팅 목록 조회-날짜반환
      */
     @GetMapping("/list")
-    public List<ChatListResponse> chatList(@RequestParam String memberEmail) {
+    public List<ChatListResponse> chatList(@RequestParam String memberEmail){
         return chatService.chatList(memberEmail);
     }
 
@@ -62,8 +62,8 @@ public class ChatController {
     /**
      * 채팅 문법 체크
      */
-    @GetMapping("/check")
-    public String chatCheck(@RequestBody ChatCheckRequestDto dto) throws IOException {
+    @PostMapping("/check")
+    public String chatCheck(@RequestBody ChatCheckRequestDto dto) throws IOException{
         return chatService.checkChat(dto);
     }
 }
