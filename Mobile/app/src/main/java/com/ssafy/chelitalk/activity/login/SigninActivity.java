@@ -111,7 +111,6 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         // 로그인 성공
                         if (task.isSuccessful()) {
-
                             checkUserRegistration(account.getEmail());
 
                         } else { // 로그인 실패 - 로그인 화면으로 돌아가기
