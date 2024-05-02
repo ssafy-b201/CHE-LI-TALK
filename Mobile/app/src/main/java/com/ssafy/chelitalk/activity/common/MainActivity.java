@@ -276,9 +276,12 @@ public class MainActivity extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
 
-        Intent intent = getIntent();
-        String nickname = intent.getStringExtra("nickname");
-        MemberData.getInstance().setNickname(nickname);
+        // Singleton에서 닉네임 가져오기
+        String nickname = MemberData.getInstance().getNickname();
+
+        if (nickname == null) {
+            nickname = "Guest";
+        }
 
         if(timeOfDay >= 6 && timeOfDay < 12){
             greetingTextView.setText("Good Morning, " + nickname);
