@@ -1,29 +1,18 @@
 package com.ssafy.chelitalk.api.history;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class History {
-    private LocalDateTime createdAt;
-    private String memberEmail;
+    private Date createdAt;
 
-    public History(LocalDateTime createdAt, String memberEmail) {
+    public History(Date createdAt) {
         this.createdAt = createdAt;
-        this.memberEmail = memberEmail;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 
-    public String getMemberEmail() {
-        return memberEmail;
-    }
-
-    public void setMemberEmail(String memberEmail) {
-        this.memberEmail = memberEmail;
-    }
 }

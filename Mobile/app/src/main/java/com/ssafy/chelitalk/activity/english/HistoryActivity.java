@@ -1,28 +1,36 @@
 package com.ssafy.chelitalk.activity.english;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
+import android.util.Log;
+import android.view.Gravity;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ssafy.chelitalk.R;
 import com.ssafy.chelitalk.activity.common.NetworkClient;
 import com.ssafy.chelitalk.api.history.History;
 import com.ssafy.chelitalk.api.history.HistoryService;
-import com.ssafy.chelitalk.api.history.RetrofitClientHistory;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
-import okhttp3.OkHttp;
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,13 +49,16 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
 
         retrofit = NetworkClient.getRetrofitClient(HistoryActivity.this);
+        if (retrofit == null) {
+            throw new IllegalStateException("레트로핏 초기화 상태 안됨");
+        }
         api = retrofit.create(HistoryService.class);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
         String email = currentUser != null ? currentUser.getEmail() : null;
 
-        TextView textView = findViewById(R.id.history);
+        LinearLayout container = findViewById(R.id.textContainer);
 
         if(email!=null) {
             Call<List<History>> call = api.historyList(email);
@@ -56,14 +67,35 @@ public class HistoryActivity extends AppCompatActivity {
                 public void onResponse(Call<List<History>> call, Response<List<History>> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         List<History> historyList = response.body();
-                        StringBuilder historyText = new StringBuilder();
+                        //날짜 포맷 지정
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
 
                         for (History history : historyList) {
-                            historyText.append(history.getCreatedAt()).append("\n");
+                            TextView textView = new TextView(HistoryActivity.this);
+                            String dateText = dateFormat.format(history.getCreatedAt());
+                            String timeText = "\n" + timeFormat.format(history.getCreatedAt());
+
+                            SpannableString spannable = new SpannableString(dateText + timeText);
+                            spannable.setSpan(new StyleSpan(Typeface.BOLD), 0, dateText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            spannable.setSpan(new RelativeSizeSpan(0.8f), dateText.length(), spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                            textView.setText(spannable);
+                            textView.setTextSize(16);
+                            textView.setTextColor(ContextCompat.getColor(HistoryActivity.this, R.color.black));
+                            Typeface typeface = ResourcesCompat.getFont(HistoryActivity.this, R.font.galmuri9);
+                            textView.setTypeface(typeface);
+                            textView.setGravity(Gravity.CENTER);
+                            textView.setPadding(20, 10, 20, 10);
+                            textView.setLayoutParams(new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT));
+                            container.addView(textView);
                         }
-                        textView.setText(historyText.toString());
-                    } else {
+                    } else if(response.body() ==null){
                         Toast.makeText(getApplicationContext(), "목록이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+                    } else{
+                        Toast.makeText(getApplicationContext(), "응답실패", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -73,7 +105,7 @@ public class HistoryActivity extends AppCompatActivity {
                 }
             });
         }else{
-            textView.setText("사용자 정보가 없습니다");
+//            textView.setText("사용자 정보가 없습니다");
         }
 
 

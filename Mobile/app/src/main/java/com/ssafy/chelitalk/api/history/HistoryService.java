@@ -9,7 +9,7 @@ import retrofit2.http.Query;
 
 public interface HistoryService{
 
-    @GET("/chat/list")
+    @GET("chat/list")
     Call<List<History>> historyList(@Query("memberEmail") String memberEmail);
 
 }
