@@ -5,9 +5,14 @@ pipeline {
         GITLAB_TOKEN = credentials('wns1915_cherry') // Jenkins에 저장된 GitLab Token의 ID
     }
     stages {
+		stage('Prepare Workspace') {
+			steps {
+				cleanWs()
+			}
+		}
         stage('Checkout') {
             steps {
-                git branch: 'origin/release', credentialsId: 'wns1915_cherry', url: 'https://lab.ssafy.com/2_yewon/chelitalk.git' // GitLab 리포지토리
+                git branch: 'release', credentialsId: 'wns1915_cherry', url: 'https://lab.ssafy.com/2_yewon/chelitalk.git'
             }
         }
         stage('Build Docker Images') {
