@@ -36,4 +36,14 @@
         android:padding="5dp"
         android:src="@drawable/cherries" />
 
+    <TextView
+        android:id="@+id/text_response"
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:fontFamily="@font/mitmi"
+        android:layout_margin="20dp"/>
+
 </LinearLayout>
