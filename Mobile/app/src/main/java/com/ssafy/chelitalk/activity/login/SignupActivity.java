@@ -54,10 +54,10 @@ public class SignupActivity extends AppCompatActivity {
                     String email = user.getEmail();
                     String nickname = et_nickname.getText().toString();
 
-                    if (!nickname.isEmpty()) {
+                    if (!nickname.isEmpty() && isValidNickname(nickname)) {
                         sendUserInfoToServer(email, nickname);
                     } else {
-                        Toast.makeText(SignupActivity.this, "체리톡에서 사용할 영어이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, "영어, 10자 이하로 입력해주세요.", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     Log.d("SignupActivity", "사용자 정보 없음");
@@ -141,6 +141,11 @@ public class SignupActivity extends AppCompatActivity {
         return new OkHttpClient.Builder()
                 .sslSocketFactory(sslContext.getSocketFactory(), trustManager)
                 .build();
+    }
+
+    // 닉네임 유효성 검사 메소드
+    private boolean isValidNickname(String nickname) {
+        return nickname.matches("^[a-zA-Z]{1,10}$");
     }
 
 }
