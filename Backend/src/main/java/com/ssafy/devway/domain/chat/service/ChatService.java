@@ -40,11 +40,10 @@ public class ChatService {
     public String beginChatting(ChatRequestDto dto) throws IOException {
 
         Member member = getMember(dto.getMemberEmail());
-        String memberNickname = member.getMemberNickname();
 
         // 키워드로 질문 시작
-        String question = gptBlock.askQuestionForFirstChat(dto.getContent(), memberNickname,
-            GPTMode.GPT_TALK_START_ENGLISH_CHAT);
+        String question = gptBlock.askQuestion(dto.getContent(),
+            GPTMode.GPT_TALK_START_ENGLISH);
 
         // chat 생성
         Chat newChat = Chat.builder()
