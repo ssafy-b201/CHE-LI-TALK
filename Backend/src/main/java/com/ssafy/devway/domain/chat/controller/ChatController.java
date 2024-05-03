@@ -66,4 +66,14 @@ public class ChatController {
     public String chatCheck(@RequestBody ChatCheckRequestDto dto) throws IOException{
         return chatService.checkChat(dto);
     }
+
+    /**
+     * 최근 채팅 조회
+     */
+    @GetMapping("/recent")
+    public List<ChatListDetailResponse> chatRecent(@RequestParam String memberEmail){
+        return chatService.getRecent(memberEmail);
+    }
+    
+
 }
