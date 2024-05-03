@@ -170,7 +170,7 @@ public class ChattingActivity extends AppCompatActivity {
                         String nickname = MemberData.getInstance().getNickname();
 
                         runOnUiThread(() -> {
-                            adapter.addMessage(new Message("Hello, " + nickname + " ! " + responseMessage, false));
+                            adapter.addMessage(new Message(responseMessage, false));
                         });
                     } else {
                         Log.e("ChattingActivity", "서버 오류: " + response.code());
