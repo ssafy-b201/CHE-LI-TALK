@@ -25,6 +25,7 @@ import com.ssafy.chelitalk.activity.common.MainActivity;
 import com.ssafy.chelitalk.activity.login.SignupActivity;
 import com.ssafy.chelitalk.api.chat.Message;
 import com.ssafy.chelitalk.api.chat.MessageAdapter;
+import com.ssafy.chelitalk.api.member.MemberData;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -165,6 +166,9 @@ public class ChattingActivity extends AppCompatActivity {
                         // 서버로부터의 응답 처리
                         Log.d("ChattingActivity", "메시지 전송 성공");
                         String responseMessage = response.body().string();
+
+                        String nickname = MemberData.getInstance().getNickname();
+
                         runOnUiThread(() -> {
                             adapter.addMessage(new Message(responseMessage, false));
                         });
