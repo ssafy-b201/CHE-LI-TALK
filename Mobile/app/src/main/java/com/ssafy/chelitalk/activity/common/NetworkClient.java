@@ -14,6 +14,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class NetworkClient {
 
@@ -23,6 +24,7 @@ public class NetworkClient {
     public static Retrofit getRetrofitClient(Context context){
         if(retrofit == null){
             Gson gson = new GsonBuilder()
+                    .setLenient()
                     .registerTypeAdapter(Date.class, new DateTypeAdapter())
                     .create();
 
@@ -38,6 +40,7 @@ public class NetworkClient {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(httpClient)
+                    .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(new NullOnEmptyConverterFactory())
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();

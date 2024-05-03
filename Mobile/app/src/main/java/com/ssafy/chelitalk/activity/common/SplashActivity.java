@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.ssafy.chelitalk.R;
 import com.ssafy.chelitalk.activity.login.SigninActivity;
 import com.ssafy.chelitalk.activity.login.SignupActivity;
+import com.ssafy.chelitalk.api.member.MemberData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -148,7 +149,8 @@ public class SplashActivity extends AppCompatActivity {
 
     private void proceedToMain(String nickname) {
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-        intent.putExtra("nickname", nickname);
+
+        MemberData.getInstance().setNickname(nickname);
 
         startActivity(intent);
         finish();
