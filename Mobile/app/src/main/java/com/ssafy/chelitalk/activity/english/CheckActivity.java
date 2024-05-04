@@ -80,14 +80,6 @@ public class CheckActivity extends AppCompatActivity {
                     }
                 }
 
-                private String formatToJson(String responseBody) {
-                    String[] parts = responseBody.split(":");
-                    if(parts.length == 2){
-                        return "{\"" + parts[0].trim() + "\":\"" + parts[1].trim() + "\"}";
-                    }
-                    return "{}";
-                }
-
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
                     responseTextView.setText("서버 연결 실패");

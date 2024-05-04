@@ -6,7 +6,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ssafy.chelitalk.api.history.DateTypeAdapter;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -26,6 +28,7 @@ public class NetworkClient {
             Gson gson = new GsonBuilder()
                     .setLenient()
                     .registerTypeAdapter(Date.class, new DateTypeAdapter())
+//                    .registerTypeAdapter(Date.class, new com.ssafy.chelitalk.api.attend.DateTypeAdapter())
                     .create();
 
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();

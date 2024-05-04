@@ -3,12 +3,14 @@ package com.ssafy.chelitalk.activity.english;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -21,14 +23,38 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.ssafy.chelitalk.R;
 import com.ssafy.chelitalk.activity.common.MainActivity;
+import com.ssafy.chelitalk.api.attend.DateTypeAdapter;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Locale;
 
 public class HistoryDetailActivity extends AppCompatActivity {
+
+    private TextView createdAtTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_history_detail);
+
+        createdAtTextView = findViewById(R.id.createdAtTextView);
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("history-createdAt")) {
+            long createdAt = intent.getLongExtra("history-createdAt", 0);
+            if (createdAt != 0) {
+                String createdAtString = convertTimestampToString(createdAt);
+                createdAtTextView.setText(createdAtString);
+            } else {
+                Log.e("HistoryDetailActivity", "Received invalid timestamp (0).");
+            }
+        } else {
+            Log.e("HistoryDetailActivity", "Intent does not have 'history-createdAt' extra.");
+        }
+
 
 
         //메뉴 dialog(modal)
@@ -38,7 +64,7 @@ public class HistoryDetailActivity extends AppCompatActivity {
                 AlertDialog.Builder dlg = new AlertDialog.Builder(HistoryDetailActivity.this);
                 dlg.setTitle("Menu");
                 ListAdapter adapter = new ArrayAdapter<String>(
-                        HistoryDetailActivity.this, R.layout.dialog_item, R.id.text, new String[]{"HOME", "STUDY", "LIKE", "HISTORY", "CHECK"}) {
+                        HistoryDetailActivity.this, R.layout.dialog_item, R.id.text, new String[]{"HOME", "STUDY", "LIKE", "HISTORY"}) {
                     @NonNull
                     @Override
                     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -56,9 +82,6 @@ public class HistoryDetailActivity extends AppCompatActivity {
                                 break;
                             case 3:
                                 img.setImageResource(R.drawable.history_icon);
-                                break;
-                            case 4:
-                                img.setImageResource(R.drawable.check_icon);
                                 break;
                             default:
                                 img.setImageResource(R.drawable.cherry);
@@ -89,10 +112,6 @@ public class HistoryDetailActivity extends AppCompatActivity {
                                 intent = new Intent(HistoryDetailActivity.this, HistoryActivity.class);
                                 startActivity(intent);
                                 break;
-                            case 4:
-                                intent = new Intent(HistoryDetailActivity.this, CheckActivity.class);
-                                startActivity(intent);
-                                break;
                         }
                     }
                 });
@@ -105,5 +124,11 @@ public class HistoryDetailActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    private String convertTimestampToString(long timestamp) {
+        System.out.println("타임스탬프"+timestamp);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        return dateFormat.format(new Date(timestamp));
     }
 }
