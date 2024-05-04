@@ -8,6 +8,7 @@ import com.ssafy.devway.domain.chat.dto.response.ChatListDetailResponse;
 import com.ssafy.devway.domain.chat.dto.response.ChatListResponse;
 import com.ssafy.devway.domain.chat.entity.Chat;
 import com.ssafy.devway.domain.chat.service.ChatService;
+import com.ssafy.devway.global.api.ApiResponse;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -74,6 +75,18 @@ public class ChatController {
     public List<ChatListDetailResponse> chatRecent(@RequestParam String memberEmail){
         return chatService.getRecent(memberEmail);
     }
-    
+
+    /**
+     * 즐겨 찾기 상태 변화
+     */
+    @PostMapping("/like")
+    public String likeChat(@RequestParam Long sentenceId){
+        if(chatService.likeChat(sentenceId)){
+            return "liked";
+        }else{
+            return "don't like";
+        }
+    }
+
 
 }
