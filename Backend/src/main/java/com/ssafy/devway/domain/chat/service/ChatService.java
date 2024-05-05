@@ -1,7 +1,5 @@
 package com.ssafy.devway.domain.chat.service;
 
-import com.ssafy.devway.ChatGPT.GPTBlock;
-import com.ssafy.devway.ChatGPT.GPTMode;
 import com.ssafy.devway.domain.chat.dto.request.ChatCheckRequestDto;
 import com.ssafy.devway.domain.chat.dto.request.ChatDetailRequestDto;
 import com.ssafy.devway.domain.chat.dto.request.ChatRequestDto;
