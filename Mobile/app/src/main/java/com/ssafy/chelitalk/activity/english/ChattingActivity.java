@@ -167,8 +167,6 @@ public class ChattingActivity extends AppCompatActivity {
                         Log.d("ChattingActivity", "메시지 전송 성공");
                         String responseMessage = response.body().string();
 
-                        String nickname = MemberData.getInstance().getNickname();
-
                         runOnUiThread(() -> {
                             adapter.addMessage(new Message(responseMessage, false));
                         });
