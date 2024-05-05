@@ -4,11 +4,10 @@ package com.ssafy.devway.domain.chat.controller;
 import com.ssafy.devway.domain.chat.dto.request.ChatCheckRequestDto;
 import com.ssafy.devway.domain.chat.dto.request.ChatDetailRequestDto;
 import com.ssafy.devway.domain.chat.dto.request.ChatRequestDto;
+import com.ssafy.devway.domain.chat.dto.request.ChatConvertRequest;
 import com.ssafy.devway.domain.chat.dto.response.ChatListDetailResponse;
 import com.ssafy.devway.domain.chat.dto.response.ChatListResponse;
-import com.ssafy.devway.domain.chat.entity.Chat;
 import com.ssafy.devway.domain.chat.service.ChatService;
-import com.ssafy.devway.global.api.ApiResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -94,6 +93,22 @@ public class ChatController {
         }else{
             return "don't like";
         }
+    }
+
+    /**
+     * STT
+     */
+    @PostMapping("/stt")
+    public String convertToText(ChatConvertRequest request) throws Exception {
+       return chatService.convertToText(request);
+    }
+
+    /**
+     * TTS
+     */
+    @PostMapping("/tts")
+    public String convertToSpeech(ChatConvertRequest request){
+        return chatService.convertToSpeech(request);
     }
 
 
