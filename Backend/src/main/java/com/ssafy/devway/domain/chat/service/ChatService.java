@@ -1,7 +1,7 @@
 package com.ssafy.devway.domain.chat.service;
 
-import com.ssafy.devway.ChatGPT.GPTBlock;
-import com.ssafy.devway.ChatGPT.GPTMode;
+import com.ssafy.devway.GPT.GPTBlock;
+import com.ssafy.devway.GPT.GPTMode;
 import com.ssafy.devway.domain.chat.dto.request.ChatCheckRequestDto;
 import com.ssafy.devway.domain.chat.dto.request.ChatDetailRequestDto;
 import com.ssafy.devway.domain.chat.dto.request.ChatRequestDto;
@@ -13,6 +13,7 @@ import com.ssafy.devway.domain.chat.repository.ChatRepository;
 import com.ssafy.devway.domain.chat.repository.SentenceRepository;
 import com.ssafy.devway.domain.member.entity.Member;
 import com.ssafy.devway.domain.member.repository.MemberRepository;
+import com.ssafy.devway.global.api.ApiResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -40,11 +41,10 @@ public class ChatService {
     public String beginChatting(ChatRequestDto dto) throws IOException {
 
         Member member = getMember(dto.getMemberEmail());
-        String memberNickname = member.getMemberNickname();
 
         // 키워드로 질문 시작
-        String question = gptBlock.askQuestionForFirstChat(dto.getContent(), memberNickname,
-            GPTMode.GPT_TALK_START_ENGLISH_CHAT);
+        String question = gptBlock.askQuestion(dto.getContent(),
+            GPTMode.GPT_TALK_START_ENGLISH);
 
         // chat 생성
         Chat newChat = Chat.builder()
@@ -168,7 +168,7 @@ public class ChatService {
                 continue;
             }
             String correction = gptBlock.askQuestion(sentence.getSentenceContent(),
-                GPTMode.GPT_ENGLISH_GRAMMER);
+                GPTMode.GPT_ENGLISH_GRAMMAR);
             allCorrections.append(correction).append("\n");
         }
         return allCorrections.toString();
@@ -176,7 +176,53 @@ public class ChatService {
 
     }
 
+    public List<ChatListDetailResponse> getRecent(String memberEmail) {
+        Member member = memberRepository.findByMemberEmail(memberEmail);
+
+        int index = member.getMemberChats().size()-1;
+        if(index == -1) index = 0;
+
+        //가장 최근의 채팅
+        Chat chat = member.getMemberChats().get(index);
+
+        if(chat == null){
+            throw new IllegalArgumentException("채팅 정보가 유효하지 않습니다.");
+        }
+
+        List<ChatListDetailResponse> chatDetails = new ArrayList<>();
+        List<Sentence> sentences = sentenceRepository.findByChatId(chat.getChatId());
+        for(int i=0;i<sentences.size();i++){
+            chatDetails.add(new ChatListDetailResponse(sentences.get(i).getSentenceSender(), sentences.get(i).getSentenceContent()));
+        }
+        return chatDetails;
+    }
+
     public Member getMember(String memberEmail) {
         return memberRepository.findByMemberEmail(memberEmail);
+    }
+
+
+    public Boolean likeChat(Long sentenceId) {
+        Sentence sentence = sentenceRepository.findBySentenceId(sentenceId);
+
+        if(sentence == null){
+            throw new IllegalArgumentException("해당하는 문장이 없습니다.");
+        }
+
+        Boolean isLike = sentence.getSentenceLikeStatus();
+
+        if(isLike==null){
+            isLike = false;
+            System.out.println("문장이 널널");
+        }else{
+            if(isLike){
+                isLike = false;
+                System.out.println("문장 즐겨찾기 해제"+sentence.getSentenceLikeStatus());
+            }else{
+                isLike = true;
+                System.out.println("문장 즐겨찾기"+sentence.getSentenceLikeStatus());
+            }
+        }
+        return isLike;
     }
 }

@@ -53,7 +53,7 @@ public class CheckActivity extends AppCompatActivity {
         responseTextView = findViewById(R.id.text_response);
 
         retrofit = NetworkClient.getRetrofitClient(CheckActivity.this);
-        if(retrofit == null){
+        if (retrofit == null) {
             throw new IllegalStateException("레트로핏 초기화 상태 안됨");
         }
         api = retrofit.create(CheckService.class);
@@ -62,15 +62,15 @@ public class CheckActivity extends AppCompatActivity {
         FirebaseUser currentUser = auth.getCurrentUser();
         String email = currentUser != null ? currentUser.getEmail() : null;
 
-        if(email != null){
+        if (email != null) {
             dto = new Check(email);
             Call<String> call = api.chatCheck(dto);
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    if(response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         responseTextView.setText(response.body());
-                    }else{
+                    } else {
                         try {
                             String errorResponse = response.errorBody().string();
                             Log.e("CheckActivity", "에러메시지: " + errorResponse);
@@ -80,14 +80,22 @@ public class CheckActivity extends AppCompatActivity {
                     }
                 }
 
+                private String formatToJson(String responseBody) {
+                    String[] parts = responseBody.split(":");
+                    if (parts.length == 2) {
+                        return "{\"" + parts[0].trim() + "\":\"" + parts[1].trim() + "\"}";
+                    }
+                    return "{}";
+                }
+
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
                     responseTextView.setText("서버 연결 실패");
-                    Log.e("CheckActivity","서버 연결 실패"+t);
+                    Log.e("CheckActivity", "서버 연결 실패" + t);
                 }
             });
 
-        }else{
+        } else {
             Toast.makeText(this, "사용자 로그인 오류", Toast.LENGTH_SHORT).show();
         }
 
@@ -96,7 +104,6 @@ public class CheckActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
 
 
         //메뉴 dialog(modal)
@@ -168,11 +175,13 @@ public class CheckActivity extends AppCompatActivity {
             }
         });
     }
-    @Override
-    public void onBackPressed() { // 요거 주석처리 하지 말기
-        Intent intent = new Intent(CheckActivity.this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish(); // 현재 활동 종료
 
-    }}
+//    @Override
+//    public void onBackPressed() { // 요거 주석처리 하지 말기
+//        Intent intent = new Intent(CheckActivity.this, MainActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        startActivity(intent);
+//        finish(); // 현재 활동 종료
+//
+//    }
+}

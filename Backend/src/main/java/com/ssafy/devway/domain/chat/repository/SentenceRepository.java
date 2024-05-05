@@ -12,4 +12,6 @@ public interface SentenceRepository extends JpaRepository<Sentence, Long> {
 	@Query("SELECT s FROM Sentence s WHERE s.chat.chatId = :chatId")
 	List<Sentence> findByChatId(Long chatId);
 
+	Sentence findBySentenceId(Long sentenceId);
+
 }
