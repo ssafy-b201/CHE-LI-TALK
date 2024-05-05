@@ -13,6 +13,7 @@ import com.ssafy.devway.domain.chat.repository.ChatRepository;
 import com.ssafy.devway.domain.chat.repository.SentenceRepository;
 import com.ssafy.devway.domain.member.entity.Member;
 import com.ssafy.devway.domain.member.repository.MemberRepository;
+import com.ssafy.devway.global.api.ApiResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -201,5 +202,27 @@ public class ChatService {
     }
 
 
+    public Boolean likeChat(Long sentenceId) {
+        Sentence sentence = sentenceRepository.findBySentenceId(sentenceId);
 
+        if(sentence == null){
+            throw new IllegalArgumentException("해당하는 문장이 없습니다.");
+        }
+
+        Boolean isLike = sentence.getSentenceLikeStatus();
+
+        if(isLike==null){
+            isLike = false;
+            System.out.println("문장이 널널");
+        }else{
+            if(isLike){
+                isLike = false;
+                System.out.println("문장 즐겨찾기 해제"+sentence.getSentenceLikeStatus());
+            }else{
+                isLike = true;
+                System.out.println("문장 즐겨찾기"+sentence.getSentenceLikeStatus());
+            }
+        }
+        return isLike;
+    }
 }
