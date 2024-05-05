@@ -1,7 +1,7 @@
 package com.ssafy.devway.domain.chat.service;
 
-import com.ssafy.devway.ChatGPT.GPTBlock;
-import com.ssafy.devway.ChatGPT.GPTMode;
+import com.ssafy.devway.GPT.GPTBlock;
+import com.ssafy.devway.GPT.GPTMode;
 import com.ssafy.devway.domain.chat.dto.request.ChatCheckRequestDto;
 import com.ssafy.devway.domain.chat.dto.request.ChatDetailRequestDto;
 import com.ssafy.devway.domain.chat.dto.request.ChatRequestDto;
@@ -168,7 +168,7 @@ public class ChatService {
                 continue;
             }
             String correction = gptBlock.askQuestion(sentence.getSentenceContent(),
-                GPTMode.GPT_ENGLISH_GRAMMER);
+                GPTMode.GPT_ENGLISH_GRAMMAR);
             allCorrections.append(correction).append("\n");
         }
         return allCorrections.toString();
