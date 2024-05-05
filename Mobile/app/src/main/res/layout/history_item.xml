@@ -6,4 +6,5 @@
     android:textSize="16sp"
     android:padding="8dp"
     android:gravity="center"
-    android:textColor="@color/black" />
+    android:fontFamily="@font/galmuri9"
+    android:textColor="@color/cherry" />
