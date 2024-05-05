@@ -52,7 +52,6 @@ public class HistoryDetailActivity extends AppCompatActivity {
     private static Retrofit retrofit;
     private static HistoryDetailService api;
     private HistoryDetailRequestDto requestDto;
-    private HistoryDetailResponseDto responseDto;
     private TextView detailTextView;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -98,6 +97,7 @@ public class HistoryDetailActivity extends AppCompatActivity {
             call.enqueue(new Callback<List<HistoryDetailResponseDto>>() {
                 @Override
                 public void onResponse(Call<List<HistoryDetailResponseDto>> call, Response<List<HistoryDetailResponseDto>> response) {
+                    System.out.println("response:"+response);
                     if(response.isSuccessful() && response.body()!=null){
                         StringBuilder details = new StringBuilder();
                         for(HistoryDetailResponseDto item : response.body()){
@@ -206,11 +206,8 @@ public class HistoryDetailActivity extends AppCompatActivity {
         return dateFormat.format(new Date(timestamp));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private LocalDateTime convertTimestampToStringWithOtherFormat(long timestamp) {
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss.SSSSS", Locale.US);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
-        }
-        return null;
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
     }
 }

@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class HistoryDetailRequestDto {
     private String memberEmail;
-    LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     public HistoryDetailRequestDto(String memberEmail, LocalDateTime createdAt) {
         this.memberEmail = memberEmail;
