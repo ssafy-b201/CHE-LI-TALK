@@ -10,4 +10,85 @@
     android:background="#C5E6F0"
     tools:context=".activity.english.SpeakingActivity">
 
+    <FrameLayout
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo_bubble" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/tv_keyword"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/galmuri9"
+            android:gravity="center"
+            android:text="oo을(를) 주제로 채팅을 진행합니다."
+            android:textColor="@color/cherry"
+            android:textSize="15sp" />
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="10dp" />
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_vertical"
+        android:padding="25dp">
+
+        <ImageButton
+            android:id="@+id/recordButton"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="70dp"
+            android:layout_gravity="center|start|top"
+            android:background="@drawable/shape_for_circle_speak"
+            android:src="@drawable/play"
+            android:scaleType="fitCenter"/>
+
+        <ImageButton
+            android:id="@+id/stopButton"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="70dp"
+            android:layout_gravity="center|top|end"
+            android:background="@drawable/shape_for_circle_speak"
+            android:src="@drawable/stop"
+            android:scaleType="fitCenter"/>
+
+        <Button
+            android:id="@+id/btn_finish"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center|bottom"
+            android:background="@drawable/shape_for_finish_btn"
+            android:fontFamily="@font/galmuri9"
+            android:text="대화 종료"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
+
+    </FrameLayout>
+
+
+
+
 </LinearLayout>
