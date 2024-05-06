@@ -58,7 +58,7 @@ public class ChatController {
     @GetMapping("/list/detail")
     public List<ChatListDetailResponse> chatDetail(
         @RequestParam("memberEmail") String memberEmail,
-        @RequestParam("createdAt") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdAt)
+        @RequestParam("createdAt") LocalDateTime createdAt)
         throws IOException {
         ChatDetailRequestDto dto = ChatDetailRequestDto.builder()
             .memberEmail(memberEmail)
