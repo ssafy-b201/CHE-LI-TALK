@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -22,6 +23,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -34,9 +37,12 @@ import com.ssafy.chelitalk.activity.english.HistoryActivity;
 import com.ssafy.chelitalk.activity.english.LikeActivity;
 import com.ssafy.chelitalk.activity.english.SelectActivity;
 import com.ssafy.chelitalk.api.attend.Attend;
+import com.ssafy.chelitalk.api.attend.AttendAdapter;
+import com.ssafy.chelitalk.api.attend.AttendListDto;
 import com.ssafy.chelitalk.api.attend.AttendService;
 import com.ssafy.chelitalk.api.member.MemberData;
 
+import org.checkerframework.checker.units.qual.A;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,17 +52,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 
 import me.relex.circleindicator.CircleIndicator3;
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -68,7 +73,12 @@ public class MainActivity extends AppCompatActivity {
     private int num_page = 3;
     private CircleIndicator3 mIndicator;
     private FirebaseAuth auth;
-    private TextView attendView;
+    private static Retrofit retrofit;
+    private static AttendService api;
+    private Attend dto;
+    private List<AttendListDto> attendList = new ArrayList<>();
+    private RecyclerView attendRecyclerView;
+    private AttendAdapter attendAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,43 +86,57 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        attendRecyclerView = findViewById(R.id.attendRecyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        attendRecyclerView.setLayoutManager(layoutManager);
+
+        retrofit = NetworkClient.getRetrofitClient(MainActivity.this);
+        if(retrofit == null){
+            throw new IllegalStateException("레트로핏 초기화 상태 안됨");
+        }
+        api = retrofit.create(AttendService.class);
+
         //현재 로그인 된 사용자 가져오기
         auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
         String email = currentUser != null ? currentUser.getEmail() : null;
 
-        attendView = findViewById(R.id.attendView);
-
-        OkHttpClient client = TrustOkHttpClientUtil.getUnsafeOkHttpClient();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://k10b201.p.ssafy.io/cherry/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-
-        AttendService attendAPI = retrofit.create(AttendService.class);
-
-        attendAPI.attendList(email).enqueue(new Callback<List<Attend>>() {
-            @Override
-            public void onResponse(Call<List<Attend>> call, Response<List<Attend>> response) {
-                //성공적으로 응답하면 실행
-                if(response.isSuccessful() && response.body() != null){
-                    List<Attend> attends = response.body();
-                    updateAttendView(attends);
-                    Log.d("MainActivity", "Attendance Data: " + attends);
-                }else{
-                    Log.d("MainActivity", "Response not successful or empty: " + response.code() + " - " + response.message());
-                    Toast.makeText(MainActivity.this, "출석 데이터 추출 실패! " + response.message(), Toast.LENGTH_SHORT).show();
+        if(email != null){
+            dto = new Attend(email);
+            Call<List<AttendListDto>> call = api.attendList(dto.getMemberEmail());
+            call.enqueue(new Callback<List<AttendListDto>>() {
+                @Override
+                public void onResponse(Call<List<AttendListDto>> call, Response<List<AttendListDto>> response) {
+                    if(response.isSuccessful() && response.body() != null){
+                        attendAdapter = new AttendAdapter(response.body());
+                        attendRecyclerView.setAdapter(attendAdapter);
+//                        attendRecyclerView.setAdapter(attendAdapter);
+//                        attendList = response.body();
+//                        StringBuilder builder = new StringBuilder();
+//                        for(AttendListDto attend : attendList){
+//                            builder.append(attend.toString()).append("\n");
+//                         }
+//                        attendView.setText(builder.toString());
+                        Log.d("MainActivity", "성공"+response.body());
+                    }else{
+                        try{
+                            String errorResponse = response.errorBody().string();
+                            Log.e("MainActivity", "에러메시지: "+errorResponse);
+                        }catch (IOException e){
+                            Log.e("MainActivity", "Error", e);
+                        }
+                    }
                 }
-            }
-            @Override
-            public void onFailure(Call<List<Attend>> call, Throwable t) {
-                Log.e("MainActivity", "API call failed: " + t.getMessage(), t);
-                Toast.makeText(MainActivity.this, "API 호출 실패: " + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
 
+                @Override
+                public void onFailure(Call<List<AttendListDto>> call, Throwable t) {
+//                    attendView.setText("서버 연결 실패");
+                    Log.e("MainActivity", "서버 연결"+t);
+                }
+            });
+        }else{
+            Toast.makeText(this, "로그인오류", Toast.LENGTH_SHORT).show();
+        }
 
 
         //메뉴 dialog(modal)
@@ -122,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
                 dlg.setTitle("Menu");
                 ListAdapter adapter = new ArrayAdapter<String>(
-                        MainActivity.this, R.layout.dialog_item, R.id.text, new String[]{"HOME", "STUDY", "LIKE","HISTORY", "CHECK"}){
+                        MainActivity.this, R.layout.dialog_item, R.id.text, new String[]{"HOME", "STUDY", "LIKE","HISTORY"}){
                     @NonNull
                     @Override
                     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
@@ -145,7 +169,6 @@ public class MainActivity extends AppCompatActivity {
                             case 1: img.setImageResource(R.drawable.study_icon); break;
                             case 2: img.setImageResource(R.drawable.like_icon); break;
                             case 3: img.setImageResource(R.drawable.history_icon); break;
-                            case 4: img.setImageResource(R.drawable.check_icon); break;
                             default:img.setImageResource(R.drawable.cherry); break;
                         }
                         return view;
@@ -170,10 +193,6 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             case 3:
                                 intent = new Intent(MainActivity.this, HistoryActivity.class);
-                                startActivity(intent);
-                                break;
-                            case 4:
-                                intent = new Intent(MainActivity.this, CheckActivity.class);
                                 startActivity(intent);
                                 break;
                         }
@@ -252,18 +271,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void updateAttendView(List<Attend> attends) {
-        StringBuilder sb = new StringBuilder();
-        for(Attend attend : attends){
-            sb.append(attend.getAttend() ? "출석": "출석안함");
-        }
-        attendView.setText(sb.toString());
-        Log.d("MainActivity", "Updated Attendance View: " + sb.toString());
-    }
-
     private void setGreetingBasedOnTime() {
         Calendar c = Calendar.getInstance();
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+
+//        Intent intent = getIntent();
+//        String nickname = intent.getStringExtra("nickname");
 
         // Singleton에서 닉네임 가져오기
         String nickname = MemberData.getInstance().getNickname();
