@@ -1,5 +1,7 @@
 package com.ssafy.devway.STT;
 
+import com.google.api.gax.core.FixedCredentialsProvider;
+import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.speech.v1.SpeechClient;
 import com.google.cloud.speech.v1.SpeechRecognitionAlternative;
 import com.google.cloud.speech.v1.SpeechRecognitionResult;
@@ -7,8 +9,13 @@ import com.google.cloud.speech.v1.RecognitionConfig;
 import com.google.cloud.speech.v1.RecognitionAudio;
 import com.google.cloud.speech.v1.RecognitionConfig.AudioEncoding;
 
+import com.google.cloud.speech.v1.SpeechSettings;
+import com.google.cloud.texttospeech.v1.TextToSpeechClient;
+import com.google.cloud.texttospeech.v1.TextToSpeechSettings;
+import com.google.common.collect.Lists;
 import com.ssafy.devway.block.element.BlockElement;
 import java.io.File;
+import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,7 +41,7 @@ public class STTBlock implements BlockElement {
 
     int sampleRate = getSampleRate(fileName); // 샘플링 주파수 읽는 메소드 호출
 
-    try (SpeechClient speechClient = SpeechClient.create()) {
+    try (SpeechClient speechClient = initializeSpeechClient()) {
       RecognitionConfig config = RecognitionConfig.newBuilder()
           .setEncoding(AudioEncoding.LINEAR16)
           .setLanguageCode("en-US")
@@ -68,5 +75,22 @@ public class STTBlock implements BlockElement {
   @Override
   public String getName() {
     return "STT";
+  }
+
+  public SpeechClient initializeSpeechClient() throws Exception {
+    // 인증 파일 경로 지정
+    String jsonPath = "C:\\Users\\SSAFY\\Desktop\\MyGC.json";
+
+    // 파일에서 인증 정보 로드
+    GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(jsonPath))
+        .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+
+    // 클라이언트 설정에 인증 정보 적용
+    SpeechSettings speechSettings = SpeechSettings.newBuilder()
+        .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
+        .build();
+
+    // 설정을 사용하여 TextToSpeechClient 생성
+    return SpeechClient.create(speechSettings);
   }
 }
