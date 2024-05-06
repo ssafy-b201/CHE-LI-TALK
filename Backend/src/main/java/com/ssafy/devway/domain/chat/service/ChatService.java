@@ -1,10 +1,22 @@
 package com.ssafy.devway.domain.chat.service;
 
-import com.ssafy.devway.ChatGPT.GPTBlock;
-import com.ssafy.devway.ChatGPT.GPTMode;
+import com.google.cloud.speech.v1.RecognitionAudio;
+import com.google.cloud.speech.v1.RecognitionConfig;
+import com.google.cloud.speech.v1.RecognitionConfig.AudioEncoding;
+import com.google.cloud.speech.v1.RecognizeResponse;
+import com.google.cloud.speech.v1.SpeechClient;
+import com.google.cloud.speech.v1.SpeechRecognitionAlternative;
+import com.google.cloud.speech.v1.SpeechRecognitionResult;
+import com.google.protobuf.ByteString;
+import com.ssafy.devway.GPT.GPTBlock;
+import com.ssafy.devway.GPT.GPTMode;
+import com.ssafy.devway.STT.STTBlock;
+import com.ssafy.devway.TTS.TTSBlock;
+import com.ssafy.devway.TTS.TTSCountry;
 import com.ssafy.devway.domain.chat.dto.request.ChatCheckRequestDto;
 import com.ssafy.devway.domain.chat.dto.request.ChatDetailRequestDto;
 import com.ssafy.devway.domain.chat.dto.request.ChatRequestDto;
+import com.ssafy.devway.domain.chat.dto.request.ChatConvertRequest;
 import com.ssafy.devway.domain.chat.dto.response.ChatListDetailResponse;
 import com.ssafy.devway.domain.chat.dto.response.ChatListResponse;
 import com.ssafy.devway.domain.chat.entity.Chat;
@@ -21,6 +33,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -40,11 +53,10 @@ public class ChatService {
     public String beginChatting(ChatRequestDto dto) throws IOException {
 
         Member member = getMember(dto.getMemberEmail());
-        String memberNickname = member.getMemberNickname();
 
         // 키워드로 질문 시작
-        String question = gptBlock.askQuestionForFirstChat(dto.getContent(), memberNickname,
-            GPTMode.GPT_TALK_START_ENGLISH_CHAT);
+        String question = gptBlock.askQuestion(dto.getContent(),
+            GPTMode.GPT_TALK_START_ENGLISH);
 
         // chat 생성
         Chat newChat = Chat.builder()
@@ -79,12 +91,6 @@ public class ChatService {
         String sentenceFromUser = dto.getContent();
         String answerFromGpt = gptBlock.askQuestion(sentenceFromUser,
             GPTMode.GPT_TALK_CONTINUE_ENGLISH);
-
-        /**
-         * 질문 저장, 답변 저장, 채팅에 추가
-         * todo : 어떤 채팅인지 어떻게 구분해서 저장할까 -> 유저 닉네임, 날짜
-         * 채팅 리스트 중에 맨 마지막거 가져와서 더하기?
-         */
 
         // 유저의 채팅 리스트 중 가장 마지막
         int index = member.getMemberChats().size() - 1;
@@ -151,7 +157,8 @@ public class ChatService {
     public String checkChat(ChatCheckRequestDto dto) throws IOException {
         Member member = getMember(dto.getMemberEmail());
         int index = member.getMemberChats().size() - 1;
-        if(index == -1) index = 0;
+        if (index == -1)
+            index = 0;
 
         //가장 최근의 채팅
         Chat chat = member.getMemberChats().get(index);
@@ -168,15 +175,131 @@ public class ChatService {
                 continue;
             }
             String correction = gptBlock.askQuestion(sentence.getSentenceContent(),
-                GPTMode.GPT_ENGLISH_GRAMMER);
+                GPTMode.GPT_ENGLISH_GRAMMAR);
             allCorrections.append(correction).append("\n");
         }
         return allCorrections.toString();
 
+    }
 
+    public List<ChatListDetailResponse> getRecent(String memberEmail) {
+        Member member = memberRepository.findByMemberEmail(memberEmail);
+
+        int index = member.getMemberChats().size() - 1;
+        if (index == -1)
+            index = 0;
+
+        //가장 최근의 채팅
+        Chat chat = member.getMemberChats().get(index);
+
+        if (chat == null) {
+            throw new IllegalArgumentException("채팅 정보가 유효하지 않습니다.");
+        }
+
+        List<ChatListDetailResponse> chatDetails = new ArrayList<>();
+        List<Sentence> sentences = sentenceRepository.findByChatId(chat.getChatId());
+        for (int i = 0; i < sentences.size(); i++) {
+            chatDetails.add(new ChatListDetailResponse(sentences.get(i).getSentenceSender(),
+                sentences.get(i).getSentenceContent()));
+        }
+        return chatDetails;
     }
 
     public Member getMember(String memberEmail) {
         return memberRepository.findByMemberEmail(memberEmail);
     }
+
+
+    public Boolean likeChat(Long sentenceId) {
+        Sentence sentence = sentenceRepository.findBySentenceId(sentenceId);
+
+        if (sentence == null) {
+            throw new IllegalArgumentException("해당하는 문장이 없습니다.");
+        }
+
+        Boolean isLike = sentence.getSentenceLikeStatus();
+
+        if (isLike == null) {
+            isLike = false;
+            System.out.println("문장이 널널");
+        } else {
+            if (isLike) {
+                isLike = false;
+                System.out.println("문장 즐겨찾기 해제" + sentence.getSentenceLikeStatus());
+            } else {
+                isLike = true;
+                System.out.println("문장 즐겨찾기" + sentence.getSentenceLikeStatus());
+            }
+        }
+        return isLike;
+    }
+
+    public String convertToText(ChatConvertRequest request) throws Exception {
+
+        STTBlock sttBlock = new STTBlock();
+
+        Member member = getMember(request.getMemberEmail());
+        List<String> transcribedText = transcribeAudioDirectly(request.getAudioFile());
+
+        int index = member.getMemberChats().size() - 1;
+        if (index == -1) {
+            index = 0;
+        }
+
+        Chat nowChat = member.getMemberChats().get(index);
+        String content = "";
+
+        for (String str : transcribedText) {
+            Sentence createdSentence = Sentence.builder()
+                .sentenceSender(member.getMemberNickname())
+                .sentenceContent(str)
+                .chat(nowChat)
+                .build();
+            nowChat.getChatSentences().add(createdSentence);
+            content += str;
+        }
+        chatRepository.save(nowChat);
+
+
+        return content;
+    }
+
+    public byte[] convertToSpeech(ChatRequestDto request) {
+        String audioFilePath = "C:/Users/SSAFY/Desktop";
+
+        TTSBlock ttsBlock = new TTSBlock(audioFilePath);
+        try {
+
+            TTSCountry country = TTSCountry.US_C_FEMALE;
+            return ttsBlock.synthesizeText(request.getContent(), country);
+
+        } catch (Exception e) {
+            throw new RuntimeException("TTS conversion failed", e);
+        }
+
+    }
+
+    public List<String> transcribeAudioDirectly(MultipartFile audioFile) throws Exception {
+        try (SpeechClient speechClient = SpeechClient.create()) {
+            byte[] data = audioFile.getBytes();
+            RecognitionAudio audio = RecognitionAudio.newBuilder()
+                .setContent(ByteString.copyFrom(data))
+                .build();
+
+            RecognitionConfig config = RecognitionConfig.newBuilder()
+                .setEncoding(AudioEncoding.LINEAR16)
+                .setLanguageCode("en-US")
+                .setSampleRateHertz(44100)
+                .build();
+
+            List<String> resultsText = new ArrayList<>();
+            RecognizeResponse response = speechClient.recognize(config, audio);
+            for (SpeechRecognitionResult result : response.getResultsList()) {
+                SpeechRecognitionAlternative alternative = result.getAlternativesList().get(0);
+                resultsText.add(alternative.getTranscript());
+            }
+            return resultsText;
+        }
+    }
+
 }

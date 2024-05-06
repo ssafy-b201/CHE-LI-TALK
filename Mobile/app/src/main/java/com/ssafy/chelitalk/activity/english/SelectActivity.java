@@ -55,8 +55,15 @@ public class SelectActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SelectActivity.this, SpeakingActivity.class);
-                startActivity(intent);
+                if (keyword != null && !keyword.isEmpty()) {
+                    Intent intent = new Intent(SelectActivity.this, SpeakingActivity.class);
+                    intent.putExtra("keyword", keyword);
+                    intent.putExtra("userEmail", userEmail);
+                    startActivity(intent);
+                } else {
+                    // 키워드가 설정되지 않은 경우 오류 메시지를 표시하거나 처리
+                    Toast.makeText(SelectActivity.this, "키워드를 선택하세요.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
