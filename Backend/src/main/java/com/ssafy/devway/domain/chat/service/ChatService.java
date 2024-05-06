@@ -11,6 +11,8 @@ import com.google.protobuf.ByteString;
 import com.ssafy.devway.GPT.GPTBlock;
 import com.ssafy.devway.GPT.GPTMode;
 import com.ssafy.devway.STT.STTBlock;
+import com.ssafy.devway.TTS.TTSBlock;
+import com.ssafy.devway.TTS.TTSCountry;
 import com.ssafy.devway.domain.chat.dto.request.ChatCheckRequestDto;
 import com.ssafy.devway.domain.chat.dto.request.ChatDetailRequestDto;
 import com.ssafy.devway.domain.chat.dto.request.ChatRequestDto;
@@ -262,8 +264,19 @@ public class ChatService {
         return content;
     }
 
-    public String convertToSpeech(ChatConvertRequest request) {
-        return null;
+    public byte[] convertToSpeech(ChatRequestDto request) {
+        String audioFilePath = "C:/Users/SSAFY/Desktop";
+
+        TTSBlock ttsBlock = new TTSBlock(audioFilePath);
+        try {
+
+            TTSCountry country = TTSCountry.US_C_FEMALE;
+            return ttsBlock.synthesizeText(request.getContent(), country);
+
+        } catch (Exception e) {
+            throw new RuntimeException("TTS conversion failed", e);
+        }
+
     }
 
     public List<String> transcribeAudioDirectly(MultipartFile audioFile) throws Exception {

@@ -17,40 +17,42 @@ import lombok.Data;
 @Data
 public class TTSBlock implements BlockElement {
 
-  private String filePath = "";
-  private String model = "en-US-Standard-C";
+    private String filePath = "";
+    private String model = "en-US-Standard-C";
 
-  public TTSBlock(String filePath) {
-    this.filePath = filePath;
-  }
-
-  @Override
-  public String getName() {
-    return "TTS";
-  }
-
-  public void synthesizeText(String text, TTSCountry country) throws Exception {
-    model = country.getTextMode();
-
-    try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
-      SynthesisInput input = SynthesisInput.newBuilder()
-          .setText(text)
-          .build();
-      VoiceSelectionParams voice = VoiceSelectionParams.newBuilder()
-          .setLanguageCode(model.substring(0, 5))
-          .setName(model)
-          .build();
-      AudioConfig audioConfig = AudioConfig.newBuilder()
-          .setAudioEncoding(AudioEncoding.MP3)
-          .build();
-      SynthesizeSpeechResponse response = textToSpeechClient.synthesizeSpeech(input, voice,
-          audioConfig);
-      ByteString audioContents = response.getAudioContent();
-      try (OutputStream out = new FileOutputStream(filePath + "/output.mp3")) {
-        out.write(audioContents.toByteArray());
-        System.out.println("Audio content written to file \"output.mp3\"");
-      }
+    public TTSBlock(String filePath) {
+        this.filePath = filePath;
     }
 
-  }
+    @Override
+    public String getName() {
+        return "TTS";
+    }
+
+    public byte[] synthesizeText(String text, TTSCountry country) throws Exception {
+
+        model = country.getTextMode();
+
+        try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()) {
+            SynthesisInput input = SynthesisInput.newBuilder()
+                .setText(text)
+                .build();
+
+            VoiceSelectionParams voice = VoiceSelectionParams.newBuilder()
+                .setLanguageCode(model.substring(0, 5))
+                .setName(model)
+                .build();
+
+            AudioConfig audioConfig = AudioConfig.newBuilder()
+                .setAudioEncoding(AudioEncoding.MP3)
+                .build();
+
+            SynthesizeSpeechResponse response = textToSpeechClient.synthesizeSpeech(input, voice,
+                audioConfig);
+            ByteString audioContents = response.getAudioContent(); // 오디오 내용을 ByteString 형태로 받음
+
+            // 오디오 내용을 바이트 배열로 반환
+            return audioContents.toByteArray();
+        }
+    }
 }

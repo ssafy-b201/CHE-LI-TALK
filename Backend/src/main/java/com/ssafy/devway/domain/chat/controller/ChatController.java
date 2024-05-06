@@ -107,7 +107,7 @@ public class ChatController {
      * TTS
      */
     @PostMapping("/tts")
-    public String convertToSpeech(ChatConvertRequest request){
+    public byte[] convertToSpeech(ChatRequestDto request){
         return chatService.convertToSpeech(request);
     }
 
