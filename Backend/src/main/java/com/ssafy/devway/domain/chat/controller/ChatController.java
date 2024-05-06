@@ -6,9 +6,7 @@ import com.ssafy.devway.domain.chat.dto.request.ChatDetailRequestDto;
 import com.ssafy.devway.domain.chat.dto.request.ChatRequestDto;
 import com.ssafy.devway.domain.chat.dto.response.ChatListDetailResponse;
 import com.ssafy.devway.domain.chat.dto.response.ChatListResponse;
-import com.ssafy.devway.domain.chat.entity.Chat;
 import com.ssafy.devway.domain.chat.service.ChatService;
-import com.ssafy.devway.global.api.ApiResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -59,7 +57,7 @@ public class ChatController {
     @GetMapping("/list/detail")
     public List<ChatListDetailResponse> chatDetail(
         @RequestParam("memberEmail") String memberEmail,
-        @RequestParam("createdAt") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdAt)
+        @RequestParam("createdAt") LocalDateTime createdAt)
         throws IOException {
         ChatDetailRequestDto dto = ChatDetailRequestDto.builder()
             .memberEmail(memberEmail)
