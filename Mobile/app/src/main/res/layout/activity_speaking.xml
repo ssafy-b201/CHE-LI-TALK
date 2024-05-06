@@ -57,19 +57,22 @@
 
         <ImageButton
             android:id="@+id/recordButton"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="80dp"
-            android:layout_gravity="center_vertical|top"
-            android:background="@drawable/shape_for_circle_chat"
-            android:src="@drawable/mic"
+            android:layout_marginStart="70dp"
+            android:layout_gravity="center|start|top"
+            android:background="@drawable/shape_for_circle_speak"
+            android:src="@drawable/play"
             android:scaleType="fitCenter"/>
 
         <ImageButton
             android:id="@+id/stopButton"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="80dp"
-            android:layout_gravity="center|top"
-            android:background="@drawable/shape_for_circle_chat"
+            android:layout_marginEnd="70dp"
+            android:layout_gravity="center|top|end"
+            android:background="@drawable/shape_for_circle_speak"
+            android:src="@drawable/stop"
             android:scaleType="fitCenter"/>
 
         <Button

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -199,6 +200,10 @@ public class SpeakingActivity extends AppCompatActivity {
                         String responseMessage = response.body().string();
                         runOnUiThread(() -> {
                             adapter.addMessage(new Message(responseMessage, false));
+
+                            // 여기에서 TTS api 호출
+                            sendTextToServer(email, responseMessage);
+
                         });
                     } else {
                         Log.e("ChattingActivity", "서버 오류: " + response.code());
@@ -251,7 +256,6 @@ public class SpeakingActivity extends AppCompatActivity {
             Toast.makeText(this, "녹음 시작 실패", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     private void writeAudioDataToFile(int bufferSize) {
         byte data[] = new byte[bufferSize];
@@ -451,12 +455,12 @@ public class SpeakingActivity extends AppCompatActivity {
         });
     }
 
-    private void sendMessage(String email, String message) {
+    private void sendTextToServer(String email, String message){
         try {
 
             OkHttpClient client = getSecureOkHttpClient();
 
-            String url = "https://k10b201.p.ssafy.io/cherry/api/chat";
+            String url = "https://k10b201.p.ssafy.io/cherry/api/chat/tts";
 
             MediaType mediaType = MediaType.parse("application/json");
             String requestBody = "{\"memberEmail\":\"" + email + "\", \"content\":\"" + message + "\"}";
@@ -477,11 +481,12 @@ public class SpeakingActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     if (response.isSuccessful()) {
-                        // 서버로부터의 응답 처리
-                        Log.d("SpeakingActivity", "메시지 전송 성공");
-                        String responseMessage = response.body().string();
+
+                        byte[] audioBytes = response.body().bytes();
+
+                        // 오디오 재생
                         runOnUiThread(() -> {
-                            adapter.addMessage(new Message(responseMessage, false));
+                            playAudioFromBytes(audioBytes);
                         });
                     } else {
                         // 서버 오류 처리
@@ -494,6 +499,68 @@ public class SpeakingActivity extends AppCompatActivity {
         }
     }
 
+    private void playAudioFromBytes(byte[] audioBytes) {
+        try {
+            // 임시 파일 생성
+            File tempMp3 = File.createTempFile("response", "mp3", getCacheDir());
+            tempMp3.deleteOnExit();
+            FileOutputStream fos = new FileOutputStream(tempMp3);
+            fos.write(audioBytes);
+            fos.close();
+
+            // MediaPlayer로 재생
+            MediaPlayer mediaPlayer = new MediaPlayer();
+            mediaPlayer.setDataSource(getApplicationContext(), Uri.fromFile(tempMp3));
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Failed to play audio", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void sendMessage(String email, String message) {
+        try {
+
+            OkHttpClient client = getSecureOkHttpClient();
+
+            String url = "https://k10b201.p.ssafy.io/cherry/api/chat";
+
+            MediaType mediaType = MediaType.parse("application/json");
+            String requestBody = "{\"memberEmail\":\"" + email + "\", \"content\":\"" + message + "\"}";
+            RequestBody body = RequestBody.create(requestBody, mediaType);
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+
+            client.newCall(request).enqueue(new okhttp3.Callback() {
+
+                @Override
+                public void onFailure(okhttp3.Call call, IOException e) {
+                    Log.e("SpeakingActivity", "서버 통신 실패(called third api)", e);
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (response.isSuccessful()) {
+                        // 서버로부터의 응답 처리
+                        Log.d("SpeakingActivity", "메시지 전송 성공");
+                        String responseMessage = response.body().string();
+                        runOnUiThread(() -> {
+                            adapter.addMessage(new Message(responseMessage, false));
+                        });
+                    } else {
+                        // 서버 오류 처리
+                        Log.e("SpeakingActivity", "서버 오류(called third api) : " + response.code());
+                    }
+                }
+            });
+        }catch (Exception e) {
+            Log.e("SpeakingActivity", "///// OkHttp Client Error /////", e);
+        }
+    }
 
     private OkHttpClient getSecureOkHttpClient() throws Exception {
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
