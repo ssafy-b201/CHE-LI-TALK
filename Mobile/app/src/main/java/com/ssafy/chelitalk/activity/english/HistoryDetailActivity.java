@@ -1,34 +1,29 @@
 package com.ssafy.chelitalk.activity.english;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ssafy.chelitalk.R;
 import com.ssafy.chelitalk.activity.common.MainActivity;
 import com.ssafy.chelitalk.activity.common.NetworkClient;
+import com.ssafy.chelitalk.api.historydetail.HistoryDetailAdapter;
 import com.ssafy.chelitalk.api.historydetail.HistoryDetailRequestDto;
 import com.ssafy.chelitalk.api.historydetail.HistoryDetailResponseDto;
 import com.ssafy.chelitalk.api.historydetail.HistoryDetailService;
@@ -52,7 +47,8 @@ public class HistoryDetailActivity extends AppCompatActivity {
     private static Retrofit retrofit;
     private static HistoryDetailService api;
     private HistoryDetailRequestDto requestDto;
-    private TextView detailTextView;
+    private RecyclerView recyclerView;
+    private HistoryDetailAdapter adapter;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -62,7 +58,10 @@ public class HistoryDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history_detail);
 
         createdAtTextView = findViewById(R.id.createdAtTextView);
-        detailTextView = findViewById(R.id.historyDetailView);
+        recyclerView = findViewById(R.id.historyDetailRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        setupHomeNavigation();
 
         retrofit = NetworkClient.getRetrofitClient(HistoryDetailActivity.this);
         if(retrofit == null){
@@ -97,25 +96,18 @@ public class HistoryDetailActivity extends AppCompatActivity {
             call.enqueue(new Callback<List<HistoryDetailResponseDto>>() {
                 @Override
                 public void onResponse(Call<List<HistoryDetailResponseDto>> call, Response<List<HistoryDetailResponseDto>> response) {
-                    System.out.println("response:"+response);
                     if(response.isSuccessful() && response.body()!=null){
-                        StringBuilder details = new StringBuilder();
-                        for(HistoryDetailResponseDto item : response.body()){
-                            String sender = item.getSentenceSender();
-                            String sentence = item.getSentenceContent();
-                            details.append("발신자 :").append(sender).append("\n")
-                                    .append("메시지 :").append(sentence).append("\n\n");
-                        }
-
-                        detailTextView.setText(details.toString());
+                        adapter = new HistoryDetailAdapter(response.body());
+                        recyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
                     }else{
                         try{
                             String errorResponse = response.errorBody().string();
                             Log.e("HistoryDetailActivity", "에러 : " + errorResponse);
-                            detailTextView.setText("에러 발생: " + errorResponse);
+                            Toast.makeText(HistoryDetailActivity.this, "서버 에러 발생: " + errorResponse, Toast.LENGTH_LONG).show();
                         }catch (Exception e){
                             Log.e("HistoryDetailActivity", "Error reading error body", e);
-                            detailTextView.setText("응답 처리 중 오류 발생");
+                            Toast.makeText(HistoryDetailActivity.this, "응답 처리 중 오류 발생", Toast.LENGTH_LONG).show();
                         }
                     }
                 }
@@ -123,6 +115,7 @@ public class HistoryDetailActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<List<HistoryDetailResponseDto>> call, Throwable t) {
                     Log.e("HistoryDetailActivity", "서버 연결 실패"+t);
+                    Toast.makeText(HistoryDetailActivity.this, "서버 연결 실패", Toast.LENGTH_LONG).show();
                             
                 }
             });
@@ -132,67 +125,6 @@ public class HistoryDetailActivity extends AppCompatActivity {
             Log.e("HistoryDetailActivity", "사용자 로그인 오류 혹은 날짜 오류");
         }
 
-        //메뉴 dialog(modal)
-        final ImageButton button1 = (ImageButton) findViewById(R.id.imageButton);
-        button1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                AlertDialog.Builder dlg = new AlertDialog.Builder(HistoryDetailActivity.this);
-                dlg.setTitle("Menu");
-                ListAdapter adapter = new ArrayAdapter<String>(
-                        HistoryDetailActivity.this, R.layout.dialog_item, R.id.text, new String[]{"HOME", "STUDY", "LIKE", "HISTORY"}) {
-                    @NonNull
-                    @Override
-                    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                        View view = super.getView(position, convertView, parent);
-                        ImageView img = view.findViewById(R.id.icon);
-                        switch (position) {
-                            case 0:
-                                img.setImageResource(R.drawable.home_icon);
-                                break;
-                            case 1:
-                                img.setImageResource(R.drawable.study_icon);
-                                break;
-                            case 2:
-                                img.setImageResource(R.drawable.like_icon);
-                                break;
-                            case 3:
-                                img.setImageResource(R.drawable.history_icon);
-                                break;
-                            default:
-                                img.setImageResource(R.drawable.cherry);
-                                break;
-                        }
-                        return view;
-                    }
-                };
-
-                dlg.setAdapter(adapter, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent;
-                        switch (which) {
-                            case 0:
-                                intent = new Intent(HistoryDetailActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                break;
-                            case 1:
-                                intent = new Intent(HistoryDetailActivity.this, SelectActivity.class);
-                                startActivity(intent);
-                                break;
-                            case 2:
-                                intent = new Intent(HistoryDetailActivity.this, LikeActivity.class);
-                                startActivity(intent);
-                                break;
-                            case 3:
-                                intent = new Intent(HistoryDetailActivity.this, HistoryActivity.class);
-                                startActivity(intent);
-                                break;
-                        }
-                    }
-                });
-                dlg.show();
-            }
-        });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -201,9 +133,22 @@ public class HistoryDetailActivity extends AppCompatActivity {
         });
     }
 
+
+
     private String convertTimestampToString(long timestamp) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         return dateFormat.format(new Date(timestamp));
+    }
+
+    private void setupHomeNavigation() {
+        ImageView goToHome = findViewById(R.id.goToHome);
+        goToHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HistoryDetailActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

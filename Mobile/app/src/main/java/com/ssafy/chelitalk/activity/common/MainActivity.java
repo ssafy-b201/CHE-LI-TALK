@@ -3,6 +3,7 @@ package com.ssafy.chelitalk.activity.common;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +33,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ssafy.chelitalk.R;
 import com.ssafy.chelitalk.activity.carousel.MyAdapter;
-import com.ssafy.chelitalk.activity.english.CheckActivity;
 import com.ssafy.chelitalk.activity.english.HistoryActivity;
 import com.ssafy.chelitalk.activity.english.LikeActivity;
 import com.ssafy.chelitalk.activity.english.SelectActivity;
@@ -42,7 +42,6 @@ import com.ssafy.chelitalk.api.attend.AttendListDto;
 import com.ssafy.chelitalk.api.attend.AttendService;
 import com.ssafy.chelitalk.api.member.MemberData;
 
-import org.checkerframework.checker.units.qual.A;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -77,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private static AttendService api;
     private Attend dto;
     private List<AttendListDto> attendList = new ArrayList<>();
-    private RecyclerView attendRecyclerView;
+//    private RecyclerView attendRecyclerView;
     private AttendAdapter attendAdapter;
 
     @Override
@@ -86,11 +85,12 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        attendRecyclerView = findViewById(R.id.attendRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        attendRecyclerView.setLayoutManager(layoutManager);
+//        attendRecyclerView.setLayoutManager(layoutManager);
 
-        retrofit = NetworkClient.getRetrofitClient(MainActivity.this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            retrofit = NetworkClient.getRetrofitClient(MainActivity.this);
+        }
         if(retrofit == null){
             throw new IllegalStateException("레트로핏 초기화 상태 안됨");
         }
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<List<AttendListDto>> call, Response<List<AttendListDto>> response) {
                     if(response.isSuccessful() && response.body() != null){
                         attendAdapter = new AttendAdapter(response.body());
-                        attendRecyclerView.setAdapter(attendAdapter);
+//                        attendRecyclerView.setAdapter(attendAdapter);
 //                        attendRecyclerView.setAdapter(attendAdapter);
 //                        attendList = response.body();
 //                        StringBuilder builder = new StringBuilder();
@@ -140,65 +140,86 @@ public class MainActivity extends AppCompatActivity {
 
 
         //메뉴 dialog(modal)
-        final ImageButton button1 = (ImageButton) findViewById(R.id.imageButton);
-        button1.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
-                AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
-                dlg.setTitle("Menu");
-                ListAdapter adapter = new ArrayAdapter<String>(
-                        MainActivity.this, R.layout.dialog_item, R.id.text, new String[]{"HOME", "STUDY", "LIKE","HISTORY"}){
-                    @NonNull
-                    @Override
-                    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
-                        View view = super.getView(position, convertView, parent);
-                        ImageView img = view.findViewById(R.id.icon);
+//        final ImageButton button1 = (ImageButton) findViewById(R.id.imageButton);
+//        button1.setOnClickListener(new View.OnClickListener(){
+//            public void onClick(View view){
+//                AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
+//                dlg.setTitle("Menu");
+//                ListAdapter adapter = new ArrayAdapter<String>(
+//                        MainActivity.this, R.layout.dialog_item, R.id.text, new String[]{"HOME", "STUDY", "LIKE","HISTORY"}){
+//                    @NonNull
+//                    @Override
+//                    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
+//                        View view = super.getView(position, convertView, parent);
+//                        ImageView img = view.findViewById(R.id.icon);
+//
+//                        int width = 200;
+//                        int height = 200;
+//
+//                        if(position ==1){
+//                            width=100;
+//                        }
+//
+//                        ViewGroup.LayoutParams layoutParams = img.getLayoutParams();
+//                        layoutParams.width = width;
+//                        layoutParams.height = height;
+//                        img.setLayoutParams(layoutParams);
+//                        switch (position){
+//                            case 0: img.setImageResource(R.drawable.home_icon); break;
+//                            case 1: img.setImageResource(R.drawable.study_icon); break;
+//                            case 2: img.setImageResource(R.drawable.like_icon); break;
+//                            case 3: img.setImageResource(R.drawable.history_icon); break;
+//                            default:img.setImageResource(R.drawable.cherry); break;
+//                        }
+//                        return view;
+//                    }
+//                };
+//                dlg.setAdapter(adapter, new DialogInterface.OnClickListener(){
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Intent intent;
+//                        switch(which){
+//                            case 0:
+//                                intent = new Intent(MainActivity.this, MainActivity.class);
+//                                startActivity(intent);
+//                                break;
+//                            case 1:
+//                                intent = new Intent(MainActivity.this, SelectActivity.class);
+//                                startActivity(intent);
+//                                break;
+//                            case 2:
+//                                intent = new Intent(MainActivity.this, LikeActivity.class);
+//                                startActivity(intent);
+//                                break;
+//                            case 3:
+//                                intent = new Intent(MainActivity.this, HistoryActivity.class);
+//                                startActivity(intent);
+//                                break;
+//                        }
+//                    }
+//                });
+//                dlg.show();
+//            }
+//        });
 
-                        int width = 200;
-                        int height = 200;
+        //menu
+        LinearLayout goToStudy = findViewById(R.id.goToStudy);
+        LinearLayout goToHistory = findViewById(R.id.goToHistory);
+        goToStudy.setOnClickListener(new View.OnClickListener(){
 
-                        if(position ==1){
-                            width=100;
-                        }
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SelectActivity.class);
+                startActivity(intent);
+            }
+        });
 
-                        ViewGroup.LayoutParams layoutParams = img.getLayoutParams();
-                        layoutParams.width = width;
-                        layoutParams.height = height;
-                        img.setLayoutParams(layoutParams);
-                        switch (position){
-                            case 0: img.setImageResource(R.drawable.home_icon); break;
-                            case 1: img.setImageResource(R.drawable.study_icon); break;
-                            case 2: img.setImageResource(R.drawable.like_icon); break;
-                            case 3: img.setImageResource(R.drawable.history_icon); break;
-                            default:img.setImageResource(R.drawable.cherry); break;
-                        }
-                        return view;
-                    }
-                };
-                dlg.setAdapter(adapter, new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent;
-                        switch(which){
-                            case 0:
-                                intent = new Intent(MainActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                break;
-                            case 1:
-                                intent = new Intent(MainActivity.this, SelectActivity.class);
-                                startActivity(intent);
-                                break;
-                            case 2:
-                                intent = new Intent(MainActivity.this, LikeActivity.class);
-                                startActivity(intent);
-                                break;
-                            case 3:
-                                intent = new Intent(MainActivity.this, HistoryActivity.class);
-                                startActivity(intent);
-                                break;
-                        }
-                    }
-                });
-                dlg.show();
+        goToHistory.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                startActivity(intent);
             }
         });
 
