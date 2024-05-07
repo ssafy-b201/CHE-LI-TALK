@@ -54,16 +54,4 @@
         android:padding="20dp"
         android:background="@color/box"
         android:scrollbars="vertical" />
-
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="end"
-        android:layout_margin="50dp"
-        android:layout_marginEnd="50dp"
-        android:background="@drawable/shape_for_circle_button"
-        android:padding="5dp"
-        android:src="@drawable/cherries" />
 </LinearLayout>
