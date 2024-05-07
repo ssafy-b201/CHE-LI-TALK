@@ -53,6 +53,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         spannable.setSpan(new RelativeSizeSpan(1.2f), 0, dateText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannable.setSpan(new RelativeSizeSpan(0.8f), dateText.length(), spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
+
+
         holder.historyText.setText(spannable);
 
         holder.itemView.setOnClickListener(new View.OnClickListener(){
