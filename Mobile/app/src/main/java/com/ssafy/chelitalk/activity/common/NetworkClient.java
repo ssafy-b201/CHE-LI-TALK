@@ -7,16 +7,10 @@ import androidx.annotation.RequiresApi;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 import com.ssafy.chelitalk.api.history.DateTypeAdapter;
 import com.ssafy.chelitalk.api.historydetail.LocalDateTimeTypeAdapter;
 
-import java.lang.reflect.Type;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -38,12 +32,6 @@ public class NetworkClient {
                     .setLenient()
                     .registerTypeAdapter(Date.class, new DateTypeAdapter())
                     .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
-//                    .registerTypeAdapter(LocalDateTime.class, new JsonSerializer<LocalDateTime>() {
-//                        @Override
-//                        public JsonElement serialize(LocalDateTime src, Type typeOfSrc, JsonSerializationContext context) {
-//                            return new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-//                        }
-//                    })
                     .create();
 
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();

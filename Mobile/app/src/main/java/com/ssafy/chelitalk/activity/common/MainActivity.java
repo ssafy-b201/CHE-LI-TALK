@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-//        attendRecyclerView = findViewById(R.id.attendRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 //        attendRecyclerView.setLayoutManager(layoutManager);
 

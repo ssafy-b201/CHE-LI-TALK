@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ssafy.chelitalk.R;
+import com.ssafy.chelitalk.activity.common.MainActivity;
 import com.ssafy.chelitalk.activity.common.NetworkClient;
 import com.ssafy.chelitalk.api.historydetail.HistoryDetailAdapter;
 import com.ssafy.chelitalk.api.historydetail.HistoryDetailRequestDto;
@@ -58,7 +61,7 @@ public class HistoryDetailActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.historyDetailRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
+        setupHomeNavigation();
 
         retrofit = NetworkClient.getRetrofitClient(HistoryDetailActivity.this);
         if(retrofit == null){
@@ -122,6 +125,7 @@ public class HistoryDetailActivity extends AppCompatActivity {
             Log.e("HistoryDetailActivity", "사용자 로그인 오류 혹은 날짜 오류");
         }
 
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -129,9 +133,22 @@ public class HistoryDetailActivity extends AppCompatActivity {
         });
     }
 
+
+
     private String convertTimestampToString(long timestamp) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         return dateFormat.format(new Date(timestamp));
+    }
+
+    private void setupHomeNavigation() {
+        ImageView goToHome = findViewById(R.id.goToHome);
+        goToHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HistoryDetailActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
