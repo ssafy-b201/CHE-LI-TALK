@@ -118,10 +118,8 @@ public class ChatController {
     /**
      * history 비우기
      */
-    @DeleteMapping("/chat/delete")
+    @DeleteMapping("/delete")
     public String deleteHistory(@RequestParam String memberEmail){
         return chatService.deleteHistory(memberEmail);
     }
-
-
 }
