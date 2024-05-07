@@ -47,10 +47,13 @@
             />
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/historyDetailView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/historyDetailRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="16dp"
+        android:scrollbars="vertical"/>
 
     <ImageButton
         android:id="@+id/imageButton"

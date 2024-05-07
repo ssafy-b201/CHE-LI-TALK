@@ -70,7 +70,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return messages.size();
     }
 
-    static class SentMessageViewHolder extends RecyclerView.ViewHolder {
+    public static class SentMessageViewHolder extends RecyclerView.ViewHolder {
         TextView textViewMessage;
 
         public SentMessageViewHolder(View itemView) {
@@ -79,7 +79,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    static class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
+    public static class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
         TextView textViewMessage;
 
         public ReceivedMessageViewHolder(View itemView) {

@@ -101,6 +101,7 @@ public class HistoryActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<List<History>> call, Throwable t) {
                     historyList = new ArrayList<>();
+                    Log.e("HistoryActivity", "오류"+t);
                     Toast.makeText(getApplicationContext(), "통신오류: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });

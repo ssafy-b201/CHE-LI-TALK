@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class DateTypeAdapter extends TypeAdapter<Date>  {
-    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
     @Override
     public void write(JsonWriter out, Date value) throws IOException {
         if (value == null) {
