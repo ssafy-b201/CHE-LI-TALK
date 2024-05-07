@@ -121,5 +121,6 @@ public class ChatController {
     @DeleteMapping("/delete")
     public void deleteHistory(@RequestParam String memberEmail){
         chatService.deleteHistory(memberEmail);
+        chatService.chatList(memberEmail);
     }
 }
