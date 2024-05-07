@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -99,7 +100,7 @@ public class ChatController {
      * STT
      */
     @PostMapping("/stt")
-    public String convertToText(ChatConvertRequest request) throws Exception {
+    public String convertToText(@ModelAttribute ChatConvertRequest request) throws Exception {
        return chatService.convertToText(request);
     }
 
@@ -107,7 +108,8 @@ public class ChatController {
      * TTS
      */
     @PostMapping("/tts")
-    public byte[] convertToSpeech(ChatRequestDto request){
+    public byte[] convertToSpeech(@RequestBody ChatRequestDto request){
+
         return chatService.convertToSpeech(request);
     }
 

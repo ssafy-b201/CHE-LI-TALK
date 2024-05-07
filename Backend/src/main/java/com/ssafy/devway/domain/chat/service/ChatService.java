@@ -1,5 +1,7 @@
 package com.ssafy.devway.domain.chat.service;
 
+import com.google.api.gax.core.FixedCredentialsProvider;
+import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.speech.v1.RecognitionAudio;
 import com.google.cloud.speech.v1.RecognitionConfig;
 import com.google.cloud.speech.v1.RecognitionConfig.AudioEncoding;
@@ -7,6 +9,8 @@ import com.google.cloud.speech.v1.RecognizeResponse;
 import com.google.cloud.speech.v1.SpeechClient;
 import com.google.cloud.speech.v1.SpeechRecognitionAlternative;
 import com.google.cloud.speech.v1.SpeechRecognitionResult;
+import com.google.cloud.speech.v1.SpeechSettings;
+import com.google.common.collect.Lists;
 import com.google.protobuf.ByteString;
 import com.ssafy.devway.GPT.GPTBlock;
 import com.ssafy.devway.GPT.GPTMode;
@@ -25,6 +29,7 @@ import com.ssafy.devway.domain.chat.repository.ChatRepository;
 import com.ssafy.devway.domain.chat.repository.SentenceRepository;
 import com.ssafy.devway.domain.member.entity.Member;
 import com.ssafy.devway.domain.member.repository.MemberRepository;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -55,7 +60,7 @@ public class ChatService {
         Member member = getMember(dto.getMemberEmail());
 
         // 키워드로 질문 시작
-        String question = gptBlock.askQuestion(dto.getContent(),
+        String question = gptBlock.startQuestion(dto.getContent(),
             GPTMode.GPT_TALK_START_ENGLISH);
 
         // chat 생성
@@ -246,19 +251,11 @@ public class ChatService {
             index = 0;
         }
 
-        Chat nowChat = member.getMemberChats().get(index);
         String content = "";
 
         for (String str : transcribedText) {
-            Sentence createdSentence = Sentence.builder()
-                .sentenceSender(member.getMemberNickname())
-                .sentenceContent(str)
-                .chat(nowChat)
-                .build();
-            nowChat.getChatSentences().add(createdSentence);
             content += str;
         }
-        chatRepository.save(nowChat);
 
 
         return content;
@@ -271,7 +268,9 @@ public class ChatService {
         try {
 
             TTSCountry country = TTSCountry.US_C_FEMALE;
-            return ttsBlock.synthesizeText(request.getContent(), country);
+            String text = request.getContent();
+
+            return ttsBlock.synthesizeText(text, country);
 
         } catch (Exception e) {
             throw new RuntimeException("TTS conversion failed", e);
@@ -280,7 +279,7 @@ public class ChatService {
     }
 
     public List<String> transcribeAudioDirectly(MultipartFile audioFile) throws Exception {
-        try (SpeechClient speechClient = SpeechClient.create()) {
+        try (SpeechClient speechClient = initializeSpeechClient()) {
             byte[] data = audioFile.getBytes();
             RecognitionAudio audio = RecognitionAudio.newBuilder()
                 .setContent(ByteString.copyFrom(data))
@@ -300,6 +299,23 @@ public class ChatService {
             }
             return resultsText;
         }
+    }
+
+    public SpeechClient initializeSpeechClient() throws Exception {
+        // 인증 파일 경로 지정
+        String jsonPath = "/home/ubuntu/MyGC.json";
+
+        // 파일에서 인증 정보 로드
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(jsonPath))
+            .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+
+        // 클라이언트 설정에 인증 정보 적용
+        SpeechSettings speechSettings = SpeechSettings.newBuilder()
+            .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
+            .build();
+
+        // 설정을 사용하여 TextToSpeechClient 생성
+        return SpeechClient.create(speechSettings);
     }
 
 }
