@@ -280,7 +280,7 @@ public class ChatService {
     }
 
     public List<String> transcribeAudioDirectly(MultipartFile audioFile) throws Exception {
-        try (SpeechClient speechClient = initializeSpeechClient()) {
+        try (SpeechClient speechClient = SpeechClient.create()) {
             byte[] data = audioFile.getBytes();
             RecognitionAudio audio = RecognitionAudio.newBuilder()
                 .setContent(ByteString.copyFrom(data))
@@ -300,23 +300,6 @@ public class ChatService {
             }
             return resultsText;
         }
-    }
-
-    public SpeechClient initializeSpeechClient() throws Exception {
-        // 인증 파일 경로 지정
-        String jsonPath = "/home/ubuntu/MyGC.json";
-
-        // 파일에서 인증 정보 로드
-        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(jsonPath))
-            .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
-
-        // 클라이언트 설정에 인증 정보 적용
-        SpeechSettings speechSettings = SpeechSettings.newBuilder()
-            .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
-            .build();
-
-        // 설정을 사용하여 TextToSpeechClient 생성
-        return SpeechClient.create(speechSettings);
     }
 
     public String deleteHistory(String memberEmail) {
