@@ -2,7 +2,6 @@
 <resources>
     <string-array name="select_keywords">
         <item>가족</item>
-        <item>친구</item>
         <item>반려동물</item>
         <item>여행</item>
         <item>음식</item>

@@ -162,6 +162,7 @@ public class SpeakingActivity extends AppCompatActivity {
         try {
 
             OkHttpClient client = getSecureOkHttpClient();
+//            OkHttpClient client = new OkHttpClient();
 
             String url = "https://k10b201.p.ssafy.io/cherry/api/chat/begin";
 
@@ -405,6 +406,8 @@ public class SpeakingActivity extends AppCompatActivity {
         }
 
         OkHttpClient client = getSecureOkHttpClient();
+//        OkHttpClient client = new OkHttpClient();
+
         RequestBody fileBody = RequestBody.create(MediaType.parse("audio/wav"), file);
 
         RequestBody requestBody = new MultipartBody.Builder()
@@ -444,21 +447,24 @@ public class SpeakingActivity extends AppCompatActivity {
         });
     }
 
-    private void sendTextToServer(String email, String message){
+    private void sendTextToServer(String email, String content){
         try {
 
             OkHttpClient client = getSecureOkHttpClient();
+//            OkHttpClient client = new OkHttpClient();
 
             String url = "https://k10b201.p.ssafy.io/cherry/api/chat/tts";
 
             MediaType mediaType = MediaType.parse("application/json");
-            String requestBody = "{\"memberEmail\":\"" + email + "\", \"content\":\"" + message + "\"}";
+            String requestBody = "{\"memberEmail\":\"" + email + "\", \"content\":\"" + content + "\"}";
             RequestBody body = RequestBody.create(requestBody, mediaType);
 
             Request request = new Request.Builder()
                     .url(url)
                     .post(body)
                     .build();
+
+            System.out.println("requestBody : " + requestBody);
 
             client.newCall(request).enqueue(new okhttp3.Callback() {
 
@@ -469,6 +475,7 @@ public class SpeakingActivity extends AppCompatActivity {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
+
                     if (response.isSuccessful()) {
 
                         byte[] audioBytes = response.body().bytes();
@@ -491,6 +498,8 @@ public class SpeakingActivity extends AppCompatActivity {
     private void playAudioFromBytes(byte[] audioBytes) {
         MediaPlayer mediaPlayer = null;
         try {
+            System.out.println("오디오 재생 시도, audioBytes.length : " + audioBytes.length);
+
             File tempMp3 = File.createTempFile("response", "mp3", getCacheDir());
             FileOutputStream fos = new FileOutputStream(tempMp3);
             fos.write(audioBytes);
@@ -504,6 +513,7 @@ public class SpeakingActivity extends AppCompatActivity {
             Log.e("SpeakingActivity.this", "오디오 실행 불가 : " + e.getMessage());
         } finally {
             if (mediaPlayer != null) {
+                System.out.println("오디오 재생 끝 ");
                 mediaPlayer.release();
             }
         }
@@ -513,6 +523,7 @@ public class SpeakingActivity extends AppCompatActivity {
         try {
 
             OkHttpClient client = getSecureOkHttpClient();
+//            OkHttpClient client = new OkHttpClient();
 
             String url = "https://k10b201.p.ssafy.io/cherry/api/chat";
 
