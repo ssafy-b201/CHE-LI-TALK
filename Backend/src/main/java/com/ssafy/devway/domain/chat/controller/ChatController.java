@@ -8,11 +8,13 @@ import com.ssafy.devway.domain.chat.dto.request.ChatConvertRequest;
 import com.ssafy.devway.domain.chat.dto.response.ChatListDetailResponse;
 import com.ssafy.devway.domain.chat.dto.response.ChatListResponse;
 import com.ssafy.devway.domain.chat.service.ChatService;
+import com.ssafy.devway.global.api.ApiResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -111,6 +113,14 @@ public class ChatController {
     public byte[] convertToSpeech(@RequestBody ChatRequestDto request){
 
         return chatService.convertToSpeech(request);
+    }
+
+    /**
+     * history 비우기
+     */
+    @DeleteMapping("/chat/delete")
+    public String deleteHistory(@RequestParam String memberEmail){
+        return chatService.deleteHistory(memberEmail);
     }
 
 
