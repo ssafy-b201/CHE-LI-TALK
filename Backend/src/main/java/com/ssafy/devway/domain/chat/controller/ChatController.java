@@ -119,7 +119,7 @@ public class ChatController {
      * history 비우기
      */
     @DeleteMapping("/delete")
-    public String deleteHistory(@RequestParam String memberEmail){
-        return chatService.deleteHistory(memberEmail);
+    public void deleteHistory(@RequestParam String memberEmail){
+        chatService.deleteHistory(memberEmail);
     }
 }
