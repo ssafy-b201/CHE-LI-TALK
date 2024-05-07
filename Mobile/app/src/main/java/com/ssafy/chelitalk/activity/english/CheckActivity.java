@@ -2,6 +2,7 @@ package com.ssafy.chelitalk.activity.english;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -52,7 +53,9 @@ public class CheckActivity extends AppCompatActivity {
 
         responseTextView = findViewById(R.id.text_response);
 
-        retrofit = NetworkClient.getRetrofitClient(CheckActivity.this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            retrofit = NetworkClient.getRetrofitClient(CheckActivity.this);
+        }
         if (retrofit == null) {
             throw new IllegalStateException("레트로핏 초기화 상태 안됨");
         }
