@@ -9,6 +9,7 @@ services:
       - "8060:8060"
     environment:
       - TZ=Asia/Seoul
+      - GOOGLE_APPLICATION_CREDENTIALS=/home/ubuntu/MyGC.json
     networks:
       - devway_network
 
