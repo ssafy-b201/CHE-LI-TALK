@@ -29,6 +29,7 @@ import com.ssafy.devway.domain.chat.repository.ChatRepository;
 import com.ssafy.devway.domain.chat.repository.SentenceRepository;
 import com.ssafy.devway.domain.member.entity.Member;
 import com.ssafy.devway.domain.member.repository.MemberRepository;
+import com.ssafy.devway.global.api.ApiResponse;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -279,7 +280,7 @@ public class ChatService {
     }
 
     public List<String> transcribeAudioDirectly(MultipartFile audioFile) throws Exception {
-        try (SpeechClient speechClient = SpeechClient.create()) {
+        try (SpeechClient speechClient = initializeSpeechClient()) {
             byte[] data = audioFile.getBytes();
             RecognitionAudio audio = RecognitionAudio.newBuilder()
                 .setContent(ByteString.copyFrom(data))
@@ -301,4 +302,38 @@ public class ChatService {
         }
     }
 
+    public SpeechClient initializeSpeechClient() throws Exception {
+        // 인증 파일 경로 지정
+        String jsonPath = "/home/ubuntu/MyGC.json";
+
+        // 파일에서 인증 정보 로드
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(jsonPath))
+            .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+
+        // 클라이언트 설정에 인증 정보 적용
+        SpeechSettings speechSettings = SpeechSettings.newBuilder()
+            .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
+            .build();
+
+        // 설정을 사용하여 TextToSpeechClient 생성
+        return SpeechClient.create(speechSettings);
+    }
+
+    public String deleteHistory(String memberEmail) {
+        Member member = getMember(memberEmail);
+
+        if(member == null){
+            return "멤버가 없습니다.";
+        }
+
+        List<Chat> chatList = chatRepository.findAllByMember(member);
+        if(chatList.isEmpty()){
+            return "회원의 채팅 정보가 없습니다.";
+        }
+
+        for(Chat chat : chatList){
+            chatRepository.delete(chat);
+        }
+        return "해당 회원의 모든 챗이 삭제되었습니다";
+    }
 }
