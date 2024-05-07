@@ -9,9 +9,11 @@ services:
       - "8060:8060"
     environment:
       - TZ=Asia/Seoul
-      - GOOGLE_APPLICATION_CREDENTIALS=/home/ubuntu/MyGC.json
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/MyGC.json  # 컨테이너 내부 경로로 변경
     networks:
       - devway_network
+    volumes:
+      - /home/ubuntu/MyGC.json:/app/MyGC.json  # 호스트 파일을 컨테이너 내부에 마운트
 
   mysql:
     image: mysql
