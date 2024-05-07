@@ -38,7 +38,8 @@ public class TTSBlock implements BlockElement {
 
         model = country.getTextMode();
 
-        try (TextToSpeechClient textToSpeechClient = initializeTextToSpeechClient()) {
+//        try (TextToSpeechClient textToSpeechClient = initializeTextToSpeechClient()) {
+        try (TextToSpeechClient textToSpeechClient = TextToSpeechClient.create()){
             SynthesisInput input = SynthesisInput.newBuilder()
                 .setText(text)
                 .build();
