@@ -68,6 +68,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                         long timestamp = createdAt.getTime();
                         Intent intent = new Intent(context, HistoryDetailActivity.class);
                         intent.putExtra("history-createdAt", timestamp);
+                        System.out.println("timestamp"+timestamp);
                         context.startActivity(intent);
                     }else{
                         Log.e("HistoryAdapter", "createdAt이 비었습니다.");
