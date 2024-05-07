@@ -79,7 +79,7 @@ public class STTBlock implements BlockElement {
 
   public SpeechClient initializeSpeechClient() throws Exception {
     // 인증 파일 경로 지정
-    String jsonPath = "C:\\Users\\SSAFY\\Desktop\\MyGC.json";
+    String jsonPath = "/home/ubuntu/MyGC.json";
 
     // 파일에서 인증 정보 로드
     GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(jsonPath))
