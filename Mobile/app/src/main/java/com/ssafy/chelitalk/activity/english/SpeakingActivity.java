@@ -1,7 +1,6 @@
 package com.ssafy.chelitalk.activity.english;
 
 import android.Manifest;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioFormat;
@@ -10,9 +9,6 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,21 +31,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ssafy.chelitalk.R;
 import com.ssafy.chelitalk.api.chat.Message;
 import com.ssafy.chelitalk.api.chat.MessageAdapter;
-import com.ssafy.chelitalk.api.member.MemberData;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.RandomAccessFile;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
@@ -173,6 +162,7 @@ public class SpeakingActivity extends AppCompatActivity {
         try {
 
             OkHttpClient client = getSecureOkHttpClient();
+//            OkHttpClient client = new OkHttpClient();
 
             String url = "https://k10b201.p.ssafy.io/cherry/api/chat/begin";
 
@@ -189,14 +179,14 @@ public class SpeakingActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(okhttp3.Call call, IOException e) {
-                    Log.e("ChattingActivity", "서버 통신 실패", e);
+                    Log.e("SpeakingActivity", "서버 통신 실패", e);
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     if (response.isSuccessful()) {
                         // 서버로부터의 응답 처리
-                        Log.d("ChattingActivity", "메시지 전송 성공");
+                        Log.d("SpeakingActivity", "메시지 전송 성공");
                         String responseMessage = response.body().string();
                         runOnUiThread(() -> {
                             adapter.addMessage(new Message(responseMessage, false));
@@ -206,12 +196,12 @@ public class SpeakingActivity extends AppCompatActivity {
 
                         });
                     } else {
-                        Log.e("ChattingActivity", "서버 오류: " + response.code());
+                        Log.e("SpeakingActivity", "서버 오류 (start chat) : " + response.code());
                     }
                 }
             });
         } catch (Exception e) {
-            Log.e("ChattingActivity", "///// OkHttp Client Error /////", e);
+            Log.e("SpeakingActivity", "///// OkHttp Client Error /////", e);
         }
     }
 
@@ -416,6 +406,8 @@ public class SpeakingActivity extends AppCompatActivity {
         }
 
         OkHttpClient client = getSecureOkHttpClient();
+//        OkHttpClient client = new OkHttpClient();
+
         RequestBody fileBody = RequestBody.create(MediaType.parse("audio/wav"), file);
 
         RequestBody requestBody = new MultipartBody.Builder()
@@ -442,28 +434,29 @@ public class SpeakingActivity extends AppCompatActivity {
                         sendMessage(memberEmail, transcribedText);
                     });
                 } else {
-                    Log.e("SpeakingActivity", "서버 오류(called first api) : " + response.code());
+                    Log.e("SpeakingActivity", "서버 오류(called sendAudioToServer api) : " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call call, IOException e) {
                 runOnUiThread(() -> {
-                    Log.e("SpeakingActivity", "서버 통신 실패(called first api)", e);
+                    Log.e("SpeakingActivity", "서버 통신 실패(called sendAudioToServer api)", e);
                 });
             }
         });
     }
 
-    private void sendTextToServer(String email, String message){
+    private void sendTextToServer(String email, String content){
         try {
 
             OkHttpClient client = getSecureOkHttpClient();
+//            OkHttpClient client = new OkHttpClient();
 
             String url = "https://k10b201.p.ssafy.io/cherry/api/chat/tts";
 
             MediaType mediaType = MediaType.parse("application/json");
-            String requestBody = "{\"memberEmail\":\"" + email + "\", \"content\":\"" + message + "\"}";
+            String requestBody = "{\"memberEmail\":\"" + email + "\", \"content\":\"" + content + "\"}";
             RequestBody body = RequestBody.create(requestBody, mediaType);
 
             Request request = new Request.Builder()
@@ -471,15 +464,18 @@ public class SpeakingActivity extends AppCompatActivity {
                     .post(body)
                     .build();
 
+            System.out.println("requestBody : " + requestBody);
+
             client.newCall(request).enqueue(new okhttp3.Callback() {
 
                 @Override
                 public void onFailure(okhttp3.Call call, IOException e) {
-                    Log.e("SpeakingActivity", "서버 통신 실패(called second api)", e);
+                    Log.e("SpeakingActivity", "서버 통신 실패(called sendTextToServer api)", e);
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
+
                     if (response.isSuccessful()) {
 
                         byte[] audioBytes = response.body().bytes();
@@ -490,7 +486,7 @@ public class SpeakingActivity extends AppCompatActivity {
                         });
                     } else {
                         // 서버 오류 처리
-                        Log.e("SpeakingActivity", "서버 오류(called second api) : " + response.code());
+                        Log.e("SpeakingActivity", "서버 오류(called sendTextToServer api) : " + response.code());
                     }
                 }
             });
@@ -500,22 +496,26 @@ public class SpeakingActivity extends AppCompatActivity {
     }
 
     private void playAudioFromBytes(byte[] audioBytes) {
+        MediaPlayer mediaPlayer = null;
         try {
-            // 임시 파일 생성
+            System.out.println("오디오 재생 시도, audioBytes.length : " + audioBytes.length);
+
             File tempMp3 = File.createTempFile("response", "mp3", getCacheDir());
-            tempMp3.deleteOnExit();
             FileOutputStream fos = new FileOutputStream(tempMp3);
             fos.write(audioBytes);
             fos.close();
 
-            // MediaPlayer로 재생
-            MediaPlayer mediaPlayer = new MediaPlayer();
+            mediaPlayer = new MediaPlayer();
             mediaPlayer.setDataSource(getApplicationContext(), Uri.fromFile(tempMp3));
             mediaPlayer.prepare();
             mediaPlayer.start();
         } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Failed to play audio", Toast.LENGTH_SHORT).show();
+            Log.e("SpeakingActivity.this", "오디오 실행 불가 : " + e.getMessage());
+        } finally {
+            if (mediaPlayer != null) {
+                System.out.println("오디오 재생 끝 ");
+                mediaPlayer.release();
+            }
         }
     }
 
@@ -523,6 +523,7 @@ public class SpeakingActivity extends AppCompatActivity {
         try {
 
             OkHttpClient client = getSecureOkHttpClient();
+//            OkHttpClient client = new OkHttpClient();
 
             String url = "https://k10b201.p.ssafy.io/cherry/api/chat";
 
@@ -539,7 +540,7 @@ public class SpeakingActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(okhttp3.Call call, IOException e) {
-                    Log.e("SpeakingActivity", "서버 통신 실패(called third api)", e);
+                    Log.e("SpeakingActivity", "서버 통신 실패(called sendMessage api)", e);
                 }
 
                 @Override
@@ -553,7 +554,7 @@ public class SpeakingActivity extends AppCompatActivity {
                         });
                     } else {
                         // 서버 오류 처리
-                        Log.e("SpeakingActivity", "서버 오류(called third api) : " + response.code());
+                        Log.e("SpeakingActivity", "서버 오류(called sendMessage api) : " + response.code());
                     }
                 }
             });
