@@ -288,7 +288,7 @@ public class ChatService {
             RecognitionConfig config = RecognitionConfig.newBuilder()
                 .setEncoding(AudioEncoding.LINEAR16)
                 .setLanguageCode("en-US")
-                .setSampleRateHertz(22050)
+                .setSampleRateHertz(44100)
                 .build();
 
             List<String> resultsText = new ArrayList<>();
