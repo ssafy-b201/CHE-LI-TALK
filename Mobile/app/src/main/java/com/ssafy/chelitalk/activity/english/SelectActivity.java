@@ -1,6 +1,8 @@
 package com.ssafy.chelitalk.activity.english;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,8 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -34,6 +38,10 @@ public class SelectActivity extends AppCompatActivity {
     private String userEmail = user.getEmail();
     private String keyword;
 
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
+    private static final int WRITE_EXTERNAL_STORAGE = 200;
+    private static final int READ_EXTERNAL_STORAGE = 200;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +54,11 @@ public class SelectActivity extends AppCompatActivity {
         final ImageButton btn_speak = (ImageButton) findViewById(R.id.btn_speak);
         final ImageButton btn_chatting = (ImageButton) findViewById(R.id.btn_chatting);
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD_AUDIO_PERMISSION);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE);
+        }
 
         btn_speak.setOnClickListener(new View.OnClickListener() {
 
@@ -115,7 +128,6 @@ public class SelectActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
 
     }
 

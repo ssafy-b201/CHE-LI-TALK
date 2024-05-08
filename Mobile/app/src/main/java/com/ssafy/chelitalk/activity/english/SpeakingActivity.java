@@ -9,11 +9,13 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +42,7 @@ import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
@@ -68,13 +71,20 @@ public class SpeakingActivity extends AppCompatActivity {
     private ImageButton stopButton;
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
+    private static final int WRITE_EXTERNAL_STORAGE = 200;
+    private static final int READ_EXTERNAL_STORAGE = 200;
 
+    private ProgressBar progressBar;
+    private Handler progressHandler = new Handler();
+    private int progressStatus = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speaking);
         initializeUI();
+
+        progressBar = findViewById(R.id.progressBar);
 
         //채팅 종료
         Button btn_finish = (Button) findViewById(R.id.btn_finish);
@@ -141,6 +151,8 @@ public class SpeakingActivity extends AppCompatActivity {
         recordButton.setOnClickListener(v -> {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD_AUDIO_PERMISSION);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE);
             } else {
                 startRecording();
             }
@@ -162,7 +174,6 @@ public class SpeakingActivity extends AppCompatActivity {
         try {
 
             OkHttpClient client = getSecureOkHttpClient();
-//            OkHttpClient client = new OkHttpClient();
 
             String url = "https://k10b201.p.ssafy.io/cherry/api/chat/begin";
 
@@ -223,7 +234,7 @@ public class SpeakingActivity extends AppCompatActivity {
             return;
         }
 
-        final int sampleRate = 44100;  // 표준 샘플레이트
+        final int sampleRate = 44100;  // 샘플레이트
         final int channelConfig = AudioFormat.CHANNEL_IN_MONO;
         final int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
         int bufferSize = AudioRecord.getMinBufferSize(sampleRate, channelConfig, audioFormat);
@@ -236,12 +247,33 @@ public class SpeakingActivity extends AppCompatActivity {
             recordButton.setEnabled(false);
             stopButton.setEnabled(true);
 
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setProgress(0);
+            progressStatus = 0;
+
             recordingThread = new Thread(new Runnable() {
                 public void run() {
                     writeAudioDataToFile(bufferSize);
                 }
             }, "AudioRecorder Thread");
             recordingThread.start();
+
+            new Thread(() -> {
+                int progressUpdateTime = 150;
+                int totalDuration = 15000; // 총 녹음 시간을 15초로 설정
+                int timesToUpdate = totalDuration / progressUpdateTime; // 업데이트 할 총 횟수
+
+                while (isRecording && progressStatus < timesToUpdate) {
+                    progressStatus++;
+
+                    progressHandler.post(() -> progressBar.setProgress((int) (100.0 * progressStatus / timesToUpdate)));
+                    try {
+                        Thread.sleep(progressUpdateTime);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         } else {
             Toast.makeText(this, "녹음 시작 실패", Toast.LENGTH_SHORT).show();
         }
@@ -281,9 +313,14 @@ public class SpeakingActivity extends AppCompatActivity {
                 recorder.release();
                 recorder = null;
                 recordingThread = null;
+                recordButton.setEnabled(true);
             }
+            progressBar.setVisibility(View.GONE);
 
             String wavFile = getExternalFilesDir(null).getAbsolutePath() + "/recording.wav";
+
+            System.out.println("wavFile = " + wavFile);
+
             copyWaveFile(getTempFilename(), wavFile);
             deleteTempFile();
             sendAudioToServer(wavFile, userEmail);
@@ -397,6 +434,7 @@ public class SpeakingActivity extends AppCompatActivity {
     private void sendAudioToServer(String filePath, String memberEmail) throws Exception {
 
         File file = new File(filePath);
+
         long fileSize = file.length();
         long MAX_SIZE = 10 * 1024 * 1024; // 최대 10MB로 설정
 
@@ -406,7 +444,6 @@ public class SpeakingActivity extends AppCompatActivity {
         }
 
         OkHttpClient client = getSecureOkHttpClient();
-//        OkHttpClient client = new OkHttpClient();
 
         RequestBody fileBody = RequestBody.create(MediaType.parse("audio/wav"), file);
 
@@ -426,8 +463,9 @@ public class SpeakingActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     String transcribedText = response.body().string();  // 응답 받은 텍스트
+
                     runOnUiThread(() -> {
-                        // 사용자가 보낸 메시지
+                        // 사용자가 보낸 메시지 채팅창에 띄우기
                         adapter.addMessage(new Message(transcribedText, true));
 
                         // 메세지에 대한 gpt api 호출
@@ -451,8 +489,6 @@ public class SpeakingActivity extends AppCompatActivity {
         try {
 
             OkHttpClient client = getSecureOkHttpClient();
-//            OkHttpClient client = new OkHttpClient();
-
             String url = "https://k10b201.p.ssafy.io/cherry/api/chat/tts";
 
             MediaType mediaType = MediaType.parse("application/json");
@@ -496,34 +532,56 @@ public class SpeakingActivity extends AppCompatActivity {
     }
 
     private void playAudioFromBytes(byte[] audioBytes) {
-        MediaPlayer mediaPlayer = null;
+        MediaPlayer mediaPlayer = new MediaPlayer();
         try {
             System.out.println("오디오 재생 시도, audioBytes.length : " + audioBytes.length);
 
+            // 임시 파일 생성
             File tempMp3 = File.createTempFile("response", "mp3", getCacheDir());
             FileOutputStream fos = new FileOutputStream(tempMp3);
             fos.write(audioBytes);
             fos.close();
 
-            mediaPlayer = new MediaPlayer();
             mediaPlayer.setDataSource(getApplicationContext(), Uri.fromFile(tempMp3));
-            mediaPlayer.prepare();
-            mediaPlayer.start();
+            mediaPlayer.prepare();  // 준비
+            mediaPlayer.start();    // 재생 시작
+
+            // 녹음 버튼 비활성화
+            disableRecordingButtons();
+
+            mediaPlayer.setOnCompletionListener(mp -> {
+                mp.release();  // 리소스 해제
+                enableRecordingButtons();  // 버튼 다시 활성화
+            });
         } catch (IOException e) {
             Log.e("SpeakingActivity.this", "오디오 실행 불가 : " + e.getMessage());
-        } finally {
-            if (mediaPlayer != null) {
-                System.out.println("오디오 재생 끝 ");
-                mediaPlayer.release();
-            }
         }
+    }
+
+    private void disableRecordingButtons() {
+        runOnUiThread(() -> {
+            recordButton.setEnabled(false);
+            stopButton.setEnabled(false);
+
+            recordButton.setAlpha(0.4f);
+            stopButton.setAlpha(0.4f);
+        });
+    }
+
+    private void enableRecordingButtons() {
+        runOnUiThread(() -> {
+            recordButton.setEnabled(true);
+            stopButton.setEnabled(true);
+
+            recordButton.setAlpha(1.0f);
+            stopButton.setAlpha(1.0f);
+        });
     }
 
     private void sendMessage(String email, String message) {
         try {
 
             OkHttpClient client = getSecureOkHttpClient();
-//            OkHttpClient client = new OkHttpClient();
 
             String url = "https://k10b201.p.ssafy.io/cherry/api/chat";
 
@@ -551,6 +609,9 @@ public class SpeakingActivity extends AppCompatActivity {
                         String responseMessage = response.body().string();
                         runOnUiThread(() -> {
                             adapter.addMessage(new Message(responseMessage, false));
+
+                            // TTS api 호출
+                            sendTextToServer(email, responseMessage);
                         });
                     } else {
                         // 서버 오류 처리
@@ -589,6 +650,9 @@ public class SpeakingActivity extends AppCompatActivity {
 
         return new OkHttpClient.Builder()
                 .sslSocketFactory(sslContext.getSocketFactory(), trustManager)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
                 .build();
     }
 
