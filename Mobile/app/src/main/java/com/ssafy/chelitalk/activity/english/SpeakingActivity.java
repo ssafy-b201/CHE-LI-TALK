@@ -30,6 +30,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.ssafy.chelitalk.R;
 import com.ssafy.chelitalk.api.chat.Message;
 import com.ssafy.chelitalk.api.chat.MessageAdapter;
@@ -78,6 +79,8 @@ public class SpeakingActivity extends AppCompatActivity {
     private Handler progressHandler = new Handler();
     private int progressStatus = 0;
 
+    private LottieAnimationView animationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +88,8 @@ public class SpeakingActivity extends AppCompatActivity {
         initializeUI();
 
         progressBar = findViewById(R.id.progressBar);
+        animationView = findViewById(R.id.lottie);
+        animationView.setAnimation("loading_loop.json");
 
         //채팅 종료
         Button btn_finish = (Button) findViewById(R.id.btn_finish);
@@ -443,6 +448,8 @@ public class SpeakingActivity extends AppCompatActivity {
             return;
         }
 
+        showUploadingAnimation(); // 애니메이션 보여주기
+
         OkHttpClient client = getSecureOkHttpClient();
 
         RequestBody fileBody = RequestBody.create(MediaType.parse("audio/wav"), file);
@@ -461,6 +468,7 @@ public class SpeakingActivity extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                hideUploadingAnimation(); // 애니메이션 숨기기
                 if (response.isSuccessful()) {
                     String transcribedText = response.body().string();  // 응답 받은 텍스트
 
@@ -478,6 +486,7 @@ public class SpeakingActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call call, IOException e) {
+                hideUploadingAnimation(); // 애니메이션 숨기기
                 runOnUiThread(() -> {
                     Log.e("SpeakingActivity", "서버 통신 실패(called sendAudioToServer api)", e);
                 });
@@ -654,6 +663,24 @@ public class SpeakingActivity extends AppCompatActivity {
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .build();
+    }
+
+    private void showUploadingAnimation() {
+        runOnUiThread(() -> {
+            recordButton.setVisibility(View.GONE);
+            stopButton.setVisibility(View.GONE);
+            animationView.setVisibility(View.VISIBLE);
+            animationView.playAnimation();
+        });
+    }
+
+    private void hideUploadingAnimation() {
+        runOnUiThread(() -> {
+            recordButton.setVisibility(View.VISIBLE);
+            stopButton.setVisibility(View.VISIBLE);
+            animationView.setVisibility(View.GONE);
+            animationView.pauseAnimation();
+        });
     }
 
 }
