@@ -23,7 +23,7 @@
         <activity
             android:name=".activity.english.ChattingActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".activity.english.SpeakingActivity"
             android:exported="false">
@@ -46,7 +46,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.english.SelectActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".activity.login.SigninActivity"
             android:exported="false" />
@@ -60,10 +60,10 @@
         </activity>
         <activity
             android:name=".activity.login.SignupActivity"
-            android:exported="false"></activity>
+            android:exported="false"/>
         <activity
             android:name=".activity.common.MainActivity"
-            android:exported="false"></activity>
+            android:exported="false"/>
     </application>
 
 </manifest>

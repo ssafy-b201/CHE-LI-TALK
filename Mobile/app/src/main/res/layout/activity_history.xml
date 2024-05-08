@@ -55,15 +55,16 @@
         android:background="@color/box"
         android:scrollbars="vertical" />
 
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="end"
-        android:layout_margin="50dp"
-        android:layout_marginEnd="50dp"
-        android:background="@drawable/shape_for_circle_button"
-        android:padding="5dp"
-        android:src="@drawable/cherries" />
+    <Button
+        android:id="@+id/deleteBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="히스토리 비우기"
+        android:fontFamily="@font/galmuri9"
+        android:background="@color/cherrybtn"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:layout_marginVertical="20dp"
+        />
 </LinearLayout>

@@ -24,9 +24,9 @@
             android:gravity="center"
             android:layout_centerInParent="true"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="14sp"
             android:textStyle="bold"
-            android:fontFamily="@font/mitmi"
+            android:fontFamily="@font/galmuri9"
             android:text="@string/default_text2"
             />
     </RelativeLayout>
