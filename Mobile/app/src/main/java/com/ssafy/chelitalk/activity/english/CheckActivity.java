@@ -17,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ssafy.chelitalk.R;
@@ -46,6 +47,7 @@ public class CheckActivity extends AppCompatActivity {
     private CheckAdapter adapter;
     private GrammarAdapter adapterForGrammar;
     private Check dto;
+    private LottieAnimationView animationView;
 
 
     @Override
@@ -56,6 +58,8 @@ public class CheckActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.checkRecyclerView);
         recyclerViewForCheck = findViewById(R.id.grammarRecyclerView);
+        animationView = findViewById(R.id.lottie);
+        animationView.setAnimation("loading_loop.json");
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewForCheck.setLayoutManager(new LinearLayoutManager(this));
@@ -75,14 +79,17 @@ public class CheckActivity extends AppCompatActivity {
         String email = currentUser != null ? currentUser.getEmail() : null;
 
         if (email != null) {
+            showLoading(true);
             dto = new Check(email);
             Call<String> call = api.chatCheck(dto);
             Call<List<HistoryDetailResponseDto>> callForChat = api.chatRecent(email);
 
 
+            //문법체크
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
+                    showLoading(false);
                     if (response.isSuccessful()) {
                         List<String> grammarDetails = Arrays.asList(response.body().split("\\n"));
                         adapterForGrammar = new GrammarAdapter(grammarDetails);
@@ -161,5 +168,18 @@ public class CheckActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void showLoading(boolean show){
+        if(show){
+            animationView.setVisibility(View.VISIBLE);
+            recyclerViewForCheck.setVisibility(View.GONE);
+            animationView.playAnimation();
+            animationView.setRepeatCount(3);
+        }else{
+            animationView.cancelAnimation();
+            recyclerViewForCheck.setVisibility(View.VISIBLE);
+            animationView.setVisibility(View.GONE);
+        }
     }
 }
