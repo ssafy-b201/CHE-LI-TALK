@@ -45,7 +45,9 @@ public class GPTBlock implements BlockElement {
         messages.add(new Message("system",
             "Please answer in a friendly manner."
                 + "Do not format responses as a script or play. "
-                + "Only provide the dialogue content in a natural conversational format." + gptMode.textMode));
+                + "Only provide the dialogue content in a natural conversational format."
+                + "Directly start with a question about the topic without any introductory phrases or responses to previous messages."
+                + gptMode.textMode));
         messages.add(new Message("user", prompt + gptMode.textMode));
 
         ChatRequestDTO requestDto = new ChatRequestDTO(
@@ -103,6 +105,7 @@ public class GPTBlock implements BlockElement {
         List<Message> messages = new ArrayList<>();
         messages.add(new Message("system",
             "Start a new conversation. Please answer in a friendly."
+                + "Directly start with a question about the topic without any introductory phrases or responses to previous messages."
                 + gptMode.textMode));
         messages.add(new Message("user", prompt + gptMode.textMode));
 
