@@ -66,5 +66,8 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-scalars:2.6.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
 
+    //Lottie
+    implementation("com.airbnb.android:lottie:3.5.0")
+
 
 }
