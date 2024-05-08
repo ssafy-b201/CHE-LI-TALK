@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +28,8 @@ import com.ssafy.chelitalk.api.history.HistoryAdapter;
 import com.ssafy.chelitalk.api.history.HistoryService;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -40,6 +43,7 @@ public class HistoryActivity extends AppCompatActivity {
     private static HistoryService api;
     private RecyclerView historyRecyclerView;
     private HistoryAdapter adapter;
+    private Button deleteHistoryButton;
     private List<History> historyList = new ArrayList<>();
 
 
@@ -59,6 +63,15 @@ public class HistoryActivity extends AppCompatActivity {
         }
         api = retrofit.create(HistoryService.class);
 
+        deleteHistoryButton = findViewById(R.id.deleteBtn);
+        deleteHistoryButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                deleteAllHistory();
+            }
+        });
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
         String email = currentUser != null ? currentUser.getEmail() : null;
@@ -68,12 +81,15 @@ public class HistoryActivity extends AppCompatActivity {
             call.enqueue(new Callback<List<History>>() {
                 @Override
                 public void onResponse(Call<List<History>> call, Response<List<History>> response) {
-                    if (response.isSuccessful() && response.body() != null) {
+                    if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
                         historyList = response.body();
+                        Collections.reverse(historyList);
                         adapter = new HistoryAdapter(HistoryActivity.this, historyList);
                         historyRecyclerView.setAdapter(adapter);
                     } else {
                         historyList = new ArrayList<>();  // 응답 실패 시 빈 리스트 할당
+                        adapter = new HistoryAdapter(HistoryActivity.this, historyList);
+                        historyRecyclerView.setAdapter(adapter);
                         Log.d("HistoryActivity", "No data received or error in response");
                     }
                 }
@@ -86,7 +102,6 @@ public class HistoryActivity extends AppCompatActivity {
                 }
             });
         }else{
-//            textView.setText("사용자 정보가 없습니다");
         }
 
 
@@ -97,6 +112,33 @@ public class HistoryActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    private void deleteAllHistory() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        String email = currentUser != null ? currentUser.getEmail() : null;
+
+        if(email != null){
+            Call<Void> call = api.deleteHistory(email);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if(response.isSuccessful()){
+                        Toast.makeText(HistoryActivity.this, "히스토리가 모두 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                        historyList.clear();
+                        adapter.notifyDataSetChanged();
+                    }else{
+                        Toast.makeText(HistoryActivity.this, "히스토리 삭제 실패!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(HistoryActivity.this, "통신오류:"+t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void setupHomeNavigation() {
