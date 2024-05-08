@@ -108,15 +108,4 @@
 
     </FrameLayout>
 
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/imageButton"
-        android:padding="5dp"
-        android:src="@drawable/cherries"
-        android:layout_gravity="end"
-        android:layout_marginEnd="50dp"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/shape_for_circle_button"/>
-
 </LinearLayout>
