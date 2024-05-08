@@ -116,7 +116,6 @@ public class HistoryDetailActivity extends AppCompatActivity {
                 public void onFailure(Call<List<HistoryDetailResponseDto>> call, Throwable t) {
                     Log.e("HistoryDetailActivity", "서버 연결 실패"+t);
                     Toast.makeText(HistoryDetailActivity.this, "서버 연결 실패", Toast.LENGTH_LONG).show();
-                            
                 }
             });
 

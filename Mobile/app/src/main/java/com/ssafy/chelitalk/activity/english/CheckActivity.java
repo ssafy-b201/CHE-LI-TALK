@@ -1,27 +1,21 @@
 package com.ssafy.chelitalk.activity.english;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,9 +23,15 @@ import com.ssafy.chelitalk.R;
 import com.ssafy.chelitalk.activity.common.MainActivity;
 import com.ssafy.chelitalk.activity.common.NetworkClient;
 import com.ssafy.chelitalk.api.check.Check;
+import com.ssafy.chelitalk.api.check.CheckAdapter;
 import com.ssafy.chelitalk.api.check.CheckService;
+import com.ssafy.chelitalk.api.check.GrammarAdapter;
+import com.ssafy.chelitalk.api.historydetail.HistoryDetailResponseDto;
+
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,8 +41,11 @@ import retrofit2.Retrofit;
 public class CheckActivity extends AppCompatActivity {
     private static Retrofit retrofit;
     private static CheckService api;
+    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewForCheck;
+    private CheckAdapter adapter;
+    private GrammarAdapter adapterForGrammar;
     private Check dto;
-    private TextView responseTextView;
 
 
     @Override
@@ -51,7 +54,13 @@ public class CheckActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_check);
 
-        responseTextView = findViewById(R.id.text_response);
+        recyclerView = findViewById(R.id.checkRecyclerView);
+        recyclerViewForCheck = findViewById(R.id.grammarRecyclerView);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewForCheck.setLayoutManager(new LinearLayoutManager(this));
+
+        setupHomeNavigation();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             retrofit = NetworkClient.getRetrofitClient(CheckActivity.this);
@@ -68,11 +77,16 @@ public class CheckActivity extends AppCompatActivity {
         if (email != null) {
             dto = new Check(email);
             Call<String> call = api.chatCheck(dto);
+            Call<List<HistoryDetailResponseDto>> callForChat = api.chatRecent(email);
+
+
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     if (response.isSuccessful()) {
-                        responseTextView.setText(response.body());
+                        List<String> grammarDetails = Arrays.asList(response.body().split("\\n"));
+                        adapterForGrammar = new GrammarAdapter(grammarDetails);
+                        recyclerViewForCheck.setAdapter(adapterForGrammar);
                     } else {
                         try {
                             String errorResponse = response.errorBody().string();
@@ -82,24 +96,41 @@ public class CheckActivity extends AppCompatActivity {
                         }
                     }
                 }
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Log.e("CheckActivity", "서버 연결 실패" + t);
+                }
+            });
 
-                private String formatToJson(String responseBody) {
-                    String[] parts = responseBody.split(":");
-                    if (parts.length == 2) {
-                        return "{\"" + parts[0].trim() + "\":\"" + parts[1].trim() + "\"}";
+            callForChat.enqueue(new Callback<List<HistoryDetailResponseDto>>() {
+                @Override
+                public void onResponse(Call<List<HistoryDetailResponseDto>> call, Response<List<HistoryDetailResponseDto>> response) {
+                    if(response.isSuccessful() && response.body() != null){
+                        adapter = new CheckAdapter(response.body());
+                        recyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                    }else{
+                        try{
+                            String errorResponse = response.errorBody().string();
+                            Log.e("CheckActivity", "에러 : " + errorResponse);
+                            Toast.makeText(CheckActivity.this, "서버 에러 발생: " + errorResponse, Toast.LENGTH_LONG).show();
+                        }catch (Exception e){
+                            Log.e("CheckActivity", "Error reading error body", e);
+                            Toast.makeText(CheckActivity.this, "응답 처리 중 오류 발생", Toast.LENGTH_LONG).show();
+                        }
                     }
-                    return "{}";
                 }
 
                 @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    responseTextView.setText("서버 연결 실패");
-                    Log.e("CheckActivity", "서버 연결 실패" + t);
+                public void onFailure(Call<List<HistoryDetailResponseDto>> call, Throwable t) {
+                    Log.e("CheckActivity", "서버 연결 실패"+t);
+                    Toast.makeText(CheckActivity.this, "서버 연결 실패", Toast.LENGTH_LONG).show();
                 }
             });
 
         } else {
             Toast.makeText(this, "사용자 로그인 오류", Toast.LENGTH_SHORT).show();
+            Log.e("CheckActivity", "사용자 로그인 오류 혹은 날짜 오류");
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -109,74 +140,7 @@ public class CheckActivity extends AppCompatActivity {
         });
 
 
-        //메뉴 dialog(modal)
-        final ImageButton button1 = (ImageButton) findViewById(R.id.imageButton);
-        button1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                AlertDialog.Builder dlg = new AlertDialog.Builder(CheckActivity.this);
-                dlg.setTitle("Menu");
-                ListAdapter adapter = new ArrayAdapter<String>(
-                        CheckActivity.this, R.layout.dialog_item, R.id.text, new String[]{"HOME", "STUDY", "LIKE", "HISTORY", "CHECK"}) {
-                    @NonNull
-                    @Override
-                    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                        View view = super.getView(position, convertView, parent);
-                        ImageView img = view.findViewById(R.id.icon);
-                        switch (position) {
-                            case 0:
-                                img.setImageResource(R.drawable.home_icon);
-                                break;
-                            case 1:
-                                img.setImageResource(R.drawable.study_icon);
-                                break;
-                            case 2:
-                                img.setImageResource(R.drawable.like_icon);
-                                break;
-                            case 3:
-                                img.setImageResource(R.drawable.history_icon);
-                                break;
-                            case 4:
-                                img.setImageResource(R.drawable.check_icon);
-                                break;
-                            default:
-                                img.setImageResource(R.drawable.cherry);
-                                break;
-                        }
-                        return view;
-                    }
-                };
 
-                dlg.setAdapter(adapter, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent;
-                        switch (which) {
-                            case 0:
-                                intent = new Intent(CheckActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                break;
-                            case 1:
-                                intent = new Intent(CheckActivity.this, SelectActivity.class);
-                                startActivity(intent);
-                                break;
-                            case 2:
-                                intent = new Intent(CheckActivity.this, LikeActivity.class);
-                                startActivity(intent);
-                                break;
-                            case 3:
-                                intent = new Intent(CheckActivity.this, HistoryActivity.class);
-                                startActivity(intent);
-                                break;
-                            case 4:
-                                intent = new Intent(CheckActivity.this, CheckActivity.class);
-                                startActivity(intent);
-                                break;
-                        }
-                    }
-                });
-                dlg.show();
-            }
-        });
     }
 
     @Override
@@ -186,5 +150,16 @@ public class CheckActivity extends AppCompatActivity {
         startActivity(intent);
         finish(); // 현재 활동 종료
 
+    }
+
+    private void setupHomeNavigation() {
+        ImageView goToHome = findViewById(R.id.goToHome);
+        goToHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CheckActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
