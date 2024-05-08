@@ -3,7 +3,7 @@
     android:id="@+id/grammarText"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
+    android:padding="13dp"
     android:textSize="18sp"
     android:fontFamily="@font/mitmi"
     android:textColor="@android:color/black" />
