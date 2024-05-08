@@ -46,10 +46,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/grammarRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_weight="1"
         android:background="@drawable/rectangle_style"
-        android:padding="16dp"
+        android:padding="10dp"
         android:layout_marginHorizontal="10dp"
         android:scrollbars="vertical"
         />
