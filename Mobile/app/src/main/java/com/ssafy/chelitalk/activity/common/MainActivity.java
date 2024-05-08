@@ -232,9 +232,6 @@ public class MainActivity extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
 
-//        Intent intent = getIntent();
-//        String nickname = intent.getStringExtra("nickname");
-
         // Singleton에서 닉네임 가져오기
         String nickname = MemberData.getInstance().getNickname();
 

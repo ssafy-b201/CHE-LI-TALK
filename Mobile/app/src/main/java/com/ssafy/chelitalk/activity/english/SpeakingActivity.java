@@ -88,8 +88,10 @@ public class SpeakingActivity extends AppCompatActivity {
         initializeUI();
 
         progressBar = findViewById(R.id.progressBar);
+
         animationView = findViewById(R.id.lottie);
         animationView.setAnimation("loading_loop.json");
+        animationView.setVisibility(View.GONE);
 
         //채팅 종료
         Button btn_finish = (Button) findViewById(R.id.btn_finish);
