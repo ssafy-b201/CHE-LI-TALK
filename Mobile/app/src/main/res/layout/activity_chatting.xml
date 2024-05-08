@@ -65,6 +65,35 @@
 
     </FrameLayout>
 
+    <RelativeLayout
+        android:layout_width="370dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_horizontal">
 
+        <EditText
+            android:id="@+id/etMessage"
+            android:layout_width="280dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/shape_for_ok_btn"
+            android:gravity="center"
+            android:hint="메시지를 입력하세요."
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/btnSend"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/shape_for_finish_btn"
+            android:text="보내기"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
 
 </LinearLayout>
