@@ -1,7 +1,5 @@
 package com.ssafy.devway.domain.chat.service;
 
-import com.google.api.gax.core.FixedCredentialsProvider;
-import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.speech.v1.RecognitionAudio;
 import com.google.cloud.speech.v1.RecognitionConfig;
 import com.google.cloud.speech.v1.RecognitionConfig.AudioEncoding;
@@ -9,8 +7,6 @@ import com.google.cloud.speech.v1.RecognizeResponse;
 import com.google.cloud.speech.v1.SpeechClient;
 import com.google.cloud.speech.v1.SpeechRecognitionAlternative;
 import com.google.cloud.speech.v1.SpeechRecognitionResult;
-import com.google.cloud.speech.v1.SpeechSettings;
-import com.google.common.collect.Lists;
 import com.google.protobuf.ByteString;
 import com.ssafy.devway.GPT.GPTBlock;
 import com.ssafy.devway.GPT.GPTMode;
@@ -29,14 +25,14 @@ import com.ssafy.devway.domain.chat.repository.ChatRepository;
 import com.ssafy.devway.domain.chat.repository.SentenceRepository;
 import com.ssafy.devway.domain.member.entity.Member;
 import com.ssafy.devway.domain.member.repository.MemberRepository;
-import com.ssafy.devway.global.api.ApiResponse;
-import java.io.FileInputStream;
+import io.github.cdimascio.dotenv.Dotenv;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,8 +42,10 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional
 public class ChatService {
 
-    private final GPTBlock gptBlock = new GPTBlock(
-        "sk-proj-xe7g0CQdvSdmKZPTJPbGT3BlbkFJoEfOvwHmhjcKdGVMFiB2");
+    Dotenv dotenv = Dotenv.load();
+    String GPT_API_KEY = dotenv.get("GPT_API_KEY");
+
+    private final GPTBlock gptBlock = new GPTBlock(GPT_API_KEY);
     private final MemberRepository memberRepository;
     private final SentenceRepository sentenceRepository;
     private final ChatRepository chatRepository;
