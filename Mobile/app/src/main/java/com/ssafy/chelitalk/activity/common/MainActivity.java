@@ -282,6 +282,10 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject slip = adviceJson.getJSONObject("slip");
                     String advice = slip.getString("advice");
 
+                    if (!advice.toLowerCase().contains("best")) {
+                        break; // Exit loop if advice does not contain "best"
+                    }
+
                     if(advice.length() < 70){
                         break;
                     }
