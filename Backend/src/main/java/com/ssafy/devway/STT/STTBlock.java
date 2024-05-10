@@ -25,7 +25,7 @@ public class STTBlock implements BlockElement {
 
     private ArrayList<String> speechToTexts = new ArrayList<>();
 
-    public void transcribe(String fileName) throws Exception {
+    public String transcribe(String fileName) throws Exception {
         if (!isWavFile(fileName)) {
             throw new IllegalArgumentException(
                 "Unsupported file format. Only .wav files are allowed.");
@@ -53,6 +53,14 @@ public class STTBlock implements BlockElement {
                 speechToTexts.add(alternative.getTranscript());
             }
         }
+
+        String content = "";
+
+        for (String str : speechToTexts) {
+            content += str;
+        }
+
+        return content;
     }
 
     private int getSampleRate(String fileName) throws Exception {

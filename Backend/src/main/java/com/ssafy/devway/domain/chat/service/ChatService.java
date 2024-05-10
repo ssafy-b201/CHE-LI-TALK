@@ -242,22 +242,8 @@ public class ChatService {
 
         STTBlock sttBlock = new STTBlock();
 
-        Member member = getMember(request.getMemberEmail());
-        List<String> transcribedText = transcribeAudioDirectly(request.getAudioFile());
+        return sttBlock.transcribe(request.getAudioFile().getName());
 
-        int index = member.getMemberChats().size() - 1;
-        if (index == -1) {
-            index = 0;
-        }
-
-        String content = "";
-
-        for (String str : transcribedText) {
-            content += str;
-        }
-
-
-        return content;
     }
 
     public byte[] convertToSpeech(ChatRequestDto request) {
@@ -275,29 +261,6 @@ public class ChatService {
             throw new RuntimeException("TTS conversion failed", e);
         }
 
-    }
-
-    public List<String> transcribeAudioDirectly(MultipartFile audioFile) throws Exception {
-        try (SpeechClient speechClient = SpeechClient.create()) {
-            byte[] data = audioFile.getBytes();
-            RecognitionAudio audio = RecognitionAudio.newBuilder()
-                .setContent(ByteString.copyFrom(data))
-                .build();
-
-            RecognitionConfig config = RecognitionConfig.newBuilder()
-                .setEncoding(AudioEncoding.LINEAR16)
-                .setLanguageCode("en-US")
-                .setSampleRateHertz(44100)
-                .build();
-
-            List<String> resultsText = new ArrayList<>();
-            RecognizeResponse response = speechClient.recognize(config, audio);
-            for (SpeechRecognitionResult result : response.getResultsList()) {
-                SpeechRecognitionAlternative alternative = result.getAlternativesList().get(0);
-                resultsText.add(alternative.getTranscript());
-            }
-            return resultsText;
-        }
     }
 
     public String deleteHistory(String memberEmail) {
