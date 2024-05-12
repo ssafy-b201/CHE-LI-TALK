@@ -51,6 +51,9 @@ dependencies {
 
 	// mysql
 	implementation 'mysql:mysql-connector-java:8.0.23'
+
+	// env
+	implementation 'io.github.cdimascio:dotenv-java:2.2.0'
 }
 
 tasks.named('test') {
