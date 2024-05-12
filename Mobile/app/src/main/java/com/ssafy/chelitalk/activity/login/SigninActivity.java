@@ -174,7 +174,7 @@ public class SigninActivity extends AppCompatActivity implements GoogleApiClient
 
     private OkHttpClient getSecureOkHttpClient() throws Exception {
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        InputStream caInput = getResources().openRawResource(R.raw.k10b201);
+        InputStream caInput = getResources().openRawResource(R.raw.cheli);
         Certificate ca;
         try {
             ca = cf.generateCertificate(caInput);
