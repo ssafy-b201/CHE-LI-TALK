@@ -2,10 +2,12 @@ package com.ssafy.chelitalk.activity.english;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -51,6 +53,7 @@ public class ChattingActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private MessageAdapter adapter;
     private TextView tv;
+    private View rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,9 @@ public class ChattingActivity extends AppCompatActivity {
 
         tv = findViewById(R.id.tv_keyword); // 여기로 이동
         tv.setText(keyword + "을(를) 주제로 채팅을 진행합니다.");
+
+        rootView = findViewById(R.id.main);
+        setUpKeyboardAdjustment();
 
         // 선택한 키워드로 채팅 시작
         startChat(userEmail, keyword);
@@ -133,6 +139,24 @@ public class ChattingActivity extends AppCompatActivity {
                 });
 
                 alertDialog.show();
+            }
+        });
+    }
+
+    private void setUpKeyboardAdjustment() {
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect rect = new Rect();
+                rootView.getWindowVisibleDisplayFrame(rect);
+                int screenHeight = rootView.getRootView().getHeight();
+                int keypadHeight = screenHeight - rect.bottom;
+
+                if (keypadHeight > screenHeight * 0.15) { // 키보드가 올라왔다고 가정
+                    tv.setVisibility(View.GONE); // 말풍선 텍스트를 숨깁니다
+                } else {
+                    tv.setVisibility(View.VISIBLE); // 말풍선 텍스트를 다시 보여줍니다
+                }
             }
         });
     }
