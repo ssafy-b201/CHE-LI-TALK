@@ -48,6 +48,9 @@
             android:layout_height="45dp"
             android:layout_marginTop="110dp"
             android:textAlignment="center"
+            android:spinnerMode="dropdown"
+            android:dropDownWidth="match_parent"
+            android:dropDownVerticalOffset="48dp"
             android:entries="@array/select_keywords"
             android:background="@drawable/rectangle_select_keywords"
             android:popupBackground="@drawable/rectangle_list_keywords">
