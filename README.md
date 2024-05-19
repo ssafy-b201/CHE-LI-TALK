@@ -29,19 +29,19 @@
 ---
 
 ### 3-1. 메인
-<img src="" height="800px" >
+<img src="/uploads/5b25216620a6837e272fdac3c4ff4594/메인.gif" height="800px" >
 
 ### 3-2. 채팅
-<img src="" height="800px" >
+<img src="/uploads/dfdef68c0e0655725b6f08620b32fbd1/채팅.gif" height="800px" >
 
 ### 3-3. 스피킹
-<img src="" height="800px" >
+<img src="/uploads/3a87b33f7e18c58a447cb5b8e021ff28/스피킹.gif" height="800px" >
 
 ### 3-4. 문법체크
-<img src="" height="800px" >
+<img src="/uploads/1a5031a1c6ecb82f27b7996745a212a2/문법_체크.gif" height="800px" >
 
 ### 3-5. 히스토리
-<img src="" height="800px" >
+<img src="/uploads/88387dd9deda567835c98c9047f0523e/히스토리.gif" height="800px" >
 
 ## 4. 기술스택
 
