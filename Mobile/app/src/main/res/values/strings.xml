@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">chelitalk</string>
+    <string name="default_text">CHECK, LISTEN, TALK? \n 문법 체크! 원어민 리슨! 영어 토크! \n AI와의 대화를 통해 영어 회화 연습을 해보세요</string>
+    <string name="default_text2">REMEMBER ME \n 영어 회화 연습 후 기억하고 싶은 문장 \n 저장해보세요! 리멤버 미</string>
+    <string name="default_text3">ADVICES FOR YOU \n 매일 달라지는 영어 명언과 함께 \n 오늘도 힘차게 살아봅시다.</string>
 </resources>

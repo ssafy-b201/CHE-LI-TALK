@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="@raw/cheli"/>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+    <domain-config>
+        <domain includeSubdomains="true">k10b201.p.ssafy.io</domain>
+        <trust-anchors>
+<!--            <certificates src="user" />-->
+             <certificates src="@raw/cheli" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>

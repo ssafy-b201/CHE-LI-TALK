@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="#C5E6F0"
+    tools:context=".activity.english.SpeakingActivity">
+
+    <FrameLayout
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/goToHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo_bubble" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/tv_keyword"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/galmuri9"
+            android:gravity="center"
+            android:text="oo을(를) 주제로 채팅을 진행합니다."
+            android:textColor="@color/cherry"
+            android:textSize="15sp" />
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="10dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center_vertical"
+        android:padding="25dp">
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie"
+            android:layout_width="200dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_fileName="loading_loop.json"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="200dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center|top"
+            android:layout_marginBottom="8dp"
+            android:max="100"
+            android:visibility="gone"
+            android:progress="0"
+            android:progressDrawable="@drawable/progress_bar_style" />
+
+        <ImageButton
+            android:id="@+id/recordButton"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="60dp"
+            android:layout_gravity="center|start|top"
+            android:background="@drawable/shape_for_circle_speak"
+            android:src="@drawable/play"
+            android:scaleType="fitCenter"/>
+
+        <ImageButton
+            android:id="@+id/stopButton"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="60dp"
+            android:layout_gravity="center|top|end"
+            android:background="@drawable/shape_for_circle_speak"
+            android:src="@drawable/stop"
+            android:scaleType="fitCenter"/>
+
+        <Button
+            android:id="@+id/btn_finish"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center|bottom"
+            android:background="@drawable/shape_for_finish_btn"
+            android:fontFamily="@font/galmuri9"
+            android:text="대화 종료"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
+
+    </FrameLayout>
+
+
+
+
+</LinearLayout>
