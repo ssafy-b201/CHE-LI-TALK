@@ -69,3 +69,7 @@
         <td align="center">Nginx<br/>Docker<br/>Jenkins<br/></td>    
     </tr>
 </table>
+
+# 🛠 시스템 흐름도
+
+<img src="./assets/Devway_System_Architecture.png" alt="architecture" height="600px">
