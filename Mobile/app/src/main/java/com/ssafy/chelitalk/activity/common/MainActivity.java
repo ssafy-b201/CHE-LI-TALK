@@ -1,36 +1,30 @@
 package com.ssafy.chelitalk.activity.common;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.ssafy.chelitalk.R;
 import com.ssafy.chelitalk.activity.carousel.MyAdapter;
 import com.ssafy.chelitalk.activity.english.HistoryActivity;
@@ -76,8 +70,6 @@ public class MainActivity extends AppCompatActivity {
     private static AttendService api;
     private Attend dto;
     private List<AttendListDto> attendList = new ArrayList<>();
-//    private RecyclerView attendRecyclerView;
-    private AttendAdapter attendAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-//        attendRecyclerView.setLayoutManager(layoutManager);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             retrofit = NetworkClient.getRetrofitClient(MainActivity.this);
@@ -108,15 +99,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<List<AttendListDto>> call, Response<List<AttendListDto>> response) {
                     if(response.isSuccessful() && response.body() != null){
-                        attendAdapter = new AttendAdapter(response.body());
-//                        attendRecyclerView.setAdapter(attendAdapter);
-//                        attendRecyclerView.setAdapter(attendAdapter);
-//                        attendList = response.body();
-//                        StringBuilder builder = new StringBuilder();
-//                        for(AttendListDto attend : attendList){
-//                            builder.append(attend.toString()).append("\n");
-//                         }
-//                        attendView.setText(builder.toString());
                         Log.d("MainActivity", "성공"+response.body());
                     }else{
                         try{
@@ -130,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<List<AttendListDto>> call, Throwable t) {
-//                    attendView.setText("서버 연결 실패");
                     Log.e("MainActivity", "서버 연결"+t);
                 }
             });
@@ -196,16 +177,10 @@ public class MainActivity extends AppCompatActivity {
         mPager.setPageTransformer(new ViewPager2.PageTransformer() {
             @Override
             public void transformPage(@NonNull View page, float position) {
-                float myOffset = position * -(2*pageOffset+pageMargin);
-                if(mPager.getOrientation()==ViewPager2.ORIENTATION_HORIZONTAL){
-                    if(ViewCompat.getLayoutDirection(mPager)==ViewCompat.LAYOUT_DIRECTION_RTL){
-                        page.setTranslationX(-myOffset);
-                    }else{
-                        page.setTranslationX(myOffset);
-                    }
-                }else{
-                    page.setTranslationY(myOffset);
-                }
+                // 단순하게 페이지가 중앙에 위치하도록 조정
+                float v = 1 - Math.abs(position);
+                page.setScaleY(0.8f + v * 0.2f);
+                page.setAlpha(0.85f + v * 0.15f);
             }
         });
 
@@ -220,8 +195,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    Toast.makeText(getApplicationContext(), "알람이 켜졌습니다.", Toast.LENGTH_SHORT).show();
-                }else{
+                    // FCM 토큰 요청
+                    FirebaseMessaging.getInstance().getToken()
+                            .addOnCompleteListener(new OnCompleteListener<String>() {
+                                @Override
+                                public void onComplete(@NonNull Task<String> task) {
+                                    if (!task.isSuccessful()) {
+                                        Log.w("FCM Token", "Fetching FCM registration token failed", task.getException());
+                                        return;
+                                    }
+
+                                    // Get new FCM registration token
+                                    String token = task.getResult();
+
+                                    // Log and toast
+                                    Log.d("FCM Token", token);
+                                    Toast.makeText(getApplicationContext(), "알람이 켜졌습니다.", Toast.LENGTH_SHORT ).show();
+                                    System.out.println("토큰 : " + token);
+                                }
+                            });
+                } else {
                     Toast.makeText(getApplicationContext(), "알람이 꺼졌습니다.", Toast.LENGTH_SHORT).show();
                 }
             }

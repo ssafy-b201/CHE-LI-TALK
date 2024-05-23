@@ -2,13 +2,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+   >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/frameSize"
-        android:layout_marginLeft="@dimen/pageMarginAndOffset"
-        android:layout_marginRight="@dimen/pageMarginAndOffset"
         android:orientation="vertical">
         <ImageView
             android:id="@+id/imgBanner3"
@@ -29,7 +27,6 @@
             android:textStyle="bold"
             android:fontFamily="@font/galmuri9"
             android:text="@string/default_text3"
-            />
             />
     </RelativeLayout>
 

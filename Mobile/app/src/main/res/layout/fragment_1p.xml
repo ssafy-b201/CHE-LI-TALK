@@ -2,19 +2,19 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/frameSize"
-        android:layout_marginLeft="@dimen/pageMarginAndOffset"
-        android:layout_marginRight="@dimen/pageMarginAndOffset"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        >
         <ImageView
             android:id="@+id/imgBanner1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/rectangle_style"
             android:contentDescription="@string/app_name"/>
 
         <TextView
