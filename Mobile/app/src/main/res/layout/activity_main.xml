@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/background_color"
     android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     tools:context=".activity.common.MainActivity">
 
     <FrameLayout
@@ -35,7 +37,7 @@
 
     <!--명언-->
     <FrameLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center|top">
         <!-- 리본 -->
@@ -65,14 +67,15 @@
         </FrameLayout>
 
         <FrameLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="10dp"
             android:layout_gravity="center">
 
             <TextView
                 android:id="@+id/adviceTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -87,13 +90,13 @@
 
     <!--menu-->
     <FrameLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
         android:layout_marginTop="20dp">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="70dp"
             android:background="@drawable/rectangle_style"
             />
@@ -163,33 +166,21 @@
         </LinearLayout>
     </FrameLayout>
 
-    <!--출석체크-->
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/attendRecyclerView"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:layout_marginBottom="30dp"-->
-<!--        android:padding="20dp"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:background="@drawable/rectangle_style"-->
-<!--        />-->
-
     <!--서비스 소개-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/frameSize"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/rounded_rectangle_style"
+        >
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"
-            android:layout_width="wrap_content"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/rectangle_style"
-            android:clipChildren="false"
-            android:clipToPadding="false" />
+             />
 
         <me.relex.circleindicator.CircleIndicator3
             android:id="@+id/indicator"
@@ -198,20 +189,21 @@
             android:layout_gravity="bottom" />
     </FrameLayout>
 
-    <!--그래머체크와 푸시알람-->
+    <!--푸시알람-->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="horizontal">
 
+        <!-- alarm-->
         <FrameLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical">
             <TextView
                 android:padding="10dp"
-                android:layout_width="350dp"
+                android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:background="@drawable/rectangle_style"

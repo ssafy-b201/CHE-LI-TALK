@@ -177,16 +177,10 @@ public class MainActivity extends AppCompatActivity {
         mPager.setPageTransformer(new ViewPager2.PageTransformer() {
             @Override
             public void transformPage(@NonNull View page, float position) {
-                float myOffset = position * -(2*pageOffset+pageMargin);
-                if(mPager.getOrientation()==ViewPager2.ORIENTATION_HORIZONTAL){
-                    if(ViewCompat.getLayoutDirection(mPager)==ViewCompat.LAYOUT_DIRECTION_RTL){
-                        page.setTranslationX(-myOffset);
-                    }else{
-                        page.setTranslationX(myOffset);
-                    }
-                }else{
-                    page.setTranslationY(myOffset);
-                }
+                // 단순하게 페이지가 중앙에 위치하도록 조정
+                float v = 1 - Math.abs(position);
+                page.setScaleY(0.8f + v * 0.2f);
+                page.setAlpha(0.85f + v * 0.15f);
             }
         });
 
