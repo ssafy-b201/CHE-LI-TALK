@@ -10,8 +10,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sample Message"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:padding="10dp"
         android:maxWidth="250dp"
+        android:textSize="20sp"
         android:background="@drawable/rectangle_sbubble_gpt"/>
 </LinearLayout>

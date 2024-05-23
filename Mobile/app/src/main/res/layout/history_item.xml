@@ -7,4 +7,5 @@
     android:padding="8dp"
     android:gravity="center"
     android:fontFamily="@font/galmuri9"
-    android:textColor="@color/cherry" />
+    android:textColor="@color/cherry"
+    android:background="@color/white"/>
