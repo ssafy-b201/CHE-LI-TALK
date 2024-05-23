@@ -63,7 +63,7 @@
         android:layout_gravity="center"
         android:text="히스토리 비우기"
         android:fontFamily="@font/galmuri9"
-        android:background="@color/cherrybtn"
+        android:background="@drawable/shape_for_ok_btn"
         android:padding="10dp"
         android:textColor="@color/white"
         android:layout_marginVertical="20dp"

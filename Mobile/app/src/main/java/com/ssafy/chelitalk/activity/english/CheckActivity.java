@@ -63,7 +63,7 @@ public class CheckActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewForCheck.setLayoutManager(new LinearLayoutManager(this));
 
-        setupHomeNavigation();
+//        setupHomeNavigation();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             retrofit = NetworkClient.getRetrofitClient(CheckActivity.this);
@@ -158,16 +158,16 @@ public class CheckActivity extends AppCompatActivity {
 
     }
 
-    private void setupHomeNavigation() {
-        ImageView goToHome = findViewById(R.id.goToHome);
-        goToHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CheckActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
+//    private void setupHomeNavigation() {
+//        ImageView goToHome = findViewById(R.id.goToHome);
+//        goToHome.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(CheckActivity.this, MainActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//    }
 
     private void showLoading(boolean show){
         if(show){

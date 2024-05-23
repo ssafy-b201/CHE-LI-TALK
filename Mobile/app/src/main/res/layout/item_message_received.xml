@@ -13,6 +13,6 @@
         android:textColor="@color/black"
         android:padding="10dp"
         android:maxWidth="250dp"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:background="@drawable/rectangle_sbubble_gpt"/>
 </LinearLayout>

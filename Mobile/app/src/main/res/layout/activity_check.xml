@@ -10,20 +10,20 @@
     android:background="@color/background_color"
     tools:context=".activity.english.CheckActivity">
 
-    <FrameLayout
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        tools:ignore="UselessParent">
+<!--    <FrameLayout-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        tools:ignore="UselessParent">-->
 
-        <ImageView
-            android:id="@+id/goToHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/logo_bubble"
-            />
-    </FrameLayout>
+<!--        <ImageView-->
+<!--            android:id="@+id/goToHome"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/logo_bubble"-->
+<!--            />-->
+<!--    </FrameLayout>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/checkRecyclerView"
@@ -31,6 +31,7 @@
         android:layout_height="300dp"
         android:layout_weight="1"
         android:padding="16dp"
+        android:layout_marginTop="30dp"
         android:scrollbars="vertical" />
 
     <!--grammar recyclerview로 바꾸기-->
