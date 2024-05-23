@@ -13,7 +13,6 @@
         android:maxWidth="250dp"
         android:padding="10dp"
         android:text="Sample Message"
-        android:fontFamily="@font/galmuri9"
         android:textColor="@color/black"
         android:textSize="20sp" />
 </LinearLayout>
