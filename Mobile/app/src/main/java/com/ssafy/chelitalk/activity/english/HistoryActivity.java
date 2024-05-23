@@ -105,7 +105,7 @@ public class HistoryActivity extends AppCompatActivity {
         }
 
 
-        setupHomeNavigation();
+//        setupHomeNavigation();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -141,14 +141,14 @@ public class HistoryActivity extends AppCompatActivity {
         }
     }
 
-    private void setupHomeNavigation() {
-        ImageView goToHome = findViewById(R.id.goToHome);
-        goToHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HistoryActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
+//    private void setupHomeNavigation() {
+//        ImageView goToHome = findViewById(R.id.goToHome);
+//        goToHome.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(HistoryActivity.this, MainActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//    }
 }

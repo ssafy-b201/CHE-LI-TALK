@@ -49,7 +49,7 @@
             android:layout_marginTop="110dp"
             android:textAlignment="center"
             android:spinnerMode="dropdown"
-            android:dropDownVerticalOffset="48dp"
+            android:dropDownVerticalOffset="50dp"
             android:entries="@array/select_keywords"
             android:background="@drawable/rectangle_select_keywords"
             android:popupBackground="@drawable/rectangle_list_keywords">
@@ -62,7 +62,6 @@
         android:layout_height="312dp"
         android:layout_gravity="center">
 
-        <!-- 첫 번째 버튼과 텍스트를 포함하는 FrameLayout -->
         <FrameLayout
             android:layout_width="90dp"
             android:layout_height="140dp"
@@ -91,7 +90,6 @@
                 android:textStyle="bold" />
         </FrameLayout>
 
-        <!-- 두 번째 버튼과 텍스트를 포함하는 FrameLayout -->
         <FrameLayout
             android:layout_width="90dp"
             android:layout_height="140dp"

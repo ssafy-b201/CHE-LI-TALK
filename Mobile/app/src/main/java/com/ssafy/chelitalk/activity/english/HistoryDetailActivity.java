@@ -61,7 +61,7 @@ public class HistoryDetailActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.historyDetailRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        setupHomeNavigation();
+//        setupHomeNavigation();
 
         retrofit = NetworkClient.getRetrofitClient(HistoryDetailActivity.this);
         if(retrofit == null){
@@ -139,16 +139,16 @@ public class HistoryDetailActivity extends AppCompatActivity {
         return dateFormat.format(new Date(timestamp));
     }
 
-    private void setupHomeNavigation() {
-        ImageView goToHome = findViewById(R.id.goToHome);
-        goToHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HistoryDetailActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
+//    private void setupHomeNavigation() {
+//        ImageView goToHome = findViewById(R.id.goToHome);
+//        goToHome.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(HistoryDetailActivity.this, MainActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private LocalDateTime convertTimestampToStringWithOtherFormat(long timestamp) {

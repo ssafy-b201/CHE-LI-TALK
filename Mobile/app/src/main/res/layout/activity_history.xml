@@ -10,24 +10,25 @@
     android:background="@color/background_color"
     tools:context=".activity.english.HistoryActivity">
 
-    <FrameLayout
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp">
+<!--    <FrameLayout-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="20dp">-->
 
-        <ImageView
-            android:id="@+id/goToHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/logo_bubble"
-            />
+<!--        <ImageView-->
+<!--            android:id="@+id/goToHome"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/logo_bubble"-->
+<!--            />-->
 
-    </FrameLayout>
+<!--    </FrameLayout>-->
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp">
 
         <ImageView
             android:layout_width="wrap_content"
