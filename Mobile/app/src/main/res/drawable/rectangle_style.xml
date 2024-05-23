@@ -6,9 +6,9 @@
             <corners
                 android:radius="10dp"/>
             <solid
-                android:color="@color/box"/>
+                android:color="@color/white"/>
             <size
-                android:height="140dp"
+                android:height="120dp"
                 android:width="350dp"/>
         </shape>
     </item>

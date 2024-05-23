@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_gravity="center"
-    android:background="#C5E6F0"
+    android:background="@color/background_color"
     tools:context=".activity.english.HistoryActivity">
 
     <FrameLayout
@@ -52,7 +52,7 @@
         android:layout_height="550dp"
         android:layout_gravity="center"
         android:padding="20dp"
-        android:background="@color/box"
+        android:background="@color/white"
         android:scrollbars="vertical" />
 
     <Button

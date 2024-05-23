@@ -6,4 +6,5 @@
     android:padding="13dp"
     android:textSize="18sp"
     android:fontFamily="@font/mitmi"
-    android:textColor="@android:color/black" />
+    android:textColor="@android:color/black"
+    android:background="@color/white"/>
