@@ -134,6 +134,15 @@ public class SelectActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() { // 요거 주석처리 하지 말기
+        Intent intent = new Intent(SelectActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish(); // 현재 활동 종료
+
+    }
+
     private void setupHomeNavigation() {
         ImageView goToHome = findViewById(R.id.goToHome);
         goToHome.setOnClickListener(new View.OnClickListener() {
