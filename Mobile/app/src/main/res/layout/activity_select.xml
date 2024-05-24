@@ -54,6 +54,12 @@
                 android:textColor="@color/cherry"
                 android:textSize="17sp"
                 android:textStyle="bold" />
+
+            <View
+                android:id="@+id/selected_speaking"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_for_selected_type"/>
         </FrameLayout>
 
         <FrameLayout
@@ -83,6 +89,12 @@
                 android:textColor="@color/cherry"
                 android:textSize="17sp"
                 android:textStyle="bold" />
+
+            <View
+                android:id="@+id/selected_chatting"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_for_selected_type"/>
         </FrameLayout>
     </FrameLayout>
 
@@ -112,29 +124,63 @@
             android:paddingLeft="40dp"
             android:paddingRight="40dp">
 
-            <ImageView
-                android:id="@+id/image_family"
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="110dp"
                 android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:src="@drawable/family" />
+                android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/image_pet"
-                android:layout_width="0dp"
-                android:layout_height="110dp"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:src="@drawable/pet" />
+                <ImageView
+                    android:id="@+id/image_family"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/family" />
 
-            <ImageView
-                android:id="@+id/image_movie"
+                <View
+                    android:id="@+id/selected_family"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_for_selected_keyword"/>
+            </FrameLayout>
+
+
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="110dp"
                 android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:src="@drawable/movie" />
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/image_pet"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/pet" />
+
+                <View
+                    android:id="@+id/selected_pet"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_for_selected_keyword"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="110dp"
+                android:layout_margin="8dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/image_movie"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/movie" />
+
+                <View
+                    android:id="@+id/selected_movie"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_for_selected_keyword"/>
+            </FrameLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -146,29 +192,62 @@
             android:paddingLeft="40dp"
             android:paddingRight="40dp">
 
-            <ImageView
-                android:id="@+id/image_hobby"
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="110dp"
                 android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:src="@drawable/hobby" />
+                android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/image_food"
-                android:layout_width="0dp"
-                android:layout_height="110dp"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:src="@drawable/food" />
+                <ImageView
+                    android:id="@+id/image_hobby"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/hobby" />
 
-            <ImageView
-                android:id="@+id/image_music"
+                <View
+                    android:id="@+id/selected_hobby"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_for_selected_keyword"/>
+            </FrameLayout>
+
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="110dp"
                 android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:src="@drawable/music" />
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/image_food"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/food" />
+
+                <View
+                    android:id="@+id/selected_food"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_for_selected_keyword"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="110dp"
+                android:layout_margin="8dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/image_music"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/music" />
+
+                <View
+                    android:id="@+id/selected_music"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_for_selected_keyword"/>
+            </FrameLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -180,29 +259,62 @@
             android:paddingLeft="40dp"
             android:paddingRight="40dp">
 
-            <ImageView
-                android:id="@+id/image_workout"
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="110dp"
                 android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:src="@drawable/workout" />
+                android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/image_reading"
-                android:layout_width="0dp"
-                android:layout_height="110dp"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:src="@drawable/reading" />
+                <ImageView
+                    android:id="@+id/image_workout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/workout" />
 
-            <ImageView
-                android:id="@+id/image_travel"
+                <View
+                    android:id="@+id/selected_workout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_for_selected_keyword"/>
+            </FrameLayout>
+
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="110dp"
                 android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:src="@drawable/travel" />
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/image_reading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/reading" />
+
+                <View
+                    android:id="@+id/selected_reading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_for_selected_keyword"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="110dp"
+                android:layout_margin="8dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/image_travel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/travel" />
+
+                <View
+                    android:id="@+id/selected_travel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_for_selected_keyword"/>
+            </FrameLayout>
         </LinearLayout>
     </FrameLayout>
 

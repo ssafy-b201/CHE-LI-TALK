@@ -57,6 +57,19 @@ public class SelectActivity extends AppCompatActivity {
     private ImageView imageReading;
     private ImageView imageTravel;
 
+    private View selectedFamily;
+    private View selectedPet;
+    private View selectedMovie;
+    private View selectedHobby;
+    private View selectedFood;
+    private View selectedMusic;
+    private View selectedWorkout;
+    private View selectedReading;
+    private View selectedTravel;
+
+    private View selectedSpeaking;
+    private View selectedChatting;
+
     private Button btnStart;
 
     private ImageView selectedKeyword = null;
@@ -80,6 +93,32 @@ public class SelectActivity extends AppCompatActivity {
         imageWorkout = findViewById(R.id.image_workout);
         imageReading = findViewById(R.id.image_reading);
         imageTravel = findViewById(R.id.image_travel);
+
+        selectedFamily = findViewById(R.id.selected_family);
+        selectedPet = findViewById(R.id.selected_pet);
+        selectedMovie = findViewById(R.id.selected_movie);
+        selectedHobby = findViewById(R.id.selected_hobby);
+        selectedFood = findViewById(R.id.selected_food);
+        selectedMusic = findViewById(R.id.selected_music);
+        selectedWorkout = findViewById(R.id.selected_workout);
+        selectedReading = findViewById(R.id.selected_reading);
+        selectedTravel = findViewById(R.id.selected_travel);
+
+        selectedFamily.setVisibility(View.GONE);
+        selectedPet.setVisibility(View.GONE);
+        selectedMovie.setVisibility(View.GONE);
+        selectedHobby.setVisibility(View.GONE);
+        selectedFood.setVisibility(View.GONE);
+        selectedMusic.setVisibility(View.GONE);
+        selectedWorkout.setVisibility(View.GONE);
+        selectedReading.setVisibility(View.GONE);
+        selectedTravel.setVisibility(View.GONE);
+
+        selectedSpeaking = findViewById(R.id.selected_speaking);
+        selectedChatting = findViewById(R.id.selected_chatting);
+
+        selectedSpeaking.setVisibility(View.GONE);
+        selectedChatting.setVisibility(View.GONE);
 
         btnStart = findViewById(R.id.btnStart);
 
@@ -142,18 +181,82 @@ public class SelectActivity extends AppCompatActivity {
         String conversationType = null;
         String keyword = null;
 
-        if (btnSpeak.isSelected()) conversationType = "Speaking";
-        if (btnChatting.isSelected()) conversationType = "Chatting";
+        if (btnSpeak.isSelected()){
+            conversationType = "Speaking";
+            selectedSpeaking.setVisibility(View.VISIBLE);
+        } else {
+            selectedSpeaking.setVisibility(View.GONE);
+        }
 
-        if (imageFamily.isSelected()) keyword = "가족";
-        if (imagePet.isSelected()) keyword = "반려동물";
-        if (imageMovie.isSelected()) keyword = "영화";
-        if (imageHobby.isSelected()) keyword = "취미";
-        if (imageFood.isSelected()) keyword = "음식";
-        if (imageMusic.isSelected()) keyword = "음악";
-        if (imageWorkout.isSelected()) keyword = "운동";
-        if (imageReading.isSelected()) keyword = "독서";
-        if (imageTravel.isSelected()) keyword = "여행";
+        if (btnChatting.isSelected()){
+            conversationType = "Chatting";
+            selectedChatting.setVisibility(View.VISIBLE);
+        } else {
+            selectedChatting.setVisibility(View.GONE);
+        }
+
+        if (imageFamily.isSelected()) {
+            keyword = "가족";
+            selectedFamily.setVisibility(View.VISIBLE);
+        } else {
+            selectedFamily.setVisibility(View.GONE);
+        }
+
+        if (imagePet.isSelected()) {
+            keyword = "반려동물";
+            selectedPet.setVisibility(View.VISIBLE);
+        } else {
+            selectedPet.setVisibility(View.GONE);
+        }
+
+        if (imageMovie.isSelected()) {
+            keyword = "영화";
+            selectedMovie.setVisibility(View.VISIBLE);
+        } else {
+            selectedMovie.setVisibility(View.GONE);
+        }
+
+        if (imageHobby.isSelected()) {
+            keyword = "취미";
+            selectedHobby.setVisibility(View.VISIBLE);
+        } else {
+            selectedHobby.setVisibility(View.GONE);
+        }
+
+        if (imageFood.isSelected()) {
+            keyword = "음식";
+            selectedFood.setVisibility(View.VISIBLE);
+        } else {
+            selectedFood.setVisibility(View.GONE);
+        }
+
+        if (imageMusic.isSelected()) {
+            keyword = "음악";
+            selectedMusic.setVisibility(View.VISIBLE);
+        } else {
+            selectedMusic.setVisibility(View.GONE);
+        }
+
+        if (imageWorkout.isSelected()) {
+            keyword = "운동";
+            selectedWorkout.setVisibility(View.VISIBLE);
+        } else {
+            selectedWorkout.setVisibility(View.GONE);
+        }
+
+        if (imageReading.isSelected()) {
+            keyword = "독서";
+            selectedReading.setVisibility(View.VISIBLE);
+        } else {
+            selectedReading.setVisibility(View.GONE);
+        }
+
+        if (imageTravel.isSelected()) {
+            keyword = "여행";
+            selectedTravel.setVisibility(View.VISIBLE);
+        } else {
+            selectedTravel.setVisibility(View.GONE);
+        }
 
         if (conversationType != null && keyword != null) {
             Intent intent;
