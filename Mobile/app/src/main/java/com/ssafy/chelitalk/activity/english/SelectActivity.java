@@ -37,7 +37,6 @@ public class SelectActivity extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser user = auth.getCurrentUser();
 
-    private Spinner spinner;
     private String userEmail = user.getEmail();
     private String keyword;
 
@@ -50,8 +49,6 @@ public class SelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_select);
-
-        spinner = findViewById(R.id.spinner_keywords);
 
         // to speaking / to chatting
         final ImageButton btn_speak = (ImageButton) findViewById(R.id.btn_speak);
@@ -109,22 +106,6 @@ public class SelectActivity extends AppCompatActivity {
             }
         };
 
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                keyword = (String) parent.getItemAtPosition(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-
-        });
-
-        setupHomeNavigation();
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -143,14 +124,4 @@ public class SelectActivity extends AppCompatActivity {
 
     }
 
-    private void setupHomeNavigation() {
-        ImageView goToHome = findViewById(R.id.goToHome);
-        goToHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SelectActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
 }
