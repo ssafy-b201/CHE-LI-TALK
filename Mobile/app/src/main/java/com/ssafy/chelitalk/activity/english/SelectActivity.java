@@ -62,8 +62,6 @@ public class SelectActivity extends AppCompatActivity {
     private ImageView selectedKeyword = null;
     private ImageButton selectedType = null;
 
-    TextView tv;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,9 +83,8 @@ public class SelectActivity extends AppCompatActivity {
 
         btnStart = findViewById(R.id.btnStart);
 
-        tv = findViewById(R.id.intent_info);
-
         btnStart.setEnabled(false);
+        btnStart.setVisibility(View.GONE);
 
         setupButtons();
 
@@ -184,8 +181,10 @@ public class SelectActivity extends AppCompatActivity {
         if (selectedType != null && selectedType.isSelected() &&
                 selectedKeyword != null && selectedKeyword.isSelected()) {
             btnStart.setEnabled(true);
+            btnStart.setVisibility(View.VISIBLE);
         } else {
             btnStart.setEnabled(false);
+            btnStart.setVisibility(View.GONE);
         }
     }
 

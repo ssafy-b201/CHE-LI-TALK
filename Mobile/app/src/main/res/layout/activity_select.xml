@@ -219,16 +219,5 @@
             android:text="대화 시작하기"
             android:textColor="@color/white"
             android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/intent_info"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:fontFamily="@font/galmuri9"
-            android:gravity="center_vertical"
-            android:text="오늘의 대화 주제"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
     </FrameLayout>
 </LinearLayout>
