@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -65,11 +67,24 @@ public class MainActivity extends AppCompatActivity {
     private FragmentStateAdapter pagerAdapter;
     private int num_page = 3;
     private CircleIndicator3 mIndicator;
+    private Handler autoScrollHandler = new Handler(Looper.getMainLooper());
+    private int currentPage = 0;
+    private final long DELAY_MS = 6000;
+
     private FirebaseAuth auth;
     private static Retrofit retrofit;
     private static AttendService api;
     private Attend dto;
     private List<AttendListDto> attendList = new ArrayList<>();
+
+    private final Runnable autoScrollRunnable = new Runnable() {
+        @Override
+        public void run() {
+            currentPage = (currentPage + 2) % num_page;
+            mPager.setCurrentItem(currentPage, true);
+            autoScrollHandler.postDelayed(this, DELAY_MS);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,8 +167,9 @@ public class MainActivity extends AppCompatActivity {
         mIndicator.setViewPager(mPager);
         mIndicator.createIndicators(num_page,0);
         mPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        mPager.setCurrentItem(1000);
         mPager.setOffscreenPageLimit(3);
+
+        startAutoScroll();
 
         mPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -219,6 +235,22 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void startAutoScroll() {
+        autoScrollHandler.postDelayed(autoScrollRunnable, DELAY_MS);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        autoScrollHandler.removeCallbacks(autoScrollRunnable); // 액티비티가 보이지 않을 때 자동 스크롤 중지
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        autoScrollHandler.postDelayed(autoScrollRunnable, DELAY_MS);
     }
 
     private void setGreetingBasedOnTime() {
