@@ -88,6 +88,10 @@ public class SpeakingActivity extends AppCompatActivity {
         initializeUI();
 
         progressBar = findViewById(R.id.progressBar);
+        stopButton = findViewById(R.id.stopButton);
+
+        stopButton.setEnabled(false);
+        stopButton.setVisibility(View.GONE);
 
         animationView = findViewById(R.id.lottie);
         animationView.setAnimation("loading_loop.json");
@@ -250,7 +254,11 @@ public class SpeakingActivity extends AppCompatActivity {
         if (recorder.getState() == AudioRecord.STATE_INITIALIZED) {
             recorder.startRecording();
             isRecording = true;
+
+            recordButton.setVisibility(View.GONE);
             recordButton.setEnabled(false);
+
+            stopButton.setVisibility(View.VISIBLE);
             stopButton.setEnabled(true);
 
             progressBar.setVisibility(View.VISIBLE);
@@ -581,7 +589,10 @@ public class SpeakingActivity extends AppCompatActivity {
     private void enableRecordingButtons() {
         runOnUiThread(() -> {
             recordButton.setEnabled(true);
-            stopButton.setEnabled(true);
+            stopButton.setEnabled(false);
+
+            recordButton.setVisibility(View.VISIBLE);
+            stopButton.setVisibility(View.GONE);
 
             recordButton.setAlpha(1.0f);
             stopButton.setAlpha(1.0f);
@@ -678,7 +689,7 @@ public class SpeakingActivity extends AppCompatActivity {
     private void hideUploadingAnimation() {
         runOnUiThread(() -> {
             recordButton.setVisibility(View.VISIBLE);
-            stopButton.setVisibility(View.VISIBLE);
+            stopButton.setVisibility(View.GONE);
             animationView.setVisibility(View.GONE);
             animationView.pauseAnimation();
         });

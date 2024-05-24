@@ -71,6 +71,7 @@ public class SelectActivity extends AppCompatActivity {
     private View selectedChatting;
 
     private Button btnStart;
+    private Button btnUnselected;
 
     private ImageView selectedKeyword = null;
     private ImageButton selectedType = null;
@@ -121,9 +122,13 @@ public class SelectActivity extends AppCompatActivity {
         selectedChatting.setVisibility(View.GONE);
 
         btnStart = findViewById(R.id.btnStart);
+        btnUnselected = findViewById(R.id.btnUnselected);
 
         btnStart.setEnabled(false);
         btnStart.setVisibility(View.GONE);
+
+        btnUnselected.setEnabled(false);
+        btnUnselected.setVisibility(View.VISIBLE);
 
         setupButtons();
 
@@ -285,9 +290,11 @@ public class SelectActivity extends AppCompatActivity {
                 selectedKeyword != null && selectedKeyword.isSelected()) {
             btnStart.setEnabled(true);
             btnStart.setVisibility(View.VISIBLE);
+            btnUnselected.setVisibility(View.GONE);
         } else {
             btnStart.setEnabled(false);
             btnStart.setVisibility(View.GONE);
+            btnUnselected.setVisibility(View.VISIBLE);
         }
     }
 
