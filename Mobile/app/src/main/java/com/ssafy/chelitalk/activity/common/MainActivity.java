@@ -233,13 +233,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(timeOfDay >= 6 && timeOfDay < 12){
-            greetingTextView.setText("Good Morning, " + nickname);
+            greetingTextView.setText("Good Morning, " + nickname + " !");
         }else if(timeOfDay >= 12 && timeOfDay < 17){
-            greetingTextView.setText("Good Afternoon, " + nickname);
+            greetingTextView.setText("Good Afternoon, " + nickname + " !");
         }else if(timeOfDay >= 17 && timeOfDay < 21){
-            greetingTextView.setText("Good Evening, " + nickname);
+            greetingTextView.setText("Good Evening, " + nickname + " !");
         }else{
-            greetingTextView.setText("Good Night, " + nickname);
+            greetingTextView.setText("Good Night, " + nickname + " !");
         }
     }
 
