@@ -58,7 +58,6 @@
         android:padding="10dp"
         android:scrollbars="vertical"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/rectangle_chat_area"/>
+        android:layout_marginRight="20dp"/>
 
 </LinearLayout>

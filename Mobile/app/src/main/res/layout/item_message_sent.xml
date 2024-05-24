@@ -13,6 +13,6 @@
         android:maxWidth="250dp"
         android:padding="10dp"
         android:text="Sample Message"
-        android:textColor="#8A8A8A"
+        android:textColor="@color/text"
         android:textSize="18sp" />
 </LinearLayout>
