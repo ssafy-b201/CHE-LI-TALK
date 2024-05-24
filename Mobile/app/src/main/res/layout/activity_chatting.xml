@@ -47,6 +47,7 @@
         android:layout_weight="1"
         android:layout_gravity="center"
         android:padding="10dp"
+        android:scrollbars="vertical"
         />
 
     <FrameLayout
@@ -83,7 +84,6 @@
             android:layout_alignParentStart="true"
             app:layout_constraintBottom_toBottomOf="parent"
             android:background="@drawable/shape_for_edit_text"
-            android:gravity="center"
             android:paddingHorizontal="10sp"
             android:fontFamily="@font/galmuri9"
             android:hint="메시지를 입력하세요."

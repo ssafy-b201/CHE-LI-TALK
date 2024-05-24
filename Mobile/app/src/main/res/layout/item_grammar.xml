@@ -5,6 +5,6 @@
     android:layout_height="wrap_content"
     android:padding="13dp"
     android:textSize="18sp"
-    android:fontFamily="@font/mitmi"
+    android:text="사용 예시"
     android:textColor="@android:color/black"
     android:background="@color/white"/>

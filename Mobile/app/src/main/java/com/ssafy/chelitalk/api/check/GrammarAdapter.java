@@ -29,7 +29,7 @@ public class GrammarAdapter extends RecyclerView.Adapter<GrammarAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String detail = (position + 1) + "번 문장에 대한 피드백 : " + grammarDetails.get(position);
+        String detail = "Grammar #" + (position + 1) + " : " + grammarDetails.get(position);
         holder.grammarText.setText(detail);
     }
 
