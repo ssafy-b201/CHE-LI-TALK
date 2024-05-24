@@ -93,7 +93,6 @@ public class SpeakingActivity extends AppCompatActivity {
         animationView.setAnimation("loading_loop.json");
         animationView.setVisibility(View.GONE);
 
-        //채팅 종료
         Button btn_finish = (Button) findViewById(R.id.btn_finish);
         btn_finish.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,7 +109,7 @@ public class SpeakingActivity extends AppCompatActivity {
                 AlertDialog alertDialog = dlg.create();
                 alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.rectangle_style);
 
-                tvDialogContent.setText("정말 채팅을 끝내시겠어요?");
+                tvDialogContent.setText("정말 스피킹을 끝내시겠어요?");
 
                 btnDialogCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
