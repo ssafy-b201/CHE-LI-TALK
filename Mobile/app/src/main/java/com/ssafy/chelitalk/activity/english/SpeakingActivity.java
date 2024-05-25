@@ -258,12 +258,12 @@ public class SpeakingActivity extends AppCompatActivity {
             recordButton.setVisibility(View.GONE);
             recordButton.setEnabled(false);
 
-            stopButton.setVisibility(View.VISIBLE);
-            stopButton.setEnabled(true);
-
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setProgress(0);
             progressStatus = 0;
+
+            stopButton.setVisibility(View.VISIBLE);
+            stopButton.setEnabled(true);
 
             recordingThread = new Thread(new Runnable() {
                 public void run() {
@@ -517,8 +517,6 @@ public class SpeakingActivity extends AppCompatActivity {
                     .url(url)
                     .post(body)
                     .build();
-
-            System.out.println("requestBody : " + requestBody);
 
             client.newCall(request).enqueue(new okhttp3.Callback() {
 
