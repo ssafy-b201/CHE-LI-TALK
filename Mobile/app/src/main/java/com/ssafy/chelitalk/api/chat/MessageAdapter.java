@@ -1,9 +1,11 @@
 package com.ssafy.chelitalk.api.chat;
 
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -81,9 +83,11 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public static class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
         TextView textViewMessage;
+        ImageView imageView;
 
         public ReceivedMessageViewHolder(View itemView) {
             super(itemView);
+            imageView = itemView.findViewById(R.id.cherryImage);
             textViewMessage = itemView.findViewById(R.id.textViewMessageReceived);
         }
     }
