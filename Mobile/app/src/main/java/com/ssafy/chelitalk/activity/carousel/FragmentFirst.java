@@ -7,6 +7,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.LeadingMarginSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,13 @@ public class FragmentFirst extends Fragment {
         int restStart = text.indexOf("문법 체크");
         int restEnd = text.length();
         spannableString.setSpan(new AbsoluteSizeSpan(18, true), restStart, restEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        int nextLineStart = text.indexOf("?", end) + 1;
+//        if(nextLineStart > end && nextLineStart < text.length()){
+//            spannableString.setSpan(new LeadingMarginSpan.Standard(50), nextLineStart, text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        }
+        SpannableString spannableString1 = new SpannableString(text.substring(0, end) + "\n\n\n" + text.substring(end));
+        tvName1.setText(spannableString1);
 
         tvName1.setText(spannableString);
     }
