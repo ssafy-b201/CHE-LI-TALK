@@ -97,6 +97,7 @@ public class CheckActivity extends AppCompatActivity {
                         try {
                             String errorResponse = response.errorBody().string();
                             Log.e("CheckActivity", "에러메시지: " + errorResponse);
+                            Toast.makeText(CheckActivity.this, "에러 발생: " + errorResponse, Toast.LENGTH_LONG).show();
                         } catch (IOException e) {
                             Log.e("CheckActivity", "Error reading error body", e);
                         }
@@ -105,6 +106,7 @@ public class CheckActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
                     Log.e("CheckActivity", "서버 연결 실패" + t);
+                    Toast.makeText(CheckActivity.this, "서버 연결 실패: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
 
