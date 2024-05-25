@@ -323,23 +323,23 @@
         android:layout_height="match_parent">
         <Button
             android:id="@+id/btnStart"
-            android:layout_width="100dp"
-            android:layout_height="55dp"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
             android:background="@drawable/shape_for_finish_btn"
             android:fontFamily="@font/galmuri9"
-            android:text="대화 시작하기"
+            android:text="대화 시작"
             android:textColor="@color/white"
             android:textSize="13sp" />
 
         <Button
             android:id="@+id/btnUnselected"
-            android:layout_width="100dp"
-            android:layout_height="55dp"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
             android:background="@drawable/shape_for_btn_unselected"
             android:fontFamily="@font/galmuri9"
-            android:text="대화 시작하기"
+            android:text="대화 시작"
             android:textColor="@color/white"
             android:textSize="13sp" />
     </FrameLayout>
