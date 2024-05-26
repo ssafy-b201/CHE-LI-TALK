@@ -57,13 +57,30 @@ public class NetworkClient {
 
     public static Retrofit getRetrofitClient(){
         if(retrofit == null){
-            Gson gson = new GsonBuilder()
-                    .setLenient()
-                    .create();
+            Gson gson = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                gson = new GsonBuilder()
+                        .setLenient()
+                        .registerTypeAdapter(Date.class, new DateTypeAdapter())
+                        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
+                        .create();
+            }
+
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+            OkHttpClient httpClient = new OkHttpClient.Builder()
+                    .connectTimeout(1, TimeUnit.MINUTES)
+                    .readTimeout(1, TimeUnit.MINUTES)
+                    .writeTimeout(1, TimeUnit.MINUTES)
+                    .addInterceptor(loggingInterceptor)
+                    .build();
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
+                    .client(httpClient)
                     .addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(new NullOnEmptyConverterFactory())
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }
