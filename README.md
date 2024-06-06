@@ -38,10 +38,10 @@
 <img src="/uploads/dfdef68c0e0655725b6f08620b32fbd1/채팅.gif" height="800px" >
 
 ### 💡 스피킹
-<img src="/uploads/3a87b33f7e18c58a447cb5b8e021ff28/스피킹.gif" height="800px" >
+![스피킹](https://github.com/ssafy-b201/CHE-LI-TALK/assets/136299367/9b66b104-4f34-4f64-a673-889e6aa973b8)
 
 ### 💡 문법체크
-<img src="/uploads/1a5031a1c6ecb82f27b7996745a212a2/문법_체크.gif" height="800px" >
+![문법_체크](https://github.com/ssafy-b201/CHE-LI-TALK/assets/136299367/e6ba76cf-9081-499b-87ca-7d43e3cc857a)
 
 ### 💡 히스토리
 <img src="/uploads/88387dd9deda567835c98c9047f0523e/히스토리.gif" height="800px" >
@@ -50,7 +50,8 @@
 
 ---
 
-<img src="/uploads/381454095047dba95e7427072edecaf0/Untitled__1_.png">
+![Untitled__1_](https://github.com/ssafy-b201/CHE-LI-TALK/assets/136299367/b44c21ae-0c24-40ed-b408-e6eeb7c855ae)
+
 
 ## 👩‍👩‍👦 팀원소개 / 역할
 
