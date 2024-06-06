@@ -5,7 +5,8 @@
 
 ---
 
-![image](/uploads/d9f6d533e2a3b9580b77e91cecd74063/image.png)
+![image](https://github.com/ssafy-b201/CHE-LI-TALK/assets/136299367/e8581d36-32e1-4862-97a4-eef15c28d975)
+
 
 ***“내 손 안의 영어선생님”***
 
@@ -31,7 +32,7 @@
 ---
 
 ### 💡 메인
-<img src="/uploads/5b25216620a6837e272fdac3c4ff4594/메인.gif" height="800px" >
+![메인](https://github.com/ssafy-b201/CHE-LI-TALK/assets/136299367/5404eb3e-478e-4ed6-b490-039e4619cf9a)
 
 ### 💡 채팅
 <img src="/uploads/dfdef68c0e0655725b6f08620b32fbd1/채팅.gif" height="800px" >
